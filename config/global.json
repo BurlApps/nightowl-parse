@@ -1,0 +1,35 @@
+{
+    "applications": {
+        "Night Owl (Debug)": {
+            "applicationId": "0bzu64ADBGuHKglFYiCTYKR7tFZVaepLxVT1HXYe",
+            "masterKey": "S9frooAMGq6Czvob8x2d1OOGvEGTjNJeBfqlLBkA"
+        },
+        "Night Owl (Debug: Brian)": {
+            "applicationId": "C46M4EM0yJZmiYKBpgmmoJLRFpgmuPFz8gSPw5A7",
+            "masterKey": "ce01MYCewqt0FAwX4PgO92HRdJiBN8t6Pex79vv4"
+        },
+        "Night Owl (Debug: Nelson)": {
+            "applicationId": "AqMUSmYmu4RIUHjCd1QuiL1eN9wG1yt1BZmqFiJ1",
+            "masterKey": "ewS4z70KQpg6VWqgApBOH7pJyFkai5DcwPTxEKct"
+        },
+        "Night Owl (Release)": {
+            "applicationId": "do9I872HqE4J67MwcN1nu1QJ9K9pjGa2eQg95Tit",
+            "masterKey": "SDUJ7hGTJTHNlmSBkZyb8bV2tqoy3D0kHUBU6NUX"
+        },
+        "_default": {
+            "link": "Night Owl (Debug)"
+        },
+        "debug": {
+            "link": "Night Owl (Debug)"
+        },
+        "release": {
+            "link": "Night Owl (Release)"
+        },
+        "nelson": {
+            "link": "Night Owl (Debug: Nelson)"
+        },
+        "brian": {
+            "link": "Night Owl (Debug: Brian)"
+        }
+    }
+}
