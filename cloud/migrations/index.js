@@ -1,5 +1,5 @@
 // Require All Migration Functions
-require("cloud/migrations/debugAccounts")
+require("cloud/migrations/debugAccount")
 
 // Call Migrations
 Parse.Cloud.job("runMigration", function(req, res) {
