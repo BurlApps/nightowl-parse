@@ -1,4 +1,4 @@
-var DebugAccounts = Parse.Object.extend("DebugAccounts")
+var DebugAccounts = Parse.Object.extend("DebugAccount")
 
 Parse.Cloud.define("debugAccounts", function(req, res) {
   Parse.Cloud.useMasterKey()
