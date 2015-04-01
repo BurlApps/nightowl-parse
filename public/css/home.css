@@ -1,0 +1,20 @@
+body {
+  background: #FEE033;
+}
+
+.container {
+  width: 100%;
+  margin: 200px auto 50px auto;
+  text-align: center;
+}
+
+.container .logo {
+  width: 250px;
+}
+
+.container .message {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  font-size: 52px;
+  margin-top: 15px;
+}

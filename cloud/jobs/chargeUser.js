@@ -5,11 +5,11 @@ Parse.Cloud.job("chargeUser", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   Settings().then(function(settings) {
-    return Stripe.initialize(settings.get("stripeKey"))
-  }).then(function() {
+    Stripe.initialize(settings.get("stripeKey"))
+
     var query = new Parse.Query(Parse.User)
 
-    query.greaterThan("charges", 0)
+    query.greaterThanOrEqualTo("charges", settings.get("bulkCharging"))
     query.exists("stripe")
 
     return query.each(function(user) {
