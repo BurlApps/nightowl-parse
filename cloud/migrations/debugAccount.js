@@ -1,6 +1,6 @@
 var DebugAccounts = Parse.Object.extend("DebugAccount")
 
-Parse.Cloud.define("debugAccounts", function(req, res) {
+Parse.Cloud.define("migration:debugAccounts", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var query = new Parse.Query(DebugAccounts)
