@@ -4,7 +4,8 @@ var Settings = require("cloud/utils/settings")
 Parse.Cloud.define("stripeRegister", function(req, res) {
   Parse.Cloud.useMasterKey()
 
-  var user = Parse.User.current()
+  var user = new Parse.User()
+  user.id = req.params.user
 
   Settings().then(function(settings) {
     return Stripe.initialize(settings.get("stripeKey"))
