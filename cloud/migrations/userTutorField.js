@@ -1,7 +1,7 @@
 var User = Parse.User
 var Tutor  = Parse.Object.extend("Tutor")
 
-Parse.Cloud.define("migration:userTutorField", function(req, res) {
+Parse.Cloud.define("migrationUserTutorField", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var user = new User()
@@ -20,6 +20,6 @@ Parse.Cloud.define("migration:userTutorField", function(req, res) {
   }).then(function() {
     res.success("Successfully added tutor field")
   }, function(error) {
-    res.error(error)
+    res.error(error.description)
   })
 })
