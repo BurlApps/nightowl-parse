@@ -70,6 +70,7 @@ module.exports.registerUser = function(req, res) {
 		  	next: "/register/welcome"
 	  	})
     }, function(error) {
+      tutor.destroy()
 		  console.log(error)
 
 	    res.json({
