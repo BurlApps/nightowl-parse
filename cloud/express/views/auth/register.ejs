@@ -1,0 +1,13 @@
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="header">Registration</div>
+  <form class="form" action="/register">
+    <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+    <input name="email" class="input" type="email" placeholder="Email" required step="1" autofocus/>
+    <input name="password" class="input" type="password" placeholder="Password" required step="2"/>
+    <input name="password_confirm" class="input" type="password" placeholder="Confirm Password" required step="3"/>
+    <textarea name="biography" class="input textarea" placeholder="Biography" required step="4"></textarea>
+    <input class="submit" type="submit" value="Start Tutoring" />
+  </form>
+</div>
+<% include ../includes/end.ejs %>

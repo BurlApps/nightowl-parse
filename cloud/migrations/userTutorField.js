@@ -13,6 +13,7 @@ Parse.Cloud.define("migrationUserTutorField", function(req, res) {
   user.set("username", random)
   user.set("password", random)
   user.set("tutor", tutor)
+  user.set("tutoring", false)
   user.signUp().then(function() {
     return user.destroy()
   }).then(function() {

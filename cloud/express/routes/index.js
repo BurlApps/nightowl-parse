@@ -35,5 +35,5 @@ module.exports.robots = function(req, res) {
 
 module.exports.sitemap = function(req, res) {
   res.set('Content-Type', 'application/xml')
-  res.render('sitemap')
+  res.render('seo/sitemap')
 }

@@ -8,7 +8,8 @@ Parse.Cloud.useMasterKey()
 
 // Routes
 var routes = {
-  core: require("cloud/express/routes/index")
+  core: require("cloud/express/routes/index"),
+  auth: require("cloud/express/routes/auth")
 }
 
 // Global app configuration section
@@ -34,8 +35,7 @@ app.use(function(req, res, next) {
   // Locals
   res.locals.host = req.protocol + "://" + req.host
   res.locals.url = res.locals.host + req.url
-  res.locals.admin = !!req.session.admin
-  res.locals.user = !!req.session.user
+  res.locals.user = req.session.user
   res.locals.random = random
 
   if(req.session.appliedSettings !== true) {
@@ -53,10 +53,15 @@ app.use(function(req, res, next) {
   }
 })
 
-console.log(routes.core.home)
-
 // Landing
 app.get('/', routes.core.home)
+
+// Auth
+app.get('/login', routes.auth.login)
+app.get('/register', routes.auth.register)
+app.get('/register/welcome', routes.auth.welcome)
+app.post('/login', routes.auth.loginUser)
+app.post('/register', routes.auth.registerUser)
 
 // Terms
 app.get('/terms', routes.core.terms)
