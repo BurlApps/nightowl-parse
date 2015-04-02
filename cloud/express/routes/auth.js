@@ -1,6 +1,19 @@
 var User = Parse.User
 var Tutor = Parse.Object.extend("Tutor")
 
+module.exports.auth = function(req, res, next) {
+	if(req.session.user) {
+		next();
+	} else if(req.xhr) {
+		res.json({
+			success: false,
+			message: "Login required :("
+		})
+	} else {
+		res.redirect("/login")
+	}
+}
+
 module.exports.login = function(req, res) {
   res.render('auth/login', {
 	  template: 'auth/login'
