@@ -1,7 +1,7 @@
 var User = Parse.User
 var Tutor = Parse.Object.extend("Tutor")
 
-module.exports.auth = function(req, res, next) {
+module.exports.restricted = function(req, res, next) {
 	if(req.session.user) {
 		next();
 	} else if(req.xhr) {
@@ -18,6 +18,11 @@ module.exports.login = function(req, res) {
   res.render('auth/login', {
 	  template: 'auth/login'
   })
+}
+
+module.exports.logout = function(req, res) {
+  req.session = null
+  res.redirect("/")
 }
 
 module.exports.register = function(req, res) {

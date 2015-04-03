@@ -9,7 +9,8 @@ Parse.Cloud.useMasterKey()
 // Routes
 var routes = {
   core: require("cloud/express/routes/index"),
-  auth: require("cloud/express/routes/auth")
+  auth: require("cloud/express/routes/auth"),
+  queue: require("cloud/express/routes/queue")
 }
 
 // Global app configuration section
@@ -58,10 +59,14 @@ app.get('/', routes.core.home)
 
 // Auth
 app.get('/login', routes.auth.login)
+app.get('/logout', routes.auth.logout)
 app.get('/register', routes.auth.register)
 app.get('/register/welcome', routes.auth.welcome)
 app.post('/login', routes.auth.loginUser)
 app.post('/register', routes.auth.registerUser)
+
+// Queue
+app.get('/queue', routes.auth.restricted, routes.queue.home)
 
 // Terms
 app.get('/terms', routes.core.terms)
