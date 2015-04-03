@@ -1,23 +1,19 @@
 var User = Parse.User
 var Tutor = Parse.Object.extend("Tutor")
+var Subject = Parse.Object.extend("Subject")
 
 module.exports.restricted = function(req, res, next) {
 	if(req.session.user) {
 		next();
 	} else if(req.xhr) {
-		res.json({
-			success: false,
-			message: "Login required :("
-		})
+		res.errorT("Login required :(")
 	} else {
 		res.redirect("/login")
 	}
 }
 
 module.exports.login = function(req, res) {
-  res.render('auth/login', {
-	  template: 'auth/login'
-  })
+  res.renderT('auth/login')
 }
 
 module.exports.logout = function(req, res) {
@@ -26,41 +22,35 @@ module.exports.logout = function(req, res) {
 }
 
 module.exports.register = function(req, res) {
-  res.render('auth/register', {
-	  template: 'auth/register'
-  })
+  res.renderT('auth/register')
 }
 
 module.exports.welcome = function(req, res) {
-  res.render('auth/welcome', {
-	  template: 'auth/welcome'
-  })
+  res.renderT('auth/welcome')
 }
 
 module.exports.loginUser = function(req, res) {
   Parse.User.logIn(req.param("email"), req.param("password"), {
 	  success: function(user) {
 		  if(user.get("tutor") && user.get("tutoring")) {
-        req.session.user = user.id
+  		  req.session.user = user
+  		  req.session.subjects = []
+        var query = new Parse.Query(Subject)
 
-        res.json({
-			  	success: true,
-			  	next: "/queue"
-		  	})
+        query.ascending("rank")
+        query.find(function(subjects) {
+          req.session.subjects = subjects
+        }).then(function() {
+          res.successT({
+  			  	next: "/questions"
+  		  	})
+        }, res.errorT)
 		  } else {
-			  res.json({
-			  	success: false,
-			  	message: "Invalid credentials :("
-		  	})
+			  res.errorT("Invalid credentials :(")
 		  }
 	  },
 	  error: function(user, error) {
-		  console.log(error)
-
-	    res.json({
-		  	success: false,
-		  	message: "Invalid credentials :("
-	  	})
+      res.errorT("Invalid credentials :(")
 	  }
 	})
 }
@@ -72,6 +62,7 @@ module.exports.registerUser = function(req, res) {
 
     tutor.set("biography", req.param("biography"))
     tutor.save().then(function(tutor) {
+      user.set("name", req.param("name"))
       user.set("email", req.param("email"))
       user.set("username", req.param("email"))
       user.set("password", req.param("password"))
@@ -83,23 +74,16 @@ module.exports.registerUser = function(req, res) {
         return tutor.save()
       })
     }).then(function() {
-      res.json({
-		  	success: true,
+      res.successT({
 		  	next: "/register/welcome"
 	  	})
     }, function(error) {
       tutor.destroy()
 		  console.log(error)
 
-	    res.json({
-		  	success: false,
-		  	message: "Something Went Wrong :("
-	  	})
+	    res.errorT("Something Went Wrong :(")
 	  })
   } else {
-    res.json({
-	  	success: false,
-	  	message: "Passwords Don't Match :("
-  	})
+    res.errorT("Passwords Don't Match :(")
   }
 }

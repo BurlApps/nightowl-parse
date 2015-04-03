@@ -1,13 +1,13 @@
 <%
-var title = "Night Owl"
-var description = [
+title = "Night Owl"
+description = [
 	"Math problems? We’re here to help. ",
   "Snap a photo of your homework questions ",
   "and we’ll solve it for you. Get the steps ",
   "and the answer right from your phone. ",
   "Download Night Owl and say goodbye to all-nighters."
 ].join(" ")
-var visible = true
+visible = true
 
 if(template == "home/index") {
 	title = "Night Owl - Math Problems?"
@@ -17,7 +17,7 @@ if(template == "home/index") {
   title = "Tutor Login"
 } else if(template == "auth/welcome") {
   title = "Welcome to Night Owl"
-} else if(template == "queue/index") {
+} else if(template == "questions/index") {
   title = "Questions Queue"
 }
 %>

@@ -12,18 +12,32 @@ body {
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
   }
+
+  .container.welcome .logo {
+    width: 100px;
+  }
+
+  .container.welcome .header {
+    font-size: 35px;
+  }
 }
 
 .container {
   position: relative;
   z-index: 2;
   width: 420px;
-  margin: 100px auto 40px auto;
+  margin: 40px auto;
   color: #fff;
 }
 
 .container.welcome {
   width: 800px;
+  text-align: center;
+}
+
+.container.welcome .logo {
+  width: 200px;
+  margin-bottom: 20px;
 }
 
 .container .header {

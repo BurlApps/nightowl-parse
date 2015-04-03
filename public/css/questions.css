@@ -1,0 +1,214 @@
+body {
+  background: #FEE033;
+}
+
+.header {
+  width: 100%;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.05);
+  border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.header .logo {
+  float: left;
+  height: 50px;
+}
+
+.header .navigation {
+  float: right;
+  margin-top: 10px;
+}
+
+.header .navigation .link {
+  padding: 5px 15px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  color: #000;
+  text-decoration: none;
+}
+
+.header .navigation .link:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  width: 100%;
+  text-align: center;
+  color: #000;
+  margin-top: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.questions {
+  width: 550px;
+  margin: 20px auto;
+}
+
+.questions .question {
+  margin-bottom: 25px;
+  background: #fff;
+  overflow: hidden;
+  zoom: 1;
+
+  border: solid 2px #dcc024;
+
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.questions .question:last-child {
+  margin-bottom: 0;
+}
+
+.questions .question .information .name {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 20px;
+  float: left;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.questions .question .information .subject {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 18px;
+  padding: 20px;
+  float: right;
+  color: #666;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: right;
+
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.questions .question .information .image {
+  width: 100%;
+  height: 500px;
+  margin: 0 -20px;
+  padding: 0 20px;
+  background: #000;
+  text-align: center;
+}
+
+.questions .question .information .image img {
+  height: 100%;
+}
+
+.questions .question .bottom {
+  padding: 15px;
+}
+
+.questions .question .time {
+  float: left;
+  color: #666;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.questions .question .actions {
+  float: right;
+}
+
+.questions .question .actions .button {
+  display: inline-block;
+  margin-left: 15px;
+  padding: 8px 10px;
+  text-align: center;
+  color: #fff;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  opacity: 0.7;
+  cursor: pointer;
+  outline: none;
+  min-width: 90px;
+
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+
+  -webkit-transition: opacity .2s ease 0;
+  -moz-transition: opacity .2s ease;
+  -o-transition: opacity .2s ease 0;
+  transition: opacity .2s ease 0;
+
+  -webkit-appearance: none;
+}
+
+.questions .question .actions .button:first-child {
+  margin: 0;
+}
+
+.questions .question .actions .button:hover {
+  opacity: 0.85;
+}
+
+.questions .question .actions .button:hover:active {
+  opacity: 1;
+}
+
+.questions .question .actions .claim {
+  background: #4862A3;
+}
+
+.questions .question .actions .flag {
+  background: #E21221;
+}
+
+@media (max-width: 600px) {
+  .questions {
+	  width: 100% !important;
+    padding: 20px;
+    margin: 0 auto !important;
+
+    -moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+  }
+
+  .questions .question .time {
+    float: none !important;
+    width: 100% !important;
+    margin: -15px -15px 15px -15px !important;
+    padding: 15px 15px 15px 15px !important;
+    border-bottom: solid 1px #ccc;
+    background: #f7f7f7;
+  }
+
+  .questions .question .actions {
+    float: none !important;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .questions .question .information .image {
+    height: 350px !important;
+  }
+}
