@@ -35,11 +35,17 @@ module.exports.loginUser = function(req, res) {
 		  if(user.get("tutor") && user.get("tutoring")) {
   		  req.session.user = user
   		  req.session.subjects = []
+
+  		  var tutor = user.get("tutor")
         var query = new Parse.Query(Subject)
 
         query.ascending("rank")
         query.find(function(subjects) {
           req.session.subjects = subjects
+        }).then(function() {
+          return tutor.fetch().then(function() {
+            req.session.tutor = tutor
+          })
         }).then(function() {
           res.successT({
   			  	next: "/questions"

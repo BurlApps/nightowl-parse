@@ -53,6 +53,7 @@ app.use(function(req, res, next) {
     data = data || {}
     data.template = data.template || template
     data.user = data.user || req.session.user
+    data.tutor = data.tutor || req.session.tutor
     res.render(template, data)
   }
 
@@ -64,6 +65,7 @@ app.use(function(req, res, next) {
   res.locals.host = req.protocol + "://" + req.host
   res.locals.url = res.locals.host + req.url
   res.locals.user = req.session.user
+  res.locals.tutor = req.session.tutor
   res.locals.random = random
 
   if(req.session.appliedSettings !== true) {
