@@ -4,22 +4,24 @@ Parse.Cloud.define("migrationSubjects", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var query = new Parse.Query(Subject)
-  var subjects = [
-    "Pre Algrebra", "Algebra", "Geometry",
-    "Trigonometry", "Pre-Calculus", "Calculus",
-    "Applied Calculus", "Vector Calculus"
-  ]
+  var subjects = {
+    "Pre Algrebra": 0, "Algebra": 1, "Geometry": 2,
+    "Trigonometry": 2, "Pre-Calculus": 3, "Calculus": 4,
+    "Applied Calculus": 5, "Vector Calculus": 6
+  }
 
+  query.containedIn("name", Object.keys(subjects))
   query.each(function(subject) {
-    return subject.destroy()
+    var name = subject.get("name")
+    if(name in subjects) delete subjects[name]
   }).then(function() {
-    subjects.forEach(function(name, index) {
+    for(var name in subjects) {
       var subject = new Subject()
 
       subject.set("name", name)
-      subject.set("rank", index)
+      subject.set("rank", subjects[name])
       subject.save()
-    })
+    }
   }).then(function() {
     res.success("Successfully added subjects")
   }, function(error) {

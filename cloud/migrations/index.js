@@ -11,7 +11,9 @@ Parse.Cloud.job("runMigration", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var promise = Parse.Promise.as()
-  var migrations = ["DebugAccounts", "UserFields", "Subjects"]
+  var migrations = [
+    "DebugAccounts", "UserFields", "Subjects"
+  ]
 
   _.each(migrations, function(migration) {
     promise = promise.then(function() {
@@ -22,7 +24,6 @@ Parse.Cloud.job("runMigration", function(req, res) {
   promise.then(function() {
     res.success("Successfully ran migrations")
   }, function(error) {
-    console.log(error)
     res.error(error.description)
   })
 })

@@ -1,14 +1,7 @@
 // Init
 $(function() {
-  window.count = 0
-
   getQuestions()
-
-  setInterval(function() {
-    if ($(".questions .question").length > 5) {
-      getQuestions()
-    }
-  }, 30000)
+  setInterval(getQuestions, 30000)
 })
 
 // Util Methods
@@ -47,6 +40,13 @@ function buildQuestion(data) {
     question.find(".name").text(data.name)
   }
 
+
+  if(data.paid < 1) {
+    question.find(".claim").val("CLAIM (" + (data.paid * 100) + "¢)")
+  } else {
+    question.find(".claim").val("CLAIM ($" + data.paid + ")")
+  }
+
   return question
 }
 
@@ -57,18 +57,16 @@ function getQuestions() {
     _csrf: config.csrf
   }, function(data) {
     var questions = data.questions
-    window.count = questions.length
-    updateTitle()
+    updateTitle(questions.length)
 
     if(questions.length != 0) {
       $(".loading").hide()
+      $(".questions").html("")
 
       questions.forEach(function(question) {
-        if($("." + question.id).length == 0) {
-          var question = buildQuestion(question)
-          $(".questions").append(question)
-          addListeners(question)
-        }
+        var question = buildQuestion(question)
+        $(".questions").append(question)
+        addListeners(question)
       })
     } else {
         $(".loading").text("No new questions. Good work!")
@@ -76,9 +74,9 @@ function getQuestions() {
   })
 }
 
-function updateTitle() {
-  if(window.count > 0) {
-    $("title").text(config.title + " (" + window.count + ")")
+function updateTitle(count) {
+  if(count > 0) {
+    $("title").text(config.title + " (" + count + ")")
   } else {
     $("title").text(config.title)
   }

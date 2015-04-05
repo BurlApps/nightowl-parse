@@ -5,7 +5,11 @@ var Moment = require("moment")
 var _ = require("underscore")
 
 module.exports.home = function(req, res) {
-  res.renderT("questions/index")
+  if(req.session.claimed) {
+    res.redirect("/questions/" + req.session.claimed.objectId)
+  } else {
+    res.renderT("questions/index")
+  }
 }
 
 module.exports.questions = function(req, res) {
@@ -26,6 +30,10 @@ module.exports.questions = function(req, res) {
     //query.matchesQuery("subject", subjectsQuery)
 
     return query.each(function(question) {
+      var subject = _.find(req.session.subjects, function(element) {
+        return element.objectId === question.get("subject").id
+      })
+
       return questions.push({
         id: question.id,
         name: question.get("name"),
@@ -33,9 +41,8 @@ module.exports.questions = function(req, res) {
         name: question.get("name"),
         created: question.createdAt,
         duration: Moment.duration(question.createdAt - now).humanize(true),
-        subject: _.find(req.session.subjects, function(element) {
-          return element.objectId === question.get("subject").id
-        }).name
+        subject: subject ? subject.name : "Other",
+        paid: tutor.get("question")
       })
     })
   }).then(function() {

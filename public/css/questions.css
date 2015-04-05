@@ -193,6 +193,11 @@ body {
 		box-sizing: border-box;
   }
 
+  .questions .question .button {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
   .questions .question .time {
     float: none !important;
     width: 100% !important;

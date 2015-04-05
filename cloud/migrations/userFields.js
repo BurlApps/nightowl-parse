@@ -8,6 +8,7 @@ Parse.Cloud.define("migrationUserFields", function(req, res) {
   var tutor = new Tutor()
   var random = Math.random().toString(36).slice(2)
 
+  tutor.set("question", 0)
   tutor.set("earned", 0)
   tutor.set("paid", 0)
   tutor.save()
