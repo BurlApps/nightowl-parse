@@ -3,6 +3,7 @@ var Tutor = Parse.Object.extend("Tutor")
 var Assignment = Parse.Object.extend("Assignment")
 var Moment = require("moment")
 var _ = require("underscore")
+var Image = require("parse-image")
 
 module.exports.home = function(req, res) {
   if(req.session.claimed) {
@@ -22,7 +23,7 @@ module.exports.questions = function(req, res) {
   user.id = req.session.user.objectId
   tutor.id = req.session.tutor.objectId
 
-  query.notContainedIn("state", [0, 2, 3])
+  query.containedIn("state", [1, 4, 5, 6])
 
   tutor.fetch().then(function() {
     var subjectsQuery = tutor.relation("subjects").query()
@@ -120,13 +121,58 @@ module.exports.claim = function(req, res) {
 }
 
 module.exports.answered = function(req, res) {
+  if(req.param("question") != req.session.claimed) {
+    res.redirect("/questions")
+  }
+
+  var tutor = new Tutor()
+
   req.session.claimed = null
-  res.redirect("/questions")
+  tutor.id = req.session.tutor.objectId
+
+  tutor.fetch().then(function() {
+    tutor.increment("earned", tutor.get("question"))
+    return tutor.save()
+  }).then(function() {
+    res.redirect("/questions")
+  })
 }
 
 
 module.exports.flag = function(req, res) {
-  res.redirect("/questions")
+  var question = new Assignment()
+  question.id = req.param("question")
+
+  question.fetch().then(function() {
+    var creator = question.get("creator")
+
+    creator.increment("freeQuestions", 1)
+    return creator.save()
+  }).then(function(creator) {
+    return Parse.Cloud.httpRequest({
+  		url: req.host + "/images/flag.png"
+  	})
+  }).then(function(response) {
+	  var image = new Image()
+	  return image.setData(response.buffer)
+	}).then(function(image) {
+	  return image.data()
+	}).then(function(buffer) {
+	  var file = new Parse.File("image.png", {
+			base64: buffer.toString("base64")
+		})
+
+	  return file.save()
+	}).then(function(image) {
+  	question.set("state", 3)
+		question.set("answer", image)
+		return question.save()
+	}).then(function() {
+    Parse.Cloud.run("assignmentPush", { question: question.id })
+    res.redirect("/questions/")
+	}, function() {
+    res.redirect("/questions/")
+  })
 }
 
 module.exports.unclaim = function(req, res) {
