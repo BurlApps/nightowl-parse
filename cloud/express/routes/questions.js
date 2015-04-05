@@ -22,7 +22,6 @@ module.exports.questions = function(req, res) {
   user.id = req.session.user.objectId
   tutor.id = req.session.tutor.objectId
 
-  query.doesNotExist("tutor")
   query.notContainedIn("state", [0, 2, 3])
 
   tutor.fetch().then(function() {
@@ -92,6 +91,9 @@ module.exports.question = function(req, res) {
         duration: Moment.duration(question.createdAt - now).humanize(true),
         subject: subject ? subject.name : "Other",
         paid: paid
+      },
+      config: {
+        question: question.id
       }
     })
   })
@@ -116,6 +118,12 @@ module.exports.claim = function(req, res) {
     res.redirect("/questions/")
   })
 }
+
+module.exports.answered = function(req, res) {
+  req.session.claimed = null
+  res.redirect("/questions")
+}
+
 
 module.exports.flag = function(req, res) {
   res.redirect("/questions")

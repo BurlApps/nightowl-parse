@@ -1,6 +1,5 @@
 <% include ../includes/start.ejs %>
 <% include ../includes/header.ejs %>
-<% console.log(question) %>
 <div class="questions">
   <div class="question">
   <div class="information">
@@ -15,11 +14,8 @@
     <div class="time"><%= question.duration %>...</div>
     <div class="actions">
       <button class="good button">
-        ANSWER (<%= question.paid %>)
-        <form method="POST" action="/questions/<%= question.id %>">
-          <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-          <input name="answer" id="fileUpload" type="file"/>
-        </form>
+        <span>ANSWER (<%= question.paid %>)</span>
+        <input id="fileUpload" type="file"/>
       </button>
       <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
     </div>

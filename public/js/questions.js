@@ -2,15 +2,9 @@
 $(function() {
   getQuestions()
   setInterval(getQuestions, 30000)
-
-  $("#fileUpload").change(uploadTriggered)
 })
 
 // Util Methods
-function uploadTriggered() {
-  $(this).parents("form").submit()
-}
-
 function buildQuestion(data) {
     var question = $('                                                         \
       <div class="question ' + data.id + '" data-question="' + data.id + '">   \

@@ -66,18 +66,25 @@ app.use(function(req, res, next) {
   res.locals.url = res.locals.host + req.url
   res.locals.user = req.session.user
   res.locals.tutor = req.session.tutor
+  res.locals.itunesApp = req.session.itunesApp || ""
+  res.locals.parseId = req.session.parseId
+  res.locals.parseSecret = req.session.parseSecret
   res.locals.random = random
+  res.locals.config = {}
 
   if(req.session.appliedSettings !== true) {
     Settings().then(function(settings) {
 	    req.session.appliedSettings = true
 	    req.session.itunesApp = settings.get("itunesApp")
+	    req.session.parseId = settings.get("parseId")
+	    req.session.parseSecret = settings.get("parseSecret")
       res.locals.itunesApp = req.session.itunesApp
+      res.locals.parseId = req.session.parseId
+      res.locals.parseSecret = req.session.parseSecret
       next()
     })
   } else {
-    res.locals.itunesApp = req.session.itunesApp || ""
-     next()
+    next()
   }
 })
 
@@ -98,6 +105,7 @@ app.get('/questions/:question', routes.auth.restricted, routes.questions.questio
 app.get('/questions/:question/claim', routes.auth.restricted, routes.questions.claim)
 app.get('/questions/:question/flag', routes.auth.restricted, routes.questions.flag)
 app.get('/questions/:question/unclaim', routes.auth.restricted, routes.questions.unclaim)
+app.get('/questions/:question/answered', routes.auth.restricted, routes.questions.answered)
 app.post('/questions', routes.auth.restricted, routes.questions.questions)
 
 // Terms

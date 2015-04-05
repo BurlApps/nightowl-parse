@@ -1,8 +1,22 @@
 <!-- Site Config -->
 <script type="text/javascript">
-    window.config = {
-      csrf: "<%= csrf %>",
-      host: "<%= host %>",
-      title: "<%= title %>"
-    }
+  window.config = {
+    csrf: "<%= csrf %>",
+    host: "<%= host %>",
+    title: "<%= title %>",
+
+    <% Object.keys(config).forEach(function(key) {
+      var value = config[key]
+    %>
+        <% if(typeof value == "boolean") { %>
+            <%= key %>: <%- value %>,
+        <% } else if(typeof value == "object") { %>
+            <%= key %>: <%- JSON.stringify(value) %>,
+        <% } else if(typeof value == "number") { %>
+            <%= key %>: <%= value %>,
+        <% } else  { %>
+            <%= key %>: "<%= value %>",
+        <% } %>
+    <% }); %>
+  }
 </script>
