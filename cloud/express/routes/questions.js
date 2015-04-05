@@ -131,13 +131,17 @@ module.exports.answered = function(req, res) {
   tutor.id = req.session.tutor.objectId
 
   tutor.fetch().then(function() {
-    tutor.increment("earned", tutor.get("question"))
+    var increment = tutor.get("question")
+    var earned = tutor.get("earned")
+    var owed = +(increment + earned).toFixed(2)
+
+    tutor.set("earned", owed)
     return tutor.save()
   }).then(function() {
+    req.session.tutor = tutor
     res.redirect("/questions")
   })
 }
-
 
 module.exports.flag = function(req, res) {
   var question = new Assignment()
