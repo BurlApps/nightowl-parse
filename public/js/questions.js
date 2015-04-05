@@ -2,16 +2,13 @@
 $(function() {
   getQuestions()
   setInterval(getQuestions, 30000)
+
+  $("#fileUpload").change(uploadTriggered)
 })
 
 // Util Methods
-function submitQuestion(action) {
-
-}
-
-function addListeners(question) {
-  question.find(".claim").click(submitQuestion("POST"))
-  question.find(".flag").click(submitQuestion("PUT"))
+function uploadTriggered() {
+  $(this).parents("form").submit()
 }
 
 function buildQuestion(data) {
@@ -28,8 +25,8 @@ function buildQuestion(data) {
       <div class="bottom">                                                     \
         <div class="time">' + data.duration + '...</div>                       \
         <div class="actions">                                                  \
-          <input class="claim button" type="button" value="CLAIM">             \
-          <input class="flag button" type="button" value="FLAG">               \
+          <a class="good button">CLAIM</a>                                     \
+          <a class="bad button">FLAG</a>                                       \
         </div>                                                                 \
         <div class="clear"></div>                                              \
       </div>                                                                   \
@@ -42,16 +39,20 @@ function buildQuestion(data) {
 
 
   if(data.paid < 1) {
-    question.find(".claim").val("CLAIM (" + (data.paid * 100) + "¢)")
+    question.find(".claim").text("CLAIM (" + (data.paid * 100) + "¢)")
   } else {
-    question.find(".claim").val("CLAIM ($" + data.paid + ")")
+    question.find(".claim").text("CLAIM ($" + data.paid + ")")
   }
 
+  question.find(".good").attr("href", "/questions/" + data.id + "/claim")
+  question.find(".bad").attr("href", "/questions/" + data.id + "/flag")
   return question
 }
 
 function getQuestions() {
-  $(".loading").text("Loading new questions").show()
+  if($(".question").length == 0) {
+    $(".loading").text("Loading new questions").show()
+  }
 
   $.post("/questions", {
     _csrf: config.csrf
@@ -66,7 +67,6 @@ function getQuestions() {
       questions.forEach(function(question) {
         var question = buildQuestion(question)
         $(".questions").append(question)
-        addListeners(question)
       })
     } else {
         $(".loading").text("No new questions. Good work!")

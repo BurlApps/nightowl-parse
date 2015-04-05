@@ -1,0 +1,30 @@
+<% include ../includes/start.ejs %>
+<% include ../includes/header.ejs %>
+<% console.log(question) %>
+<div class="questions">
+  <div class="question">
+  <div class="information">
+    <div class="name"><%= question.description %></div>
+    <div class="subject"><%= question.subject %></div>
+    <div class="clear"></div>
+    <div class="image">
+      <img src="<%= question.image %>"/>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="time"><%= question.duration %>...</div>
+    <div class="actions">
+      <button class="good button">
+        ANSWER (<%= question.paid %>)
+        <form method="POST" action="/questions/<%= question.id %>">
+          <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+          <input name="answer" id="fileUpload" type="file"/>
+        </form>
+      </button>
+      <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
+    </div>
+    <div class="clear"></div>
+  </div>
+  </div>
+</div>
+<% include ../includes/end.ejs %>

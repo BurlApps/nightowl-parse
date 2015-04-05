@@ -94,6 +94,10 @@ app.post('/register', routes.auth.registerUser)
 
 // Queue
 app.get('/questions', routes.auth.restricted, routes.questions.home)
+app.get('/questions/:question', routes.auth.restricted, routes.questions.question)
+app.get('/questions/:question/claim', routes.auth.restricted, routes.questions.claim)
+app.get('/questions/:question/flag', routes.auth.restricted, routes.questions.flag)
+app.get('/questions/:question/unclaim', routes.auth.restricted, routes.questions.unclaim)
 app.post('/questions', routes.auth.restricted, routes.questions.questions)
 
 // Terms

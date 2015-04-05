@@ -14,3 +14,7 @@ body * {
   float: none;
   clear: both;
 }
+
+.hidden {
+  display: none;
+}
