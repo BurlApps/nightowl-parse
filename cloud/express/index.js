@@ -24,8 +24,10 @@ app.use(express.cookieParser())
 app.use(express.cookieSession({
   secret: 'ursid',
   cookie: {
-    httpOnly: true
-  }
+    httpOnly: true,
+    maxAge: 600000
+  },
+  rolling: true
 }))
 app.use(express.csrf())
 app.use(function(req, res, next) {

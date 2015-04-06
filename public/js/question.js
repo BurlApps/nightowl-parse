@@ -24,6 +24,6 @@ function uploadTriggered() {
     alert("Question has been answered!")
     location.href = "/questions/" + question.id + "/answered"
   }, function(error) {
-    alert(error.description)
+    alert(error.message)
   })
 }
