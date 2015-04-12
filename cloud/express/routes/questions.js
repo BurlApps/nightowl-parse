@@ -30,9 +30,13 @@ module.exports.questions = function(req, res) {
     //query.matchesQuery("subject", subjectsQuery)
 
     return query.each(function(question) {
-      var subject = _.find(req.session.subjects, function(element) {
-        return element.objectId === question.get("subject").id
-      })
+      var subject = null
+
+      if(question.get("subject")) {
+        subject = _.find(req.session.subjects, function(element) {
+          return element.objectId === question.get("subject").id
+        })
+      }
 
       return questions.push({
         id: question.id,
@@ -70,9 +74,13 @@ module.exports.question = function(req, res) {
   }
 
   question.fetch().then(function() {
-    var subject = _.find(req.session.subjects, function(element) {
-      return element.objectId === question.get("subject").id
-    })
+    var subject = null
+
+    if(question.get("subject")) {
+      subject = _.find(req.session.subjects, function(element) {
+        return element.objectId === question.get("subject").id
+      })
+    }
 
     var name = question.get("name")
     var paid = req.session.tutor.question

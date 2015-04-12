@@ -1,7 +1,7 @@
 // Init
 $(function() {
   getQuestions()
-  setInterval(getQuestions, 30000)
+  setInterval(getQuestions, 10000)
 })
 
 // Util Methods

@@ -10,7 +10,8 @@ Parse.Cloud.useMasterKey()
 var routes = {
   core: require("cloud/express/routes/index"),
   auth: require("cloud/express/routes/auth"),
-  questions: require("cloud/express/routes/questions")
+  questions: require("cloud/express/routes/questions"),
+  twilio: require("cloud/express/routes/twilio")
 }
 
 // Global app configuration section
@@ -109,6 +110,9 @@ app.get('/questions/:question/flag', routes.auth.restricted, routes.questions.fl
 app.get('/questions/:question/unclaim', routes.auth.restricted, routes.questions.unclaim)
 app.get('/questions/:question/answered', routes.auth.restricted, routes.questions.answered)
 app.post('/questions', routes.auth.restricted, routes.questions.questions)
+
+// Twilio Texting
+app.get('/twilio', routes.twilio.auth, routes.twilio.user, routes.twilio.handler)
 
 // Terms
 app.get('/terms', routes.core.terms)

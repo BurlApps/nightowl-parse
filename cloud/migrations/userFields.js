@@ -11,6 +11,7 @@ Parse.Cloud.define("migrationUserFields", function(req, res) {
   tutor.set("question", 0)
   tutor.set("earned", 0)
   tutor.set("paid", 0)
+  tutor.set("phone", "")
   tutor.save()
 
   user.set("username", random)
