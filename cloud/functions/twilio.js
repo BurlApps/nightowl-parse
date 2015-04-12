@@ -9,7 +9,7 @@ Parse.Cloud.define("twilioMessage", function(req, res) {
       settings.get("twilioId"), "/Messages.json"
     ].join("")
 
-    req.params["From"] = settings.get("twilioNumber"),
+    req.params["From"] = settings.get("twilioNumber")
 
     return Parse.Cloud.httpRequest({
       url: url,

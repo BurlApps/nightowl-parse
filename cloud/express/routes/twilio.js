@@ -45,7 +45,17 @@ module.exports.handler = function(req, res, next) {
   req.message = req.param("Body")
 
   if(numMedia == 0) {
-    return module.exports.render(req, res, "twilio/guide")
+    Settings().then(function(settings) {
+      return Parse.Cloud.run("twilioMessage", {
+        "To": settings.get("twilioSupport"),
+        "Body": [
+          "From: ", req.user.get("phone"), "\n",
+          "Message: ", req.message
+        ].join("")
+      })
+    }).then(function() {
+      module.exports.render(req, res, "twilio/guide")
+    })
   }
 
   Parse.Cloud.httpRequest({
