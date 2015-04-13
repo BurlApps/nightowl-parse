@@ -1,0 +1,9 @@
+<% include ../includes/start.ejs %>
+<div class="header">Night Owl</div>
+<form class="form">
+  <input class="input card" type="tel" placeholder="Card Number" required step="1" autofocus/>
+  <input class="input expiration" type="tel" placeholder="Card Expiration (MM/YY)" required step="2"/>
+  <input class="input cvc" type="tel" placeholder="Card CVC (XXXX)" required step="3"/>
+  <input class="button" type="submit" value="Add Card" />
+</form>
+<% include ../includes/end.ejs %>

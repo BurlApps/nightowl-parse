@@ -56,29 +56,31 @@ module.exports.handler = function(req, res, next) {
     }).then(function() {
       module.exports.render(req, res, "twilio/guide")
     })
+  } else if(req.user.get("freeQuestions") == 0 && !req.user.get("card")) {
+    module.exports.render(req, res, "twilio/card")
+  } else {
+    Parse.Cloud.httpRequest({
+  		url: mediaUrl,
+  		method: "GET",
+  		followRedirects: true
+  	}).then(function(response) {
+  	  var image = new Image()
+  	  return image.setData(response.buffer)
+  	}).then(function(image) {
+  	  return image.data()
+  	}).then(function(buffer) {
+  		var extension = mediaType.split("/")[1]
+
+  	  var file = new Parse.File("image." + extension, {
+  			base64: buffer.toString("base64")
+  		})
+
+  	  return file.save()
+  	}).then(function(image) {
+      req.media = image
+  		module.exports.newQuestion(req, res, next)
+  	})
   }
-
-  Parse.Cloud.httpRequest({
-		url: mediaUrl,
-		method: "GET",
-		followRedirects: true
-	}).then(function(response) {
-	  var image = new Image()
-	  return image.setData(response.buffer)
-	}).then(function(image) {
-	  return image.data()
-	}).then(function(buffer) {
-		var extension = mediaType.split("/")[1]
-
-	  var file = new Parse.File("image." + extension, {
-			base64: buffer.toString("base64")
-		})
-
-	  return file.save()
-	}).then(function(image) {
-    req.media = image
-		module.exports.newQuestion(req, res, next)
-	})
 }
 
 module.exports.newQuestion = function(req, res, next) {
@@ -93,6 +95,17 @@ module.exports.newQuestion = function(req, res, next) {
   question.set("state", 1)
 
   question.save().then(function() {
+    if(req.user.get("freeQuestions") == 0) {
+      var increment = req.settings.get("questionPrice")
+      var earned = req.user.get("charges")
+      var charges = +(increment + earned).toFixed(2)
+      req.user.set("charges", charges)
+    } else {
+      req.user.increment("freeQuestions", -1)
+    }
+
+    return req.user.save()
+  }).then(function() {
     module.exports.render(req, res, "twilio/submitted")
   })
 }
@@ -108,6 +121,8 @@ module.exports.render = function(req, res, template) {
 
   res.render(template, {
     newUser: req.newUser,
-    price: price
+    price: price,
+    freeQuestions: req.user.get("freeQuestions"),
+    user: req.user
   })
 }

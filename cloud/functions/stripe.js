@@ -25,11 +25,26 @@ Parse.Cloud.define("stripeRegister", function(req, res) {
 
 Parse.Cloud.define("addCard", function(req, res) {
   Parse.Cloud.useMasterKey()
+  var user
 
-  var user = Parse.User.current()
+  if(req.params.user) {
+    user = new Parse.User()
+    user.id = req.params.user
+  } else {
+    user = Parse.User.current()
+  }
 
   Settings().then(function(settings) {
     return Stripe.initialize(settings.get("stripeKey"))
+  }).then(function() {
+    return user.fetch()
+  }).then(function() {
+    if(req.params.lastFour) {
+      user.set("card", req.params.lastFour)
+      return user.save()
+    }
+
+    return true
   }).then(function() {
     return Stripe.Customers.update(user.get("stripe"), {
       card: req.params.card

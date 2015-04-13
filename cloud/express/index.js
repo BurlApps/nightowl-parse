@@ -11,7 +11,8 @@ var routes = {
   core: require("cloud/express/routes/index"),
   auth: require("cloud/express/routes/auth"),
   questions: require("cloud/express/routes/questions"),
-  twilio: require("cloud/express/routes/twilio")
+  twilio: require("cloud/express/routes/twilio"),
+  user: require("cloud/express/routes/user")
 }
 
 // Global app configuration section
@@ -72,6 +73,7 @@ app.use(function(req, res, next) {
   res.locals.itunesApp = req.session.itunesApp || ""
   res.locals.parseId = req.session.parseId
   res.locals.parseSecret = req.session.parseSecret
+  res.locals.stripeKey = req.session.stripeKey
   res.locals.random = random
   res.locals.config = {}
 
@@ -81,9 +83,11 @@ app.use(function(req, res, next) {
 	    req.session.itunesApp = settings.get("itunesApp")
 	    req.session.parseId = settings.get("parseId")
 	    req.session.parseSecret = settings.get("parseSecret")
+	    req.session.stripeKey = settings.get("stripePubKey")
       res.locals.itunesApp = req.session.itunesApp
       res.locals.parseId = req.session.parseId
       res.locals.parseSecret = req.session.parseSecret
+      res.locals.stripeKey = req.session.stripeKey
       next()
     })
   } else {
@@ -113,6 +117,10 @@ app.post('/questions', routes.auth.restricted, routes.questions.questions)
 
 // Twilio Texting
 app.get('/twilio', routes.twilio.auth, routes.twilio.user, routes.twilio.handler)
+
+// User
+app.get('/user/updated', routes.user.updated)
+app.get('/user/:user/card', routes.user.card)
 
 // Terms
 app.get('/terms', routes.core.terms)
