@@ -1,7 +1,3 @@
 <Response>
-    <% if(newUser) { %>
-      <Message>Welcome to Night Owl! Send us a picture of your math homework and we'll send you back the answer with all the steps for <%= price %>.<% include freeQuestions %></Message>
-    <% } else {  %>
-      <Message>You are almost there, just send us a picture of your math homework and we'll send you back the answer with all the steps for <%= price %>.<% include freeQuestions %></Message>
-    <% }  %>
+  <Message>Hey, I’m the Night Owl bot! Send a photo of a math question and our grad students will solve the first <%= totalFreeQuestions %> for free, then it’s only <%= price %> 😃</Message>
 </Response>

@@ -1,7 +1,4 @@
 <Response>
-    <% if(newUser) { %>
-      <Message>Welcome to Night Owl! Thanks for sending in your question! Hold tight, we will have the solution very soon :)<% include freeQuestions %></Message>
-    <% } else {  %>
-      <Message>Thanks for sending in your question! Hold tight, we will have the solution very soon :)<% include freeQuestions %></Message>
-    <% }  %>
+  <Message>Thanks, just got the question! We’ll assign your question to one of our grad students!<% if(freeQuestions > 0) { %> You have <%= freeQuestions %> free question<%= freeQuestions > 1 ? "s" : "" %> left.<% } %>
+</Message>
 </Response>

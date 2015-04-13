@@ -18,7 +18,6 @@ module.exports.user = function(req, res, next) {
   var query = new Parse.Query(User)
   var from = req.param("From")
 
-  req.newUser = false
   req.user = null
 
   query.equalTo("phone", from)
@@ -27,7 +26,6 @@ module.exports.user = function(req, res, next) {
 
     user = new User()
 
-    req.newUser = true
     user.set("username", from)
     user.set("password", from)
     user.set("phone", from)
@@ -43,9 +41,10 @@ module.exports.handler = function(req, res, next) {
   var mediaUrl = req.param("MediaUrl0")
   var mediaType = req.param("MediaContentType0")
   req.message = req.param("Body")
+  req.activateQuestion = !(req.user.get("freeQuestions") == 0 && !req.user.get("card"))
 
-  if(numMedia == 0) {
-    Settings().then(function(settings) {
+  if(numMedia == 0 || mediaType.split("/")[0] != "image") {
+    return Settings().then(function(settings) {
       return Parse.Cloud.run("twilioMessage", {
         "To": settings.get("twilioSupport"),
         "Body": [
@@ -56,31 +55,29 @@ module.exports.handler = function(req, res, next) {
     }).then(function() {
       module.exports.render(req, res, "twilio/guide")
     })
-  } else if(req.user.get("freeQuestions") == 0 && !req.user.get("card")) {
-    module.exports.render(req, res, "twilio/card")
-  } else {
-    Parse.Cloud.httpRequest({
-  		url: mediaUrl,
-  		method: "GET",
-  		followRedirects: true
-  	}).then(function(response) {
-  	  var image = new Image()
-  	  return image.setData(response.buffer)
-  	}).then(function(image) {
-  	  return image.data()
-  	}).then(function(buffer) {
-  		var extension = mediaType.split("/")[1]
-
-  	  var file = new Parse.File("image." + extension, {
-  			base64: buffer.toString("base64")
-  		})
-
-  	  return file.save()
-  	}).then(function(image) {
-      req.media = image
-  		module.exports.newQuestion(req, res, next)
-  	})
   }
+
+  Parse.Cloud.httpRequest({
+		url: mediaUrl,
+		method: "GET",
+		followRedirects: true
+	}).then(function(response) {
+	  var image = new Image()
+	  return image.setData(response.buffer)
+	}).then(function(image) {
+	  return image.data()
+	}).then(function(buffer) {
+		var extension = mediaType.split("/")[1]
+
+	  var file = new Parse.File("image." + extension, {
+			base64: buffer.toString("base64")
+		})
+
+	  return file.save()
+	}).then(function(image) {
+    req.media = image
+		module.exports.newQuestion(req, res, next)
+	})
 }
 
 module.exports.newQuestion = function(req, res, next) {
@@ -92,21 +89,27 @@ module.exports.newQuestion = function(req, res, next) {
 
   question.set("creator", req.user)
   question.set("question", req.media)
-  question.set("state", 1)
+  question.set("state", req.activateQuestion ? 1 : 0)
 
   question.save().then(function() {
-    if(req.user.get("freeQuestions") == 0) {
-      var increment = req.settings.get("questionPrice")
-      var earned = req.user.get("charges")
-      var charges = +(increment + earned).toFixed(2)
-      req.user.set("charges", charges)
-    } else {
-      req.user.increment("freeQuestions", -1)
+    if(req.activateQuestion) {
+      if(req.user.get("freeQuestions") == 0) {
+        var increment = req.settings.get("questionPrice")
+        var earned = req.user.get("charges")
+        var charges = +(increment + earned).toFixed(2)
+        req.user.set("charges", charges)
+      } else {
+        req.user.increment("freeQuestions", -1)
+      }
     }
 
     return req.user.save()
   }).then(function() {
-    module.exports.render(req, res, "twilio/submitted")
+    if(req.activateQuestion) {
+      module.exports.render(req, res, "twilio/submitted")
+    } else {
+      module.exports.render(req, res, "twilio/card")
+    }
   })
 }
 
@@ -114,14 +117,14 @@ module.exports.render = function(req, res, template) {
   var price = req.settings.get("questionPrice")
 
   if(price < 1) {
-    price = (price * 100) + "¢"
+    price = (price * 100) + " cents"
   } else {
     price = "$" + price
   }
 
   res.render(template, {
-    newUser: req.newUser,
     price: price,
+    totalFreeQuestions: req.settings.get("freeQuestions"),
     freeQuestions: req.user.get("freeQuestions"),
     user: req.user
   })

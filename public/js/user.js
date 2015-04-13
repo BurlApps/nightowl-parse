@@ -24,6 +24,10 @@ $(function() {
           card: response.id,
           user: config.user
         }).then(function() {
+          return Parse.Cloud.run("assignmentActivate", {
+            user: config.user
+          })
+        }).then(function() {
           window.location.href = "/user/updated"
         }, function(error) {
           button.addClass("error").val(error.message)
