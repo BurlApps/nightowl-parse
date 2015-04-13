@@ -50,7 +50,7 @@ body input {
   padding: 15px;
   margin-bottom: 20px;
   font-family: 'PT Sans', sans-serif;
-  font-size: 18px;
+  font-size: 22px;
   outline: none;
   border: none;
 
@@ -81,7 +81,7 @@ body input {
   padding: 14px 0;
   background: #009688;
   color: #fff;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   font-family: 'Droid Sans', sans-serif;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
