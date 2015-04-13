@@ -55,11 +55,19 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
         data["MediaUrl"] = question.get("answer").url()
 
         if(user.get("freeQuestions") > 0) {
+          var price = settings.get("questionPrice")
+
+          if(price < 1) {
+            price = (price * 100) + " cents"
+          } else {
+            price = "$" + price
+          }
+
           data["Body"] += [
             " You still have ",
             user.get("freeQuestions"), " free question. ",
-            "After that it’s only ", settings.get("freeQuestions"),
-            " cents for our grad students to solve your math questions 😃"
+            "After that it’s only ", price,
+            " for our grad students to solve your math questions 😃"
           ].join("")
         }
       }

@@ -227,8 +227,4 @@ body {
     width: 100% !important;
     text-align: center;
   }
-
-  .questions .question .information .image {
-    height: 350px !important;
-  }
 }
