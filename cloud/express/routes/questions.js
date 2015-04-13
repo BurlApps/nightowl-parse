@@ -70,11 +70,15 @@ module.exports.question = function(req, res) {
   question.id = req.param("question")
 
   if(question.id != req.session.claimed) {
-    res.redirect("/questions")
+    return res.redirect("/questions")
   }
 
   question.fetch().then(function() {
     var subject = null
+
+    if(question.get("tutor").id != req.session.tutor.objectId) {
+      return res.redirect("/questions")
+    }
 
     if(question.get("subject")) {
       subject = _.find(req.session.subjects, function(element) {

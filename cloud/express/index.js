@@ -27,7 +27,8 @@ app.use(express.cookieSession({
   secret: 'ursid',
   cookie: {
     httpOnly: true,
-    maxAge: 600000
+    maxAge: 604800000,
+    proxy: true
   },
   rolling: true
 }))
