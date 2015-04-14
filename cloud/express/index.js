@@ -98,6 +98,7 @@ app.use(function(req, res, next) {
 
 // Landing
 app.get('/', routes.core.home)
+app.post('/phone', routes.core.phone)
 
 // Auth
 app.get('/login', routes.auth.login)

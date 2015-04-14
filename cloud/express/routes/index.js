@@ -1,7 +1,37 @@
 var Settings = require("cloud/utils/settings")
 
 module.exports.home = function(req, res) {
-  res.renderT('home/index')
+  Settings().then(function(settings) {
+    res.renderT('home/index', {
+      freeQuestions: settings.get("freeQuestions")
+    })
+  })
+}
+
+module.exports.phone = function(req, res) {
+  Settings().then(function(settings) {
+    var price = settings.get("questionPrice")
+
+    if(price < 1) {
+      price = (price * 100) + " cents"
+    } else {
+      price = "$" + price
+    }
+
+    Parse.Cloud.run("twilioMessage", {
+      "To": req.param("phone"),
+      "Body": [
+        "Hey, I’m the Night Owl bot! Send a photo of a math question ",
+        "and our grad students will solve the first ",
+        settings.get("freeQuestions"), " for free, then it’s only ",
+        price, " 😃"
+      ].join("")
+    }).then(function() {
+      res.successT({
+        message: "Sent!"
+      })
+    }, res.errorT)
+  })
 }
 
 module.exports.notfound = function(req, res) {

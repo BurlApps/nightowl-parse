@@ -1,6 +1,18 @@
 <% include ../includes/start.ejs %>
 <div class="container">
-  <img class="logo" src="/images/logo.png"/>
-  <div class="message">Coming Soon...</div>
+  <div class="information">
+    <div class="header">Night Owl</div>
+    <div class="subheader">Math problems? We’re here to help.</div>
+    <div class="description">
+      Snap a photo of your homework questions and we’ll solve it for you. Get the steps and the answer right from your phone.
+    </div>
+    <form class="form" action="/phone">
+      <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+      <input name="phone" class="input phone" type="tel" placeholder="Your digits ### ### ####" required step="1" autofocus/>
+      <input class="submit" type="submit" value="Get <%= freeQuestions %> free solutions!" />
+      <div class="contact">We just sent a message to your phone!</div>
+    </form>
+  </div>
+  <img class="image" src="/images/home.png"/>
 </div>
 <% include ../includes/end.ejs %>
