@@ -6,13 +6,14 @@ module.exports.card = function(req, res, next) {
   var query = new Parse.Query(User)
 
   query.equalTo("objectId", req.param("user"))
-  query.count().then(function(count) {
-    if(count == 1) {
+  query.first().then(function(user) {
+    if(user) {
       res.renderT('user/card', {
         notification: null,
         config: {
-          user: req.param("user")
-        }
+          user: user.id
+        },
+        phone: user.get("phone")
       })
     } else {
       res.redirect("/")

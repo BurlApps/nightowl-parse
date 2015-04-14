@@ -27,6 +27,8 @@ module.exports.questions = function(req, res) {
 
   tutor.fetch().then(function() {
     var subjectsQuery = tutor.relation("subjects").query()
+
+    // REENABLE WHEN DASHBOARD IS BUILT
     //query.matchesQuery("subject", subjectsQuery)
 
     return query.each(function(question) {

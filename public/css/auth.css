@@ -95,7 +95,7 @@ body {
   -webkit-appearance: none;
 }
 
-.container .form .input {
+.container .form .input:not(:disabled ) {
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
@@ -103,6 +103,12 @@ body {
 
 .container .form .input:focus {
   background: #fff;
+}
+
+.container .form .input:disabled {
+  background: #fff;
+  opacity: 0.6;
+  color: #000;
 }
 
 .container .form .textarea {
