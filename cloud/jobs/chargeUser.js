@@ -16,7 +16,10 @@ Parse.Cloud.job("chargeUser", function(req, res) {
       return Stripe.Charges.create({
         amount: user.get("charges"),
         currency: "usd",
-        customer: user.get("stripe")
+        customer: user.get("stripe"),
+        statement_descriptor: [
+          "Night Owl Solutions (", user.get("charges") ,")"
+        ].join("")
       }).then(function() {
         user.set("charges", 0)
         return user.save()
