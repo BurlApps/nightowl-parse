@@ -67,7 +67,7 @@ app.use(function(req, res, next) {
   res.locals.csrf = req.session._csrf
 
   // Locals
-  res.locals.host = req.protocol + "://" + req.host
+  res.locals.host = req.session.host || ("http://" + req.host)
   res.locals.url = res.locals.host + req.url
   res.locals.user = req.session.user
   res.locals.tutor = req.session.tutor
@@ -85,6 +85,8 @@ app.use(function(req, res, next) {
 	    req.session.parseId = settings.get("parseId")
 	    req.session.parseSecret = settings.get("parseSecret")
 	    req.session.stripeKey = settings.get("stripePubKey")
+	    req.session.host = settings.get("host")
+	    res.locals.host = req.session.host
       res.locals.itunesApp = req.session.itunesApp
       res.locals.parseId = req.session.parseId
       res.locals.parseSecret = req.session.parseSecret
