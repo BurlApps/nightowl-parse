@@ -14,12 +14,10 @@ Parse.Cloud.job("chargeUser", function(req, res) {
 
     return query.each(function(user) {
       return Stripe.Charges.create({
-        amount: user.get("charges"),
+        amount: user.get("charges") * 100,
         currency: "usd",
         customer: user.get("stripe"),
-        statement_descriptor: [
-          "Night Owl Solutions (", user.get("charges") ,")"
-        ].join("")
+        statement_descriptor: "Night Owl"
       }).then(function() {
         user.set("charges", 0)
         return user.save()
@@ -28,6 +26,7 @@ Parse.Cloud.job("chargeUser", function(req, res) {
   }).then(function() {
     res.success("Charged users successfully")
   }, function(error) {
-    res.error(error.description)
+    console.log(error)
+    res.error(error.message)
   })
 })
