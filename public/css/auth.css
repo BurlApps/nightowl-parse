@@ -49,6 +49,21 @@ body {
   color: #000;
 }
 
+.container .message {
+  text-align: center;
+  padding: 20px 0 0;
+  margin-top: 50px;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'PT Sans', sans-serif;
+
+  -moz-box-sizing: border-box;
+  -khtml-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 .container .form {
   margin-top: 10px;
 }
@@ -99,6 +114,7 @@ body {
   color: #fff;
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  white-space: normal;
 }
 
 .container .form .submit:hover {

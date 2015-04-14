@@ -7,7 +7,7 @@ $(function() {
     e.stopPropagation()
 
     var form = $(this)
-    var button = form.find(".button").removeClass("error").val("sending...")
+    var button = form.find(".submit").removeClass("error").val("sending...")
     var expiration = $('.expiration').val().split("/")
 
     Stripe.card.createToken({
