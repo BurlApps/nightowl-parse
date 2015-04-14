@@ -11,7 +11,6 @@ Parse.Cloud.beforeSave("Assignment", function(req, res) {
       var image = new Image()
       return image.setData(data.buffer)
     }).then(function(image) {
-      console.log("DATA: "+res.JSON(image.data()))
       var sizeCheck = (image.height() > 800 || image.width() > 800)
       if(sizeCheck === true) {
          if(image.height() > image.width()) {
