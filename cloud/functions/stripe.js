@@ -1,4 +1,4 @@
-var Stripe = require('stripe');
+var Stripe = require('stripe')
 var Settings = require("cloud/utils/settings")
 
 Parse.Cloud.define("stripeRegister", function(req, res) {
