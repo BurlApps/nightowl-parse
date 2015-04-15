@@ -122,6 +122,14 @@ module.exports.claim = function(req, res) {
   tutor.id = req.session.tutor.objectId
 
   question.fetch().then(function() {
+    var currentTutor = question.get("tutor")
+
+    console.log(currentTutor && currentTutor.id != tutor.id)
+
+    if(currentTutor && currentTutor.id != tutor.id) {
+      return Parse.Promise.error("Question already claimed")
+    }
+
     question.set("tutor", tutor)
     question.set("state", 2)
     return question.save()
