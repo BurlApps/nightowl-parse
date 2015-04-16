@@ -17,7 +17,8 @@ Parse.Cloud.define("notifySlack", function(req, res) {
       method: "POST",
       followRedirects: true,
       body: [
-        "One of our users has posted a new question! There are a total of ",
+        "[", req.settings.get("account"),
+        "]: One of our users has posted a new question! There are a total of ",
         count, " waiting to be claimed."
       ].join("")
     })
