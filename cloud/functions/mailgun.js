@@ -20,7 +20,7 @@ Parse.Cloud.define("notifyTutors", function(req, res) {
       return Mailgun.sendEmail({
         to: user.get("email"),
         from: "questions@heynightowl.com",
-        subject: "[Night Owl] A Question Has Been Posted!",
+        subject: "[Night Owl: " + req.settings.get("account") + "] A Question Has Been Posted!",
         text: [
           "One of our users has posted a new question! There are a total of ",
           count, " waiting to be claimed. \n\nStart answering questions: ",

@@ -16,11 +16,14 @@ Parse.Cloud.define("notifySlack", function(req, res) {
       url: req.settings.get("slackApi"),
       method: "POST",
       followRedirects: true,
-      body: [
-        "[", req.settings.get("account"),
-        "]: One of our users has posted a new question! There are a total of ",
-        count, " waiting to be claimed."
-      ].join("")
+      body: JSON.stringify({
+        text: [
+          "One of our users has posted a new question! There are a total of ",
+          count, " waiting to be claimed."
+        ].join(""),
+        username: "Night Owl - " + req.settings.get("account"),
+        icon_url: req.settings.get("host") + "/images/logoColor.png"
+      })
     })
   }).then(function(data) {
     res.success("Notified Admins on Slack")
