@@ -198,6 +198,23 @@ body {
 }
 
 @media (max-width: 600px) {
+  .header .logo {
+    display: none;
+  }
+
+  .header .navigation {
+    float: none;
+    margin: 0;
+  }
+
+  .header .navigation .link:first-child {
+    float: left;
+  }
+
+  .header .navigation .link:last-child {
+    float: right;
+  }
+
   .questions {
 	  width: 100% !important;
     padding: 20px;

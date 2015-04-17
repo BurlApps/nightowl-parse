@@ -1,26 +1,20 @@
 <% include ../includes/start.ejs %>
-<% include ../includes/header.ejs %>
-<div class="questions">
-  <div class="question">
-  <div class="information">
-    <div class="name"><%= question.description %></div>
-    <div class="subject"><%= question.subject %></div>
-    <div class="clear"></div>
-    <div class="image">
-      <img src="<%= question.image %>"/>
-    </div>
+<div class="image" style="background-image: url('<%= question.image %>')"></div>
+<div class="header">
+  <div class="name"><%= question.description %></div>
+  <div class="subject"><%= question.subject %></div>
+  <div class="clear"></div>
+</div>
+<div class="bottom">
+  <div class="time"><%= question.duration %>...</div>
+  <div class="actions">
+    <button class="good button">
+      <span>ANSWER (<%= question.paid %>)</span>
+      <input id="fileUpload" type="file"/>
+    </button>
+    <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
   </div>
-  <div class="bottom">
-    <div class="time"><%= question.duration %>...</div>
-    <div class="actions">
-      <button class="good button">
-        <span>ANSWER (<%= question.paid %>)</span>
-        <input id="fileUpload" type="file"/>
-      </button>
-      <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
-    </div>
-    <div class="clear"></div>
-  </div>
-  </div>
+  <div class="clear"></div>
+
 </div>
 <% include ../includes/end.ejs %>
