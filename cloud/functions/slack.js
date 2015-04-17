@@ -21,8 +21,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
           "One of our users has posted a new question! There are a total of ",
           count, " waiting to be claimed."
         ].join(""),
-        username: "Night Owl - " + req.settings.get("account"),
-        icon_url: req.settings.get("host") + "/images/logoColor.png"
+        username: "Night Owl - " + req.settings.get("account")
       })
     })
   }).then(function(data) {
