@@ -2,9 +2,21 @@ var Settings = require("cloud/utils/settings")
 var Mailgun = require('mailgun')
 
 Parse.Cloud.afterSave("Assignment", function(req, res) {
-  var assignment = req.object
+  var question = req.object
+  var data = {
+    question: question.id
+  }
 
-  if(assignment.get("state") != 1) return
-  Parse.Cloud.run("notifyTutors")
-  Parse.Cloud.run("notifySlack")
+  Parse.Cloud.run("assignmentPush", data)
+
+  switch(question.get("state")) {
+    case 1:
+      Parse.Cloud.run("notifyTutors")
+      Parse.Cloud.run("notifySlack")
+      break
+
+    case 2:
+      Parse.Cloud.run("claimedSlack", data)
+      break
+  }
 })

@@ -78,7 +78,8 @@ module.exports.question = function(req, res) {
   question.fetch().then(function() {
     var subject = null
 
-    if(question.get("tutor").id != req.session.tutor.objectId) {
+    if(!question.get("tutor") || question.get("tutor").id != req.session.tutor.objectId) {
+      req.session.claimed = null;
       return res.redirect("/questions")
     }
 
@@ -124,8 +125,6 @@ module.exports.claim = function(req, res) {
   question.fetch().then(function() {
     var currentTutor = question.get("tutor")
 
-    console.log(currentTutor && currentTutor.id != tutor.id)
-
     if(currentTutor && currentTutor.id != tutor.id) {
       return Parse.Promise.error("Question already claimed")
     }
@@ -135,7 +134,6 @@ module.exports.claim = function(req, res) {
     return question.save()
   }).then(function() {
     req.session.claimed = question.id
-    Parse.Cloud.run("assignmentPush", { question: question.id })
     res.redirect("/questions/" + question.id)
   }, function() {
     res.redirect("/questions/")
@@ -194,7 +192,6 @@ module.exports.flag = function(req, res) {
 		question.set("answer", image)
 		return question.save()
 	}).then(function() {
-    Parse.Cloud.run("assignmentPush", { question: question.id })
     res.redirect("/questions/")
 	}, function() {
     res.redirect("/questions/")
@@ -215,7 +212,6 @@ module.exports.unclaim = function(req, res) {
     return question.save()
   }).then(function() {
     req.session.claimed = null
-    Parse.Cloud.run("assignmentPush", { question: question.id })
     res.redirect("/questions/")
   }, function() {
     res.redirect("/questions/")

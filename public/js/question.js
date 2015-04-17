@@ -20,10 +20,6 @@ function uploadTriggered() {
     question.set("answer", file)
     return question.save()
   }).then(function() {
-    return Parse.Cloud.run("assignmentPush", {
-      question: question.id
-    })
-  }).then(function() {
     alert("Question has been answered!")
     location.href = "/questions/" + question.id + "/answered"
   }, function(error) {
