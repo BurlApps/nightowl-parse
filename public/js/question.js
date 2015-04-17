@@ -1,6 +1,9 @@
 // Init
 $(function() {
   $("#fileUpload").change(uploadTriggered)
+  $("body").on("touchstart click", function() {
+    $(".header, .bottom").fadeToggle(500)
+  })
 })
 
 // Utils
