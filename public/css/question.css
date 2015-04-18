@@ -89,18 +89,19 @@ body {
 
 .bottom .source {
   float: left;
-  color: #fff;
+  color: #fff !important;
   font-size: 22px;
   font-weight: bold;
   margin-top: 5px;
 }
 
 .bottom .source a {
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
 }
 
 .bottom .source a:hover {
+  color: #fff !important;
   text-decoration: underline;
 }
 
@@ -175,7 +176,7 @@ body {
     font-size: 16px;
   }
 
-  .bottom .time {
+  .bottom .source {
     display: none;
   }
 
