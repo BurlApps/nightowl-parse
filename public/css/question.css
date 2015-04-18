@@ -87,12 +87,21 @@ body {
   color: #fff;
 }
 
-.bottom .time {
+.bottom .source {
   float: left;
   color: #fff;
   font-size: 22px;
   font-weight: bold;
   margin-top: 5px;
+}
+
+.bottom .source a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.bottom .source a:hover {
+  text-decoration: underline;
 }
 
 .bottom .actions {

@@ -53,10 +53,10 @@ function getQuestions() {
   }, function(data) {
     var questions = data.questions
     updateTitle(questions.length)
+    $(".questions").html("")
 
     if(questions.length != 0) {
       $(".loading").hide()
-      $(".questions").html("")
 
       questions.forEach(function(question) {
         var question = buildQuestion(question)
