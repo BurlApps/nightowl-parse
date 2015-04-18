@@ -17,10 +17,8 @@ module.exports.questions = function(req, res) {
   var query = new Parse.Query(Assignment)
   var questions = []
   var now = new Date()
-  var user = new User()
   var tutor = new Tutor()
 
-  user.id = req.session.user.objectId
   tutor.id = req.session.tutor.objectId
 
   query.containedIn("state", [1, 4, 5, 6])
@@ -66,7 +64,6 @@ module.exports.questions = function(req, res) {
 }
 
 module.exports.question = function(req, res) {
-  var now = new Date()
   var question = new Assignment()
 
   question.id = req.param("question")
@@ -76,6 +73,8 @@ module.exports.question = function(req, res) {
   }
 
   question.fetch().then(function() {
+    return question.get("creator").fetch()
+  }).then(function(user) {
     var subject = null
 
     if(!question.get("tutor") || question.get("tutor").id != req.session.tutor.objectId) {
@@ -104,9 +103,9 @@ module.exports.question = function(req, res) {
         description: name || "No Description Provided",
         image: question.get("question").url(),
         name: question.get("name"),
-        duration: Moment.duration(question.createdAt - now).humanize(true),
         subject: subject ? subject.name : "Other",
-        paid: paid
+        paid: paid,
+        source: user.get("phone") || "App"
       },
       config: {
         question: question.id
