@@ -15,7 +15,11 @@ Parse.Cloud.define("notifyTutors", function(req, res) {
     return query.count()
   }).then(function(count) {
     var query = new Parse.Query(Parse.User)
+
+    query.exists("tutor")
+    query.equalTo("tutorEmail", true)
     query.equalTo("tutoring", true)
+
     return query.each(function(user) {
       return Mailgun.sendEmail({
         to: user.get("email"),

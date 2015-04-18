@@ -19,6 +19,7 @@ Parse.Cloud.define("migrationUserFields", function(req, res) {
   user.set("tutoring", false)
   user.set("name", "test")
   user.set("phone", "test")
+  user.set("tutorEmail", true)
   user.signUp().then(function() {
     return user.destroy()
   }).then(function() {

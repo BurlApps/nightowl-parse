@@ -74,6 +74,7 @@ module.exports.registerUser = function(req, res) {
       user.set("password", req.param("password"))
       user.set("tutor", tutor)
       user.set("tutoring", false)
+      user.set("tutorEmail", true)
 
       return user.save().then(function() {
         tutor.set("user", user)
