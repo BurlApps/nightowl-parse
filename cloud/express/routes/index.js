@@ -18,6 +18,8 @@ module.exports.phone = function(req, res) {
       price = "$" + price
     }
 
+    Parse.Analytics.track('homeTwilio')
+
     Parse.Cloud.run("twilioMessage", {
       "To": req.param("phone"),
       "Body": [

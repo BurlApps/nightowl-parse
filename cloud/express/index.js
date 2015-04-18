@@ -55,6 +55,12 @@ app.use(function(req, res, next) {
 
   // Render Shorcut
   res.renderT = function(template, data) {
+    // Tracking
+    Parse.Analytics.track('pageView', {
+      link: req.url,
+      method: req.route.method
+    })
+
     data = data || {}
     data.template = data.template || template
     data.user = data.user || req.session.user
