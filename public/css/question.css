@@ -177,10 +177,13 @@ body {
   }
 
   .bottom .source {
-    display: none;
+    margin: -20px -20px 20px -20px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
   }
 
-  .bottom .actions {
+  .bottom .actions,
+  .bottom .source {
     float: none !important;
     width: 100% !important;
     text-align: center;
