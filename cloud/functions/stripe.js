@@ -19,7 +19,7 @@ Parse.Cloud.define("stripeRegister", function(req, res) {
   }).then(function() {
     res.success("Successfully added card to user")
   }, function(error) {
-    res.error(error.description)
+    res.error(error.message)
   })
 })
 
