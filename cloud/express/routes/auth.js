@@ -3,11 +3,12 @@ var Tutor = Parse.Object.extend("Tutor")
 var Subject = Parse.Object.extend("Subject")
 
 module.exports.restricted = function(req, res, next) {
-	if(req.session.user) {
+	if(req.session.user && req.session.user.tutoring) {
 		next();
 	} else if(req.xhr) {
 		res.errorT("Login required :(")
 	} else {
+  	req.session = null
 		res.redirect("/login")
 	}
 }
