@@ -95,12 +95,12 @@ body {
   margin-top: 5px;
 }
 
-.bottom .source a {
+.bottom .source span {
   color: #fff !important;
   text-decoration: none;
 }
 
-.bottom .source a:hover {
+.bottom .source span:hover {
   color: #fff !important;
   text-decoration: underline;
 }
