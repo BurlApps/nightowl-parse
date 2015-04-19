@@ -44,14 +44,12 @@ module.exports.handler = function(req, res, next) {
   req.activateQuestion = !(req.user.get("freeQuestions") == 0 && !req.user.get("card"))
 
   if(numMedia == 0 || mediaType.split("/")[0] != "image") {
-    return Settings().then(function(settings) {
-      return Parse.Cloud.run("twilioMessage", {
-        "To": settings.get("twilioSupport"),
-        "Body": [
-          "From: ", req.user.get("phone"), "\n",
-          "Message: ", req.message
-        ].join("")
-      })
+    return Parse.Cloud.run("twilioMessage", {
+      "To": req.settings.get("twilioSupport"),
+      "Body": [
+        "From: ", req.user.get("phone"), "\n",
+        "Message: ", req.message
+      ].join("")
     }).then(function() {
       module.exports.render(req, res, "twilio/guide")
     })

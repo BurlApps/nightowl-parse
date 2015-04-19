@@ -45,15 +45,21 @@ Parse.Cloud.define("claimedSlack", function(req, res) {
     return question.get("tutor").fetch()
   }).then(function(tutor) {
     return tutor.get("user").fetch()
+  }).then(function(tutor) {
+    req.tutor = tutor
+
+    return req.question.get("creator").fetch()
   }).then(function(user) {
+    var phone = user.get("phone")
+
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackApi"),
       method: "POST",
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          user.get("name"), " (", user.id, ") just claimed question ",
-          req.question.id
+          req.tutor.get("name"), " (", req.tutor.id, ") just claimed question (",
+          req.question.id, ") created by (", user.id, ") from ", (phone ? phone : "the app")
         ].join(""),
         username: "Night Owl - " + req.settings.get("account")
       })
