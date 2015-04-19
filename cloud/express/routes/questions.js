@@ -163,8 +163,11 @@ module.exports.answered = function(req, res) {
 }
 
 module.exports.flag = function(req, res) {
+  var tutor = new Tutor()
   var question = new Assignment()
+
   question.id = req.param("question")
+  tutor.id = req.session.tutor.objectId
 
   question.fetch().then(function() {
     var creator = question.get("creator")
@@ -189,6 +192,7 @@ module.exports.flag = function(req, res) {
 	}).then(function(image) {
   	question.set("state", 3)
 		question.set("answer", image)
+		question.set("tutor", tutor)
 		return question.save()
 	}).then(function() {
     res.redirect("/questions/")
