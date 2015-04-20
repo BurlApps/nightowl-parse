@@ -1,0 +1,14 @@
+<% include ../includes/start.ejs %>
+<div class="image question" style="background-image: url('<%= question.question %>')"></div>
+<div class="image answer" style="background-image: url('<%= question.answer %>')"></div>
+<div class="header">
+  <div class="name"><%= question.description %></div>
+  <div class="subject"><%= question.subject %></div>
+  <div class="clear"></div>
+</div>
+<div class="bottom">
+  <div class="source">Creator: <%= question.source %></div>
+  <div class="claimed"><%= question.state %>: <%= question.tutor %></div>
+  <div class="clear"></div>
+</div>
+<% include ../includes/end.ejs %>

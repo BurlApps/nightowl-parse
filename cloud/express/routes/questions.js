@@ -114,6 +114,63 @@ module.exports.question = function(req, res) {
   })
 }
 
+module.exports.peek = function(req, res) {
+  var question = new Assignment()
+
+  question.id = req.param("question")
+
+  question.fetch().then(function() {
+    return question.get("creator").fetch()
+  }).then(function(user) {
+    req.user = user
+
+    return question.get("tutor").fetch()
+  }).then(function(tutor) {
+    return tutor.get("user").fetch()
+  }).then(function(tutor) {
+    var subject = null
+
+    if(question.get("subject")) {
+      subject = _.find(req.session.subjects, function(element) {
+        return element.objectId === question.get("subject").id
+      })
+    }
+
+    var name = question.get("name")
+    var answer = question.get("answer")
+    var state = "Uploading"
+
+    switch(question.get("state")) {
+      case 1: state = "Unclaimed"; break;
+      case 2: state = "Claimed"; break;
+      case 3: state = "Completed"; break;
+      case 4:
+      case 5:
+      case 6: state = "Flagged (User)"; break;
+      case 7:
+      case 8: state = "Flagged (Tutor)"; break;
+      case 9: state = "Deleted"; break;
+    }
+
+    res.renderT("questions/peek", {
+      question: {
+        id: question.id,
+        description: name || "No Description Provided",
+        question: question.get("question").url(),
+        answer: (answer) ? answer.url() : "",
+        name: question.get("name"),
+        subject: subject ? subject.name : "Other",
+        source: req.user.get("phone") || "App",
+        tutor: tutor.get("name"),
+        state: state
+      },
+      config: {
+        question: question.id
+      }
+    })
+  })
+}
+
 module.exports.claim = function(req, res) {
   var tutor = new Tutor()
   var question = new Assignment()

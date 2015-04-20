@@ -7,7 +7,7 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
     question: question.id
   }
 
-  //Parse.Cloud.run("assignmentPush", data)
+  Parse.Cloud.run("assignmentPush", data)
 
   switch(question.get("state")) {
     case 1:

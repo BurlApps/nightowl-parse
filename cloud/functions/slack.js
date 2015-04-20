@@ -55,6 +55,11 @@ Parse.Cloud.define("updateSlack", function(req, res) {
     var action = req.params.action
     action = action.charAt(0).toUpperCase() + action.slice(1)
 
+    var question = [
+      "<", req.settings.get("host"), "/questions/",
+      req.question.id, "/peek|", req.question.id, ">"
+    ].join("")
+
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackApi"),
       method: "POST",
@@ -62,7 +67,7 @@ Parse.Cloud.define("updateSlack", function(req, res) {
       body: JSON.stringify({
         text: [
           req.tutor.get("name"), " (", req.tutor.id, ") just ", req.params.action , " question (",
-          req.question.id, ") created by (", user.id, ") from ", (phone ? phone : "the app")
+          question, ") created by (", user.id, ") from ", (phone ? phone : "the app")
         ].join(""),
         username: req.settings.get("account") + " - " + action,
         icon_url: [

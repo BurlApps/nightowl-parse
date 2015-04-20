@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="/css/questions.css?r=<%= random %>">
 <% } else if(template == "questions/question") { %>
   <link rel="stylesheet" href="/css/question.css?r=<%= random %>">
+<% } else if(template == "questions/peek") { %>
+  <link rel="stylesheet" href="/css/peek.css?r=<%= random %>">
 <% } else if(template.split("/")[0] == "user") { %>
   <link rel="stylesheet" href="/css/auth.css?r=<%= random %>">
 <% } %>
