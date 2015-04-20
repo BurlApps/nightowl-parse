@@ -21,6 +21,7 @@ function buildQuestion(data) {
         <div class="actions">                                                  \
           <a class="good button">CLAIM</a>                                     \
           <a class="bad button">FLAG</a>                                       \
+          <a class="delete button">DELETE</a>                                  \
         </div>                                                                 \
         <div class="clear"></div>                                              \
       </div>                                                                   \
@@ -40,6 +41,7 @@ function buildQuestion(data) {
 
   question.find(".good").attr("href", "/questions/" + data.id + "/claim")
   question.find(".bad").attr("href", "/questions/" + data.id + "/flag")
+  question.find(".delete").attr("href", "/questions/" + data.id + "/delete")
   return question
 }
 

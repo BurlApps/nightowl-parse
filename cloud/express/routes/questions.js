@@ -162,6 +162,24 @@ module.exports.answered = function(req, res) {
   })
 }
 
+module.exports.delete = function(req, res) {
+  var tutor = new Tutor()
+  var question = new Assignment()
+
+  question.id = req.param("question")
+  tutor.id = req.session.tutor.objectId
+
+  question.set("state", 9)
+  question.set("show", false)
+  question.set("tutor", tutor)
+  question.save().then(function() {
+    req.session.claimed = null
+    res.redirect("/questions/")
+  }, function() {
+    res.redirect("/questions/")
+  })
+}
+
 module.exports.flag = function(req, res) {
   var tutor = new Tutor()
   var question = new Assignment()
@@ -190,7 +208,7 @@ module.exports.flag = function(req, res) {
 
 	  return file.save()
 	}).then(function(image) {
-  	question.set("state", 3)
+  	question.set("state", 7)
 		question.set("answer", image)
 		question.set("tutor", tutor)
 		return question.save()

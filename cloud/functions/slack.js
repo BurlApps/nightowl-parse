@@ -21,7 +21,10 @@ Parse.Cloud.define("notifySlack", function(req, res) {
           "One of our users has posted a new question! There are a total of ",
           count, " waiting to be claimed."
         ].join(""),
-        username: "Night Owl - " + req.settings.get("account")
+        username: "Night Owl - " + req.settings.get("account"),
+        icon_url: [
+          req.settings.get("host"), "/images/slack/notify.png"
+        ]
       })
     })
   }).then(function(data) {
@@ -32,7 +35,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
   })
 })
 
-Parse.Cloud.define("claimedSlack", function(req, res) {
+Parse.Cloud.define("updateSlack", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   Settings().then(function(settings) {
@@ -58,10 +61,13 @@ Parse.Cloud.define("claimedSlack", function(req, res) {
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          req.tutor.get("name"), " (", req.tutor.id, ") just claimed question (",
+          req.tutor.get("name"), " (", req.tutor.id, ") just ", req.params.action , " question (",
           req.question.id, ") created by (", user.id, ") from ", (phone ? phone : "the app")
         ].join(""),
-        username: "Night Owl - " + req.settings.get("account")
+        username: "Night Owl - " + req.settings.get("account"),
+        icon_url: [
+          req.settings.get("host"), "/images/slack/", req.params.action, ".png"
+        ].join("")
       })
     })
   }).then(function(data) {
