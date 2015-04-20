@@ -21,10 +21,8 @@ Parse.Cloud.define("notifySlack", function(req, res) {
           "One of our users has posted a new question! There are a total of ",
           count, " waiting to be claimed."
         ].join(""),
-        username: "Night Owl - " + req.settings.get("account"),
-        icon_url: [
-          req.settings.get("host"), "/images/slack/notify.png"
-        ]
+        username: req.settings.get("account") + " - Notify",
+        icon_url: req.settings.get("host") + "/images/slack/notify.png"
       })
     })
   }).then(function(data) {
@@ -54,6 +52,8 @@ Parse.Cloud.define("updateSlack", function(req, res) {
     return req.question.get("creator").fetch()
   }).then(function(user) {
     var phone = user.get("phone")
+    var action = req.params.action
+    action = action.charAt(0).toUpperCase() + action.slice(1)
 
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackApi"),
@@ -64,7 +64,7 @@ Parse.Cloud.define("updateSlack", function(req, res) {
           req.tutor.get("name"), " (", req.tutor.id, ") just ", req.params.action , " question (",
           req.question.id, ") created by (", user.id, ") from ", (phone ? phone : "the app")
         ].join(""),
-        username: "Night Owl - " + req.settings.get("account"),
+        username: req.settings.get("account") + " - " + action,
         icon_url: [
           req.settings.get("host"), "/images/slack/", req.params.action, ".png"
         ].join("")
