@@ -5,12 +5,17 @@ body {
 @media (max-width: 450px) {
   .container {
     width: inherit !important;
-    padding: 60px 20px 20px 20px !important;
+    padding: 20px !important;
     margin: 0 !important;
 
     -moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
+  }
+
+  .container .form .input,
+  .container .form .submit {
+    margin-bottom: 15px !important;
   }
 
   .container.welcome .logo {
@@ -52,7 +57,7 @@ body {
 .container .message {
   text-align: center;
   padding: 20px 0 0;
-  margin-top: 50px;
+  margin-top: 30px;
   color: #000;
   font-size: 30px;
   font-weight: bold;
@@ -134,4 +139,13 @@ body {
 
 .container .form .submit.error {
   background: #C8120B;
+}
+
+.container .stripe {
+  margin: 0 auto;
+  width: 150px;
+}
+
+.container .stripe img {
+  width: 100%;
 }
