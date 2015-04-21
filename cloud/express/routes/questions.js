@@ -226,10 +226,16 @@ module.exports.delete = function(req, res) {
   question.id = req.param("question")
   tutor.id = req.session.tutor.objectId
 
-  question.set("state", 9)
-  question.set("show", false)
-  question.set("tutor", tutor)
-  question.save().then(function() {
+  question.fetch().then(function() {
+    var creator = question.get("creator")
+
+    creator.increment("freeQuestions", 1)
+    return creator.save()
+  }).then(function() {
+    question.set("state", 9)
+    question.set("tutor", tutor)
+    question.save()
+  }).then(function() {
     req.session.claimed = null
     res.redirect("/questions/")
   }, function() {

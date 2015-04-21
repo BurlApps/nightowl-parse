@@ -15,8 +15,6 @@
     Parse.initialize("<%= parseId %>", "<%= parseSecret %>")
   </script>
   <script type="text/javascript" src="/js/question.js?r=<%= random %>"></script>
-<% } else if(template == "questions/peek") { %>
-  <script type="text/javascript" src="/js/peek.js?r=<%= random %>"></script>
 <% } else if(template == "user/card") { %>
   <script type="text/javascript" src="//www.parsecdn.com/js/parse-latest.js"></script>
   <script type="text/javascript" src="//js.stripe.com/v2/"></script>
