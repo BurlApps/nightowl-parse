@@ -1,5 +1,5 @@
 <% include ../includes/start.ejs %>
-<div class="image" style="background-image: url('<%= question.image %>')"></div>
+<a class="image" href="<%= question.question %>" target="_blank" style="background-image: url('<%= question.image %>')"></a>
 <div class="header">
   <div class="name"><%= question.description %></div>
   <div class="subject"><%= question.subject %></div>
@@ -16,6 +16,5 @@
     <a class="delete button" href="/questions/<%= question.id %>/delete">DELETE</a>
   </div>
   <div class="clear"></div>
-
 </div>
 <% include ../includes/end.ejs %>

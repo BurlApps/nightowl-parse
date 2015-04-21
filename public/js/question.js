@@ -2,7 +2,7 @@
 $(function() {
   var hidden = false
   $("#fileUpload").change(uploadTriggered)
-  $(".image").on("touchstart click", function() {
+  $(".image").on("touchstart mousedown", function() {
     if(hidden) {
       $(".header, .bottom").fadeIn(500)
     } else {

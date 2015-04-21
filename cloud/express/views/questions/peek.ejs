@@ -1,6 +1,6 @@
 <% include ../includes/start.ejs %>
-<div class="image question" style="background-image: url('<%= question.question %>')"></div>
-<div class="image answer" style="background-image: url('<%= question.answer %>')"></div>
+<a class="image question" href="<%= question.question %>" target="_blank" style="background-image: url('<%= question.question %>')"></a>
+<a class="image answer" href="<%= question.answer %>" target="_blank" style="background-image: url('<%= question.answer %>')"></a>
 <div class="header">
   <div class="name"><%= question.description %></div>
   <div class="subject"><%= question.subject %></div>

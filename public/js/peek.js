@@ -1,6 +1,6 @@
 $(function() {
   var hidden = false
-  $(".image").on("touchstart click", function() {
+  $(".image").on("touchstart mousedown", function() {
     if(hidden) {
       $(".header, .bottom").fadeIn(500)
     } else {

@@ -4,6 +4,7 @@
 
 <% if(template.split("/")[0] == "home") { %>
 	<script type="text/javascript" src="/js/home.js?r=<%= random %>"></script>
+	<script type="text/javascript" src="/js/bubbles.js?r=<%= random %>"></script>
 <% } else if(template.split("/")[0] == "auth") { %>
 	<script type="text/javascript" src="/js/auth.js?r=<%= random %>"></script>
 <% } else if(template == "questions/index") { %>
