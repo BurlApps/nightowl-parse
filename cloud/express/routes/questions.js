@@ -101,7 +101,7 @@ module.exports.question = function(req, res) {
         name: question.get("name"),
         subject: subject ? subject.name : "Other",
         paid: paid,
-        source: user.get("phone") || "App"
+        source: user.get("phone") || user.id
       },
       config: {
         question: question.id
@@ -161,7 +161,7 @@ module.exports.peek = function(req, res) {
         answer: (answer) ? answer.url() : "",
         name: question.get("name"),
         subject: subject ? subject.name : "Other",
-        source: req.user.get("phone") || "App",
+        source: req.user.get("phone") || req.user.id,
         tutor: tutor.get("name"),
         state: state
       },
