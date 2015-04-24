@@ -56,7 +56,7 @@ module.exports.questions = function(req, res) {
       })
     })
   }, function(error) {
-    console.log(error)
+    console.error(error)
     res.errorT({
       questions: []
     })
@@ -67,6 +67,8 @@ module.exports.question = function(req, res) {
   var question = new Assignment()
 
   question.id = req.param("question")
+
+  console.log(question)
 
   question.fetch().then(function() {
     return question.get("creator").fetch()
@@ -107,6 +109,10 @@ module.exports.question = function(req, res) {
         question: question.id
       }
     })
+  }, function(error) {
+    console.error(error)
+    req.session.claimed = null
+    res.redirect("/questions")
   })
 }
 
@@ -169,6 +175,9 @@ module.exports.peek = function(req, res) {
         question: question.id
       }
     })
+  }, function(error) {
+    console.error(error)
+    res.redirect("/questions")
   })
 }
 
@@ -192,7 +201,8 @@ module.exports.claim = function(req, res) {
   }).then(function() {
     req.session.claimed = question.id
     res.redirect("/questions/" + question.id)
-  }, function() {
+  }, function(error) {
+    console.error(error)
     res.redirect("/questions/")
   })
 }
@@ -217,6 +227,9 @@ module.exports.answered = function(req, res) {
   }).then(function() {
     req.session.tutor = tutor
     res.redirect("/questions")
+  }, function(error) {
+    console.error(error)
+    res.redirect("/questions")
   })
 }
 
@@ -239,7 +252,8 @@ module.exports.delete = function(req, res) {
   }).then(function() {
     req.session.claimed = null
     res.redirect("/questions/")
-  }, function() {
+  }, function(error) {
+    console.error(error)
     res.redirect("/questions/")
   })
 }
@@ -278,7 +292,8 @@ module.exports.flag = function(req, res) {
 		return question.save()
 	}).then(function() {
     res.redirect("/questions/")
-	}, function() {
+	}, function(error) {
+  	console.error(error)
     res.redirect("/questions/")
   })
 }
@@ -298,7 +313,8 @@ module.exports.unclaim = function(req, res) {
   }).then(function() {
     req.session.claimed = null
     res.redirect("/questions/")
-  }, function() {
+  }, function(error) {
+    console.error(error)
     res.redirect("/questions/")
   })
 }

@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
 
   // Error Shorcut
   res.errorT = function(error) {
-    console.log(error)
+    console.error(error)
     error = error.description || error
 
     res.json({
