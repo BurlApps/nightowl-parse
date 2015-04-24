@@ -18,8 +18,6 @@ module.exports.phone = function(req, res) {
       price = "$" + price
     }
 
-    Parse.Analytics.track('homeTwilio')
-
     Parse.Cloud.run("twilioMessage", {
       "To": req.param("phone"),
       "Body": [
@@ -28,6 +26,8 @@ module.exports.phone = function(req, res) {
         settings.get("freeQuestions"), " for free, then it’s only ",
         price, " 😃"
       ].join("")
+    }).then(function() {
+      return Parse.Analytics.track('homeTwilio')
     }).then(function() {
       res.successT({
         message: "Sent!"
