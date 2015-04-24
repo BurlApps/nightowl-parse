@@ -35,6 +35,7 @@ Parse.Cloud.define("notifyTutors", function(req, res) {
   }).then(function(data) {
     res.success("Notified Tutors")
   }, function(error) {
+    console.error(error)
     res.error(error.message)
   })
 })

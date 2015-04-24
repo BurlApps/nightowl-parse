@@ -28,7 +28,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
   }).then(function(data) {
     res.success("Notified Admins on Slack")
   }, function(error) {
-    console.log(error)
+    console.error(error)
     res.error(error.message)
   })
 })
@@ -78,7 +78,7 @@ Parse.Cloud.define("updateSlack", function(req, res) {
   }).then(function(data) {
     res.success("Notified Admins on Slack")
   }, function(error) {
-    console.log(error)
+    console.error(error)
     res.error(error.message)
   })
 })

@@ -18,6 +18,7 @@ Parse.Cloud.define("assignmentActivate", function(req, res) {
   }).then(function() {
     res.success("Successfully activated assignments")
   }, function(error) {
+    console.error(error)
     res.error(error.message)
   })
 })
@@ -94,6 +95,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
   }).then(function() {
     res.success("Successfully send push notification")
   }, function(error) {
+    console.error(error)
     res.error(error.message)
   })
 })

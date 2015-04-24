@@ -20,6 +20,7 @@ Parse.Cloud.define("twilioMessage", function(req, res) {
   }).then(function(response) {
     res.success("Successfully sent message to user")
   }, function(error) {
+    console.error(error)
     res.error(error.message)
   })
 })
