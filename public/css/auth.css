@@ -54,6 +54,22 @@ body {
   color: #000;
 }
 
+.container .subheader {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 16px;
+  text-align: center;
+  color: #000;
+  margin: 10px 0 20px;
+}
+
+.container .hint {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 15px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0px 0 15px;
+}
+
 .container .message {
   text-align: center;
   padding: 20px 0 0;
