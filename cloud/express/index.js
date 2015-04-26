@@ -44,7 +44,7 @@ app.use(function(req, res, next) {
   // Error Shorcut
   res.errorT = function(error) {
     console.error(error)
-    error = error.description || error
+    error = error.description || error.message || "An error occurred"
 
     res.json({
       success: false,

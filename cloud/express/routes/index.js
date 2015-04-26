@@ -32,7 +32,11 @@ module.exports.phone = function(req, res) {
       res.successT({
         message: "Sent!"
       })
-    }, res.errorT)
+    }, function() {
+      res.errorT({
+        message: "Invalid phone number :("
+      })
+    })
   })
 }
 
