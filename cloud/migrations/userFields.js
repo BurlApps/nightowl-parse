@@ -27,6 +27,6 @@ Parse.Cloud.define("migrationUserFields", function(req, res) {
   }).then(function() {
     res.success("Successfully added tutor field")
   }, function(error) {
-    res.error(error.description)
+    res.error(error.message)
   })
 })

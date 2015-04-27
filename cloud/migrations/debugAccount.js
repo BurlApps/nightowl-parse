@@ -33,6 +33,6 @@ Parse.Cloud.define("migrationDebugAccounts", function(req, res) {
   }).then(function() {
     res.success("Successfully added debug accounts")
   }, function(error) {
-    res.error(error.description)
+    res.error(error.message)
   })
 })

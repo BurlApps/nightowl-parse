@@ -25,6 +25,6 @@ Parse.Cloud.define("migrationSubjects", function(req, res) {
   }).then(function() {
     res.success("Successfully added subjects")
   }, function(error) {
-    res.error(error.description)
+    res.error(error.message)
   })
 })
