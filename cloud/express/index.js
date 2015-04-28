@@ -12,7 +12,8 @@ var routes = {
   auth: require("cloud/express/routes/auth"),
   questions: require("cloud/express/routes/questions"),
   twilio: require("cloud/express/routes/twilio"),
-  user: require("cloud/express/routes/user")
+  user: require("cloud/express/routes/user"),
+  chat: require("cloud/express/routes/chat")
 }
 
 // Global app configuration section
@@ -81,6 +82,8 @@ app.use(function(req, res, next) {
   res.locals.parseId = req.session.parseId
   res.locals.parseSecret = req.session.parseSecret
   res.locals.stripeKey = req.session.stripeKey
+  res.locals.pusherKey = req.session.pusherKey
+  res.locals.account = req.session.account
   res.locals.random = random
   res.locals.config = {}
 
@@ -89,14 +92,18 @@ app.use(function(req, res, next) {
 	    req.session.appliedSettings = true
 	    req.session.itunesApp = settings.get("itunesId")
 	    req.session.parseId = settings.get("parseId")
+	    req.session.pusherKey = settings.get("pusherKey")
 	    req.session.parseSecret = settings.get("parseSecret")
 	    req.session.stripeKey = settings.get("stripePubKey")
+	    req.session.account = settings.get("account")
 	    req.session.host = settings.get("host")
 	    res.locals.host = req.session.host
       res.locals.itunesApp = req.session.itunesApp
       res.locals.parseId = req.session.parseId
       res.locals.parseSecret = req.session.parseSecret
       res.locals.stripeKey = req.session.stripeKey
+      res.locals.pusherKey = req.session.pusherKey
+      res.locals.account = req.session.account
       next()
     })
   } else {
@@ -121,6 +128,9 @@ app.get('/register', routes.auth.register)
 app.get('/register/welcome', routes.auth.welcome)
 app.post('/login', routes.auth.loginUser)
 app.post('/register', routes.auth.registerUser)
+
+// Support Chat
+app.get('/chat', routes.auth.restricted, routes.chat.home)
 
 // Queue
 app.get('/questions', routes.auth.restricted, routes.questions.home)

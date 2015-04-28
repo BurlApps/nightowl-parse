@@ -1,6 +1,3 @@
-var Settings = require("cloud/utils/settings")
-var Mailgun = require('mailgun')
-
 Parse.Cloud.afterSave("Assignment", function(req, res) {
   var question = req.object
   var data = {

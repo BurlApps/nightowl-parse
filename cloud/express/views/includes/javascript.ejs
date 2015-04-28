@@ -22,6 +22,13 @@
   <script type="text/javascript" src="/js/user.js?r=<%= random %>"></script>
   <script type="text/javascript">
     Parse.initialize("<%= parseId %>", "<%= parseSecret %>")
-    Stripe.setPublishableKey("<%= stripeKey %>");
+    Stripe.setPublishableKey("<%= stripeKey %>")
+  </script>
+<% } else if(template == "chat/index") { %>
+  <script type="text/javascript" src="//js.pusher.com/2.2/pusher.min.js"></script>
+  <script type="text/javascript" src="/js/chat.js?r=<%= random %>"></script>
+  <script type="text/javascript">
+    window.pusher = new Pusher("<%= pusherKey %>")
+    window.account = "<%= account.replace(/: /g, "_").toLowerCase() %>"
   </script>
 <% } %>

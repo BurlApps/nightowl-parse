@@ -1,0 +1,191 @@
+body {
+  background: #FEE033;
+}
+
+.sidebar {
+  width: 225px;
+  float: left;
+  border-right: solid 2px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.sidebar .search {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 15px 15px 15px 40px;
+  outline: none;
+  border: none;
+  border-bottom: solid 2px #D8BE2B;
+  font-size: 18px;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  background-image: url("/images/user.png");
+  background-position: 12px center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+
+  -webkit-appearance: none;
+}
+
+.sidebar .user {
+  width: 100%;
+  padding: 15px;
+  font-size: 14px;
+  border-bottom: solid 1px #D8BE2B;
+  cursor: pointer;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.sidebar .user:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.sidebar .user:hover:active {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar .user.active {
+  background: rgba(255, 255, 255, 1);
+  border-left: solid 5px rgba(0, 0, 0, 0.3);
+  padding-left: 10px;
+}
+
+.sidebar .user .name {
+  font-weight: bold;
+  margin-bottom: 5px;
+
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.sidebar .user .message {
+  color: rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.sidebar .user .message .from {
+  font-weight: bold;
+}
+
+.rooms {
+  background: #fff;
+  float: right;
+
+  width: -moz-calc(100% - 225px);
+  width: -webkit-calc(100% - 225px);
+  width: -o-calc(100% - 225px);
+  width: calc(100% - 225px);
+}
+
+.rooms .room {
+  position: relative;
+}
+
+.rooms .room .header {
+  width: 100%;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.rooms .room .header .name {
+  font-weight: bold;
+  font-size: 22px;
+  color: #444;
+  float: left;
+}
+
+.rooms .room .header .search {
+  width: 30%;
+  background: #fff;
+  padding: 6px 35px;
+  outline: none;
+  border: solid 1px #E2E2E2;
+  font-size: 16px;
+  float: right;
+
+  background-image: url("/images/search.png");
+  background-position: 12px center;
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.rooms .room .header .search:focus {
+  border: solid 1px #999;
+}
+
+.rooms .room .bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20px;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.rooms .room .bottom .messenger {
+  width: 100%;
+  border: solid 2px #E0E0E0;
+  padding: 10px;
+  outline: none;
+  font-size: 16px;
+
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.rooms .room .messages {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.rooms .room .messages .container {
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  right: 30px;
+}
