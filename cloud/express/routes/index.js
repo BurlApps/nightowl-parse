@@ -46,7 +46,7 @@ module.exports.notfound = function(req, res) {
 
 module.exports.download = function(req, res) {
 	Settings().then(function(settings) {
-  	res.redirect(settings.get("itunesUrl"))
+  	res.redirect(settings.get("itunesLink"))
   })
 }
 

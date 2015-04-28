@@ -30,7 +30,9 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
   var question = new Assignment()
   var responses = {
     2: "A tutor is working on your question 😃",
-    3: "Just sent your answer!"
+    3: "Just sent your answer!",
+    7: "Your question was flagged for being unclear or blurry",
+    8: "Your question was flagged for having to many parts"
   }
 
   question.id = req.params.question
@@ -44,6 +46,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
   }).then(function(user) {
     var state = question.get("state")
 
+    // Send to phone
     if(user.get("phone")) {
       if(!(state in responses)) return true
 
@@ -74,6 +77,8 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
       }
 
       return Parse.Cloud.run("twilioMessage", data)
+
+    // Send via push notification
     } else {
       var data = {
         action: "questionsController.reload"
@@ -84,7 +89,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
         data["alert"] = responses[state]
       }
 
-      var pushQuery = new Parse.Query(Parse.Installation);
+      var pushQuery = new Parse.Query(Parse.Installation)
       pushQuery.equalTo("user", user)
 
       return Parse.Push.send({

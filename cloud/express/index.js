@@ -87,7 +87,7 @@ app.use(function(req, res, next) {
   if(req.session.appliedSettings !== true) {
     Settings().then(function(settings) {
 	    req.session.appliedSettings = true
-	    req.session.itunesApp = settings.get("itunesApp")
+	    req.session.itunesApp = settings.get("itunesId")
 	    req.session.parseId = settings.get("parseId")
 	    req.session.parseSecret = settings.get("parseSecret")
 	    req.session.stripeKey = settings.get("stripePubKey")
@@ -107,6 +107,12 @@ app.use(function(req, res, next) {
 // Landing
 app.get('/', routes.core.home)
 app.post('/phone', routes.core.phone)
+
+// Download
+app.get('/d', routes.core.download)
+app.get('/r', routes.core.download)
+app.get('/download', routes.core.download)
+app.get('/rate', routes.core.download)
 
 // Auth
 app.get('/login', routes.auth.login)
