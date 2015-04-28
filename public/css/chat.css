@@ -1,5 +1,6 @@
 body {
   background: #FEE033;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -7,6 +8,7 @@ body {
   float: left;
   border-right: solid 2px rgba(0, 0, 0, 0.1);
   overflow: auto;
+  display: none;
 
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -86,6 +88,7 @@ body {
 .rooms {
   background: #fff;
   float: right;
+  display: none;
 
   width: -moz-calc(100% - 225px);
   width: -webkit-calc(100% - 225px);

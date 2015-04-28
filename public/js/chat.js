@@ -8,10 +8,12 @@ function onResize() {
   var roomBottom = $(".rooms .room .bottom")
 
   var height = $(window).height() - header.outerHeight()
+
+  sidebar.height(height).show()
+  rooms.height(height).show()
+
   var messagesHeight = height - roomHeader.outerHeight() - roomBottom.outerHeight()
 
-  sidebar.height(height)
-  rooms.height(height)
   roomMessages.css({
     height: messagesHeight + "px",
     top: roomHeader.outerHeight() + "px"
