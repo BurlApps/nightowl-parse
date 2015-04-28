@@ -18,18 +18,19 @@ body {
 .sidebar .search {
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
-  padding: 15px 15px 15px 40px;
+  padding: 20px 15px 20px 44px;
   outline: none;
   border: none;
   border-bottom: solid 2px #D8BE2B;
   font-size: 18px;
+  font-weight: bold;
 
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 
   background-image: url("/images/user.png");
-  background-position: 12px center;
+  background-position: 15px center;
   background-repeat: no-repeat;
   background-size: 20px 20px;
 
