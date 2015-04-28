@@ -22,8 +22,7 @@ function subscribeChannel() {
   var channel = pusher.subscribe(account + '_chat_room')
 
   channel.bind("message.new", function(data) {
-    console.log(data)
-    window.dataT = data
+    $(".messages .container").text(data.message)
   })
 }
 

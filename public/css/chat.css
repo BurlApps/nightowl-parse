@@ -120,6 +120,7 @@ body {
 
 .rooms .room .header .search {
   width: 30%;
+  min-width: 225px;
   background: #fff;
   padding: 6px 35px;
   outline: none;
