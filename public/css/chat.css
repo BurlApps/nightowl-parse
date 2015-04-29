@@ -59,7 +59,7 @@ body {
 
 .sidebar .user.active {
   background: rgba(255, 255, 255, 1);
-  border-left: solid 5px rgba(0, 0, 0, 0.3);
+  border-left: solid 5px #1D9191;
   padding-left: 10px;
 }
 
@@ -70,6 +70,10 @@ body {
   -o-text-overflow: ellipsis;
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
+}
+
+.sidebar .user.active .name {
+  color: #1D9191;
 }
 
 .sidebar .user .message {

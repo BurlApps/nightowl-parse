@@ -6,9 +6,6 @@ var ChatRoom = function ChatRoom() {
   this.$header = $(".header")
   this.$sidebar = $(".sidebar")
   this.$rooms = $(".rooms")
-  this.$roomContainer = $(".room .container")
-  this.$roomHeader = $(".room .header")
-  this.$roomBottom = $(".room .bottom")
 
   // Variables
   this.room = null
@@ -30,15 +27,18 @@ ChatRoom.prototype.bindEvents = function() {
 }
 
 ChatRoom.prototype.resize = function() {
+  var room = this.room
   var height = this.$window.height() - this.$header.outerHeight()
 
   this.$sidebar.height(height).show()
   this.$rooms.height(height).show()
 
-  this.$roomContainer.css({
-    paddingTop: this.$roomHeader.outerHeight() + "px",
-    paddingBottom: this.$roomBottom.outerHeight() + "px",
-  })
+  if(room) {
+    room.$room.$container.css({
+      paddingTop: room.$room.$header.outerHeight() + "px",
+      paddingBottom: room.$room.$bottom.outerHeight() + "px",
+    })
+  }
 }
 
 ChatRoom.prototype.triggerSearchMessages = function() {
@@ -47,16 +47,11 @@ ChatRoom.prototype.triggerSearchMessages = function() {
 
 ChatRoom.prototype.searchMessages = function() {
   var search = this.room.$room.$search.val()
-  var messages = this.room.$room.find(".message")
+  var override = search.length == 0
 
-  if(search.length == 0) {
-    return messages.show()
-  }
-
-  messages.each(function() {
-    var text = $(this).find(".text").text()
-    var show = text.indexOf(search) != -1
-    $(this).toggle(show)
+  this.room.messages.forEach(function(message) {
+    var show = message.text.indexOf(search) != -1
+    message.$message.toggle(override || show)
   })
 }
 
@@ -107,16 +102,12 @@ ChatRoom.prototype.$getRoom = function(data) {
   room.$search = room.find(".header .search").keyup(this.searchMessages.bind(this))
   room.$messageForm = room.find(".bottom .messageForm").submit(this.createMessage.bind(this))
   room.$scroll = room.find(".messages .scroll")
+  room.$container = room.find(".container")
+  room.$header = room.find(".header")
+  room.$bottom = room.find(".bottom")
 
   return room
 }
-
-ChatRoom.prototype.$update = function() {
-  this.$roomContainer = $(".room .container")
-  this.$roomHeader = $(".room .header")
-  this.$roomBottom = $(".room .bottom")
-}
-
 
 ChatRoom.prototype.getRoom = function(data) {
   if(!(data.user.id in this.rooms)) {
@@ -137,9 +128,10 @@ ChatRoom.prototype.getRoom = function(data) {
         var $scroll = room.$room.$scroll
 
         var messages = response.messages.map(function(message) {
-          var ele = _this.buildMessage(message)
+          var $message = _this.buildMessage(message)
+          message.$message = $message
           room.messages.push(message)
-          return ele
+          return $message
         })
 
         $loading.hide()
@@ -152,7 +144,6 @@ ChatRoom.prototype.getRoom = function(data) {
 
     this.rooms[data.user.id] = room
     this.$rooms.append(room.$room)
-    this.$update()
   }
 
   return this.rooms[data.user.id]
@@ -171,14 +162,15 @@ ChatRoom.prototype.newMessage = function(data) {
   var scroll = room.$room.$scroll
 
   scroll.append(message)
+  data.$message = message
   room.$room.find(".messages").animate({
     scrollTop: scroll.outerHeight()
   }, 500)
   room.messages.push(data)
 
-  if(!this.room) {
+  //if(!this.room) {
     this.activateRoom(room)
-  }
+  //}
 }
 
 ChatRoom.prototype.buildMessage = function(data) {
