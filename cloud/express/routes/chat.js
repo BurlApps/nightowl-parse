@@ -2,8 +2,27 @@ var User = Parse.User
 var Message = Parse.Object.extend("Message")
 
 module.exports.home = function(req, res) {
-  res.renderT("chat/index")
+  res.renderT("chat/index", {
+    config: {
+      room: req.param("user") || null
+    }
+  })
 }
+
+module.exports.room = function(req, res) {
+  var user = new User()
+
+  user.id = req.param("user")
+  user.fetch().then(function() {
+    res.successT({
+      user: {
+        id: user.id,
+        name: user.get("name") || user.get("phone")
+      }
+    })
+  }, res.errorT)
+}
+
 
 module.exports.message = function(req, res) {
   var message = new Message()

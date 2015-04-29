@@ -131,8 +131,10 @@ app.post('/register', routes.auth.registerUser)
 
 // Support Chat
 app.get('/chat', routes.auth.restricted, routes.chat.home)
-app.get('/chat/:user', routes.auth.restricted, routes.chat.messages)
-app.post('/chat/:user', routes.auth.restricted, routes.chat.message)
+app.get('/chat/:user', routes.auth.restricted, routes.chat.home)
+app.get('/chat/:user/room', routes.auth.restricted, routes.chat.room)
+app.get('/chat/:user/messages', routes.auth.restricted, routes.chat.messages)
+app.post('/chat/:user/message', routes.auth.restricted, routes.chat.message)
 
 // Queue
 app.get('/questions', routes.auth.restricted, routes.questions.home)

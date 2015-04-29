@@ -6,7 +6,10 @@
   <div class="clear"></div>
 </div>
 <div class="bottom">
-  <div class="source">Creator: <%= question.source %></div>
+  <div class="source">
+    Creator:
+    <a target="_blank" href="/chat/<%= question.user %>"><%= question.source %></a>
+  </div>
   <div class="actions">
     <button class="good button">
       <span>ANSWER (<%= question.paid %>)</span>

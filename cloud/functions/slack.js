@@ -12,6 +12,11 @@ Parse.Cloud.define("notifySlack", function(req, res) {
     query.equalTo("state", 1)
     return query.count()
   }).then(function(count) {
+    var queueLink = [
+      "<", req.settings.get("host"), "/questions|Answer Questions>"
+    ].join("")
+
+
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackApi"),
       method: "POST",
@@ -19,7 +24,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
       body: JSON.stringify({
         text: [
           "One of our users has posted a new question! There are a total of ",
-          count, " waiting to be claimed."
+          count, " waiting to be claimed. ", queueLink
         ].join(""),
         username: req.settings.get("account") + " - Notify",
         icon_url: req.settings.get("host") + "/images/slack/notify.png"
@@ -55,9 +60,14 @@ Parse.Cloud.define("updateSlack", function(req, res) {
     var action = req.params.action
     action = action.charAt(0).toUpperCase() + action.slice(1)
 
-    var question = [
+    var questionLink = [
       "<", req.settings.get("host"), "/questions/",
       req.question.id, "/peek|", req.question.id, ">"
+    ].join("")
+
+    var userLink = [
+      "<", req.settings.get("host"), "/chat/",
+      user.id, "/|", user.id, ">"
     ].join("")
 
     return Parse.Cloud.httpRequest({
@@ -67,7 +77,7 @@ Parse.Cloud.define("updateSlack", function(req, res) {
       body: JSON.stringify({
         text: [
           req.tutor.get("name"), " (", req.tutor.id, ") just ", req.params.action , " question (",
-          question, ") created by (", user.id, ") from ", (phone ? phone : "the app")
+          questionLink, ") created by (", userLink, ") from ", (phone ? phone : "the app")
         ].join(""),
         username: req.settings.get("account") + " - " + action,
         icon_url: [

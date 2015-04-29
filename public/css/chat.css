@@ -4,7 +4,7 @@ body {
 }
 
 .sidebar {
-  width: 225px;
+  width: 240px;
   float: left;
   border-right: solid 2px rgba(0, 0, 0, 0.1);
   overflow: auto;
@@ -15,7 +15,7 @@ body {
   box-sizing: border-box;
 }
 
-.sidebar .search {
+.sidebar .roomInput {
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
   padding: 20px 15px 20px 44px;
@@ -95,10 +95,10 @@ body {
   float: right;
   display: none;
 
-  width: -moz-calc(100% - 225px);
-  width: -webkit-calc(100% - 225px);
-  width: -o-calc(100% - 225px);
-  width: calc(100% - 225px);
+  width: -moz-calc(100% - 240px);
+  width: -webkit-calc(100% - 240px);
+  width: -o-calc(100% - 240px);
+  width: calc(100% - 240px);
 }
 
 .rooms .room {

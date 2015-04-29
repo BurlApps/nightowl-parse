@@ -1,30 +1,10 @@
 <% include ../includes/start.ejs %>
 <% include ../includes/header.ejs %>
 <div class="sidebar">
-  <input class="search" type="text" placeholder="Search for user..." />
-  <div class="users">
-    <div class="user active">
-      <div class="name">Brian Vallelunga</div>
-      <div class="message">
-        <span class="from">You:</span>
-        <span class="text">This is some super amazing crazy stuff</span>
-      </div>
-    </div>
-    <div class="user">
-      <div class="name">Brian Vallelunga</div>
-      <div class="message">
-        <span class="from">You:</span>
-        <span class="text">This is some super amazing crazy stuff</span>
-      </div>
-    </div>
-    <div class="user">
-      <div class="name">Brian Vallelunga</div>
-      <div class="message">
-        <span class="from">You:</span>
-        <span class="text">This is some super amazing crazy stuff</span>
-      </div>
-    </div>
-  </div>
+  <form class="roomForm">
+    <input class="roomInput" type="text" placeholder="User (ryuWb9GymW)" />
+  </form>
+  <div class="users"></div>
 </div>
 <div class="rooms"></div>
 <% include ../includes/end.ejs %>
