@@ -3,7 +3,7 @@ var _ = require("underscore")
 
 // Require All Migration Functions
 require("cloud/migrations/debugAccount")
-require("cloud/migrations/userFields")
+require("cloud/migrations/userTutor")
 require("cloud/migrations/subjects")
 require("cloud/migrations/messages")
 
@@ -13,7 +13,7 @@ Parse.Cloud.job("runMigration", function(req, res) {
 
   var promise = Parse.Promise.as()
   var migrations = [
-    "DebugAccounts", "UserFields", "Subjects", "Message"
+    "DebugAccounts", "UserTutor", "Subjects", "Message"
   ]
 
   _.each(migrations, function(migration) {

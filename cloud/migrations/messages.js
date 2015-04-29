@@ -13,7 +13,7 @@ Parse.Cloud.define("migrationMessage", function(req, res) {
 
   user.signUp().then(function() {
     mesage.set("text", "")
-    mesage.set("byUser", true)
+    mesage.set("type", 0)
     mesage.set("user", user)
 
     return mesage.save()

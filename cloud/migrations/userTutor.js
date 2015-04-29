@@ -1,7 +1,8 @@
+
 var User = Parse.User
 var Tutor  = Parse.Object.extend("Tutor")
 
-Parse.Cloud.define("migrationUserFields", function(req, res) {
+Parse.Cloud.define("migrationUserTutor", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var user = new User()

@@ -126,11 +126,23 @@ module.exports.peek = function(req, res) {
   }).then(function(user) {
     req.user = user
 
-    return question.get("tutor").fetch()
+    if(question.get("tutor")) {
+      return question.get("tutor").fetch()
+    } else {
+      return null
+    }
   }).then(function(tutor) {
-    return tutor.get("user").fetch()
+    if(tutor) {
+      return tutor.get("user").fetch()
+    } else {
+      return null
+    }
   }).then(function(tutor) {
     var subject = null
+
+    if(!question.get("tutor")) {
+      return res.redirect("/questions/")
+    }
 
     if(question.get("state") == 2 && question.get("tutor").id == req.session.tutor.objectId) {
       req.session.claimed = question.id

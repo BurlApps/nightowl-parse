@@ -7,21 +7,27 @@ Parse.Cloud.define("notifyChatRoom", function(req, res) {
   Settings().then(function(settings) {
     req.settings = settings
 
-    var message = new Message()
-    message.id = req.params.message
+    req.message = new Message()
+    req.message.id = req.params.message
 
-    return message.fetch()
+    return req.message.fetch()
   }).then(function(message) {
+    return message.get("user").fetch()
+  }).then(function(user) {
     var now = new Date()
     var timestamp = parseInt(now.getTime() / 1000, 10)
     var account = req.settings.get("account").replace(/: /g, "_").toLowerCase()
 
     var data = JSON.stringify({
       data: JSON.stringify({
-        message: message.get("text"),
-        user: message.get("user").id,
-        byUser: message.get("byUser"),
-        created: message.createdAt
+        id: req.message.id,
+        text: req.message.get("text"),
+        user: {
+          id: user.id,
+          name: user.get("name") || user.get("phone")
+        },
+        type: req.message.get("type"),
+        created: req.message.createdAt
       }),
       name: "message.new",
       channel: account + "_chat_room"

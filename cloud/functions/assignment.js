@@ -1,5 +1,6 @@
 var User = Parse.User
 var Assignment = Parse.Object.extend("Assignment")
+var Message = Parse.Object.extend("Message")
 var Settings = require("cloud/utils/settings")
 
 Parse.Cloud.define("assignmentActivate", function(req, res) {
@@ -98,7 +99,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
   	  })
     }
   }).then(function() {
-    res.success("Successfully send push notification")
+    res.success("Successfully sent push notification")
   }, function(error) {
     console.error(error)
     res.error(error.message)
