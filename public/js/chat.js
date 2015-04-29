@@ -197,7 +197,7 @@ ChatRoom.prototype.buildMessage = function(data) {
     message.addClass("support")
     message.find(".name").text("Support Team")
   } else if(data.type == 2) {
-    message.find(".name").text(data.user.name || "User")
+    message.find(".name").text("User")
   }
 
   if(room.messages.length > 0) {

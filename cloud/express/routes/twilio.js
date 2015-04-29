@@ -1,6 +1,7 @@
 var User = Parse.User
 var Image = require("parse-image")
 var Assignment = Parse.Object.extend("Assignment")
+var Message = Parse.Object.extend("Message")
 var Settings = require("cloud/utils/settings")
 
 module.exports.auth = function(req, res, next) {
@@ -19,12 +20,14 @@ module.exports.user = function(req, res, next) {
   var from = req.param("From")
 
   req.user = null
+  req.newUser = false
 
   query.equalTo("phone", from)
   query.first().then(function(user) {
     if(user) return user
 
     user = new User()
+    req.newUser = true
 
     user.set("username", from)
     user.set("password", from)
@@ -44,38 +47,39 @@ module.exports.handler = function(req, res, next) {
   req.activateQuestion = !(req.user.get("freeQuestions") == 0 && !req.user.get("card"))
 
   if(numMedia == 0 || mediaType.split("/")[0] != "image") {
-    return Parse.Cloud.run("twilioMessage", {
-      "To": req.settings.get("twilioSupport"),
-      "Body": [
-        "From: ", req.user.get("phone"), "\n",
-        "Message: ", req.message
-      ].join("")
-    }).then(function() {
-      module.exports.render(req, res, "twilio/guide")
+    var message = new Message()
+
+    message.set("user", req.user)
+    message.set("type", 2)
+    message.set("text", req.message)
+
+    message.save().then(function() {
+      var template = (req.newUser) ? "guide" : "empty"
+      module.exports.render(req, res, "twilio/" + template)
     })
+  } else {
+    Parse.Cloud.httpRequest({
+  		url: mediaUrl,
+  		method: "GET",
+  		followRedirects: true
+  	}).then(function(response) {
+  	  var image = new Image()
+  	  return image.setData(response.buffer)
+  	}).then(function(image) {
+  	  return image.data()
+  	}).then(function(buffer) {
+  		var extension = mediaType.split("/")[1]
+
+  	  var file = new Parse.File("image." + extension, {
+  			base64: buffer.toString("base64")
+  		})
+
+  	  return file.save()
+  	}).then(function(image) {
+      req.media = image
+  		module.exports.newQuestion(req, res, next)
+  	})
   }
-
-  Parse.Cloud.httpRequest({
-		url: mediaUrl,
-		method: "GET",
-		followRedirects: true
-	}).then(function(response) {
-	  var image = new Image()
-	  return image.setData(response.buffer)
-	}).then(function(image) {
-	  return image.data()
-	}).then(function(buffer) {
-		var extension = mediaType.split("/")[1]
-
-	  var file = new Parse.File("image." + extension, {
-			base64: buffer.toString("base64")
-		})
-
-	  return file.save()
-	}).then(function(image) {
-    req.media = image
-		module.exports.newQuestion(req, res, next)
-	})
 }
 
 module.exports.newQuestion = function(req, res, next) {

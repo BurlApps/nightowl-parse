@@ -40,14 +40,14 @@ body > .header .navigation .link:hover {
   }
 
   body > .header .navigation .link:first-child {
-    float: left;
+    display: none;
   }
 
   body > .header .navigation .link:nth-child(2) {
-    float: right;
+    float: left;
   }
 
   body > .header .navigation .link:last-child {
-    display: none;
+    float: right;
   }
 }

@@ -7,18 +7,27 @@ Parse.Cloud.define("messagePush", function(req, res) {
   message.id = req.params.message
 
   message.fetch().then(function() {
-    var pushQuery = new Parse.Query(Parse.Installation)
-    pushQuery.equalTo("user", message.get("user"))
+    return message.get("user").fetch()
+  }).then(function(user) {
+    if(user.get("phone")) {
+      return Parse.Cloud.run("twilioMessage", {
+        "To": user.get("phone"),
+        "Body": message.get("text")
+      })
+    } else {
+      var pushQuery = new Parse.Query(Parse.Installation)
+      pushQuery.equalTo("user", user)
 
-    return Parse.Push.send({
-  	  where: pushQuery,
-  	  data: {
-        action: "support.message",
-        sound: "alert.caf",
-        message: message.get("text"),
-        alert: "Support: " + message.get("text")
-      }
-	  })
+      return Parse.Push.send({
+    	  where: pushQuery,
+    	  data: {
+          action: "support.message",
+          sound: "alert.caf",
+          message: message.get("text"),
+          alert: "Support: " + message.get("text")
+        }
+  	  })
+    }
   }).then(function() {
     res.success("Successfully sent push notification")
   }, function(error) {

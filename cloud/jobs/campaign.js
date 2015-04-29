@@ -6,7 +6,7 @@ Parse.Cloud.job("zeroFreeCampaign", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var today = new Date()
-  if(today.getDay() != 4) return res.success()
+  if(today.getDay() != 3) return res.success()
 
   Settings().then(function(settings) {
     var query = new Parse.Query(User)
