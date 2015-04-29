@@ -1,26 +1,38 @@
 var User = Parse.User
 var Message  = Parse.Object.extend("Message")
+var Conversation = Parse.Object.extend("Conversation")
 
 Parse.Cloud.define("migrationMessage", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var user = new User()
-  var mesage = new Message()
+  var message = new Message()
+  var conversation = new Conversation()
   var random = Math.random().toString(36).slice(2)
 
   user.set("username", random)
   user.set("password", random)
 
   user.signUp().then(function() {
-    mesage.set("text", "")
-    mesage.set("type", 0)
-    mesage.set("user", user)
+    message.set("text", "")
+    message.set("type", 0)
+    message.set("user", user)
 
-    return mesage.save()
+    return message.save()
   }).then(function() {
-    return mesage.destroy()
+    var messages = conversation.relation("messages")
+
+    conversation.set("user", user)
+    conversation.set("unread", true)
+    messages.add(message)
+
+    return conversation.save()
+  }).then(function() {
+    return message.destroy()
   }).then(function() {
     return user.destroy()
+  }).then(function() {
+    return conversation.destroy()
   }).then(function() {
     res.success("Successfully added message class")
   }, function(error) {

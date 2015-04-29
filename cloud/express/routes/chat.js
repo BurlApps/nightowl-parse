@@ -1,5 +1,6 @@
 var User = Parse.User
 var Message = Parse.Object.extend("Message")
+var Moment = require("moment")
 
 module.exports.home = function(req, res) {
   res.renderT("chat/index", {
@@ -46,6 +47,7 @@ module.exports.messages = function(req, res) {
   var query = new Parse.Query(Message)
   var user = new User()
   var messages = []
+  var now = new Date()
 
   user.id = req.param("user")
   user.fetch().then(function() {
@@ -60,7 +62,8 @@ module.exports.messages = function(req, res) {
           name: user.get("name") || user.get("phone")
         },
         type: message.get("type"),
-        created: message.createdAt
+        created: message.createdAt,
+        duration: Moment.duration(message.createdAt - now).humanize(true)
       })
     })
   }).then(function() {

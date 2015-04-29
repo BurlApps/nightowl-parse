@@ -1,4 +1,5 @@
 var Message = Parse.Object.extend("Message")
+var Conversation = Parse.Object.extend("Conversation")
 
 Parse.Cloud.define("messagePush", function(req, res) {
   Parse.Cloud.useMasterKey()
@@ -30,6 +31,37 @@ Parse.Cloud.define("messagePush", function(req, res) {
     }
   }).then(function() {
     res.success("Successfully sent push notification")
+  }, function(error) {
+    console.error(error)
+    res.error(error.message)
+  })
+})
+
+Parse.Cloud.define("messageConversation", function(req, res) {
+  Parse.Cloud.useMasterKey()
+
+  var message = new Message()
+  message.id = req.params.message
+
+  message.fetch().then(function() {
+    var query = new Parse.Query(Conversation)
+
+    query.equalTo("user", message.get("user"))
+    return query.first()
+  }).then(function(conversation) {
+    if(conversation) return conversation
+
+    conversation = new Conversation()
+    conversation.set("user", message.get("user"))
+    conversation.set("unread", true)
+    conversation.save()
+  }).then(function(conversation) {
+    var messages = conversation.relation("messages")
+    messages.add(message)
+
+    return conversation.save()
+  }).then(function() {
+    res.success("Successfully updated conversation")
   }, function(error) {
     console.error(error)
     res.error(error.message)

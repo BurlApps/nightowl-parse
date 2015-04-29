@@ -9,4 +9,8 @@ Parse.Cloud.afterSave("Message", function(req, res) {
   if(message.get("type") == 1) {
     Parse.Cloud.run("messagePush", data)
   }
+
+  if(message.existed()) return
+
+  Parse.Cloud.run("messageConversation", data)
 })
