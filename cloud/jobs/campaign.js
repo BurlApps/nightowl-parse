@@ -12,6 +12,7 @@ Parse.Cloud.job("zeroFreeCampaign", function(req, res) {
     var query = new Parse.Query(User)
 
     query.exists("phone")
+    query.notEqualTo("unsubscribe", true)
     query.doesNotExist("card")
     query.equalTo("freeQuestions", 0)
 
@@ -19,7 +20,7 @@ Parse.Cloud.job("zeroFreeCampaign", function(req, res) {
       return Parse.Cloud.run("twilioMessage", {
         "Body": [
           "Hey Night Owl here :) Get 3 free questions if you enter payment info at: ",
-          settings.get("host"), "/user/", user.id, "/card"
+          settings.get("host"), "/user/", user.id, "/card. Unsubscribe by replying: UNSUBSCRIBE"
         ].join(""),
         "To": user.get("phone")
       })
@@ -42,9 +43,11 @@ Parse.Cloud.job("oneFreeCampaign", function(req, res) {
 
   query.exists("phone")
   query.equalTo("freeQuestions", 1)
+  query.notEqualTo("unsubscribe", true)
+
   query.each(function(user) {
     return Parse.Cloud.run("twilioMessage", {
-      "Body": "Hey Night Owl here :) just a reminder, you still have 1 free question w/ us!",
+      "Body": "Hey Night Owl here :) just a reminder, you still have 1 free question w/ us! Unsubscribe by replying: UNSUBSCRIBE",
       "To": user.get("phone")
     })
   }).then(function() {
@@ -67,9 +70,11 @@ Parse.Cloud.job("twoFreeNewCampaign", function(req, res) {
   query.doesNotMatchKeyInQuery("objectId", "creator", questionQuery)
   query.exists("phone")
   query.greaterThanOrEqualTo("freeQuestions", 2)
+  query.notEqualTo("unsubscribe", true)
+
   query.each(function(user) {
     return Parse.Cloud.run("twilioMessage", {
-      "Body": "Hey Night Owl here :) You should send in a question! Check us out.",
+      "Body": "Hey Night Owl here :) You should send in a question! Check us out. Unsubscribe by replying: UNSUBSCRIBE",
       "To": user.get("phone")
     })
   }).then(function() {

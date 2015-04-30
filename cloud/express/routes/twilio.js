@@ -47,16 +47,23 @@ module.exports.handler = function(req, res, next) {
   req.activateQuestion = !(req.user.get("freeQuestions") == 0 && !req.user.get("card"))
 
   if(numMedia == 0 || mediaType.split("/")[0] != "image") {
-    var message = new Message()
+    if(req.message.toLowerCase().trim() == "unsubscribe") {
+      req.user.set("unsubscribe", true)
+      req.user.save().then(function() {
+        module.exports.render(req, res, "twilio/unsubscribe")
+      })
+    } else {
+      var message = new Message()
 
-    message.set("user", req.user)
-    message.set("type", 2)
-    message.set("text", req.message)
+      message.set("user", req.user)
+      message.set("type", 2)
+      message.set("text", req.message)
 
-    message.save().then(function() {
-      var template = (req.newUser) ? "guide" : "empty"
-      module.exports.render(req, res, "twilio/" + template)
-    })
+      message.save().then(function() {
+        var template = (req.newUser) ? "guide" : "empty"
+        module.exports.render(req, res, "twilio/" + template)
+      })
+    }
   } else {
     Parse.Cloud.httpRequest({
   		url: mediaUrl,

@@ -11,6 +11,7 @@ Parse.Cloud.beforeSave(Parse.User, function(req, res) {
 
     user.set("tutoring", !!user.get("tutoring"))
     user.set("tutorEmail", !!user.get("tutorEmail"))
+    user.set("unsubscribe", !!user.get("unsubscribe"))
   }).then(function() {
     res.success()
   }, function(error) {
