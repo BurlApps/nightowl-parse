@@ -37,7 +37,7 @@ Parse.Cloud.job("oneFreeCampaign", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var today = new Date()
-  if(today.getDay() != 4) return res.success()
+  if(today.getDay() != 3) return res.success()
 
   var query = new Parse.Query(User)
 
@@ -60,7 +60,7 @@ Parse.Cloud.job("twoFreeNewCampaign", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   var today = new Date()
-  if(today.getDay() != 4) return res.success()
+  if(today.getDay() != 3) return res.success()
 
   var query = new Parse.Query(User)
   var questionQuery = new Parse.Query(Assignment)

@@ -22,6 +22,7 @@ var ChatRoom = function ChatRoom() {
 ChatRoom.prototype.init = function() {
   this.resize()
   this.bindEvents()
+  this.loadRooms()
 }
 
 ChatRoom.prototype.bindEvents = function() {
@@ -72,7 +73,7 @@ ChatRoom.prototype.createMessage = function(e) {
     text: this.room.$room.find(".messenger").val()
   }, function(response) {
     if(!response.success) {
-      alert(response.message)
+      console.error(response.message)
     }
   })
 
@@ -160,7 +161,8 @@ ChatRoom.prototype.loadMessages = function(room) {
 
   $.get("/chat/" + room.user.id + "/messages", function(response) {
     if(!response.success) {
-      alert(response.message)
+      _this.removeRoom(room)
+      console.error(response.message)
     } else {
       room.messages = []
       var $scroll = room.$room.$scroll
@@ -207,6 +209,18 @@ ChatRoom.prototype.getRoom = function(data) {
   return this.rooms[data.user.id]
 }
 
+ChatRoom.prototype.loadRooms = function() {
+  var _this = this
+
+  $.get("/chat/rooms", function(response) {
+    if(!response.success) {
+      console.error(response.message)
+    } else {
+      response.rooms.forEach(_this.getRoom.bind(_this))
+    }
+  })
+}
+
 ChatRoom.prototype.newRoom = function(e) {
   e.preventDefault()
   e.stopPropagation()
@@ -217,6 +231,14 @@ ChatRoom.prototype.newRoom = function(e) {
     this.setRoom(user)
     this.$roomInput.val("")
   }
+}
+
+ChatRoom.prototype.removeRoom = function(room) {
+  room.$room.remove()
+  room.$bar.remove()
+
+  delete this.rooms[room.id]
+  history.pushState(null, null, "/chat")
 }
 
 ChatRoom.prototype.setRoom = function(user) {
@@ -231,7 +253,8 @@ ChatRoom.prototype.setRoom = function(user) {
     if(!room.loaded.bar) {
       $.get("/chat/" + room.user.id + "/room", function(response) {
         if(!response.success) {
-          alert(response.message)
+          _this.removeRoom(room)
+          console.error(response.message)
         } else {
           room.user = response.user
 
@@ -259,7 +282,7 @@ ChatRoom.prototype.activateRoom = function(room) {
   this.resize()
   room.$bar.addClass("active")
   room.$room.$messages.scrollTop(room.$room.$scroll.outerHeight())
-  history.pushState(null, null, "/chat/" + room.id);
+  history.pushState(null, null, "/chat/" + room.id)
 }
 
 ChatRoom.prototype.newMessage = function(data) {

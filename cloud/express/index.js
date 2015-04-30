@@ -131,6 +131,7 @@ app.post('/register', routes.auth.registerUser)
 
 // Support Chat
 app.get('/chat', routes.auth.restricted, routes.chat.home)
+app.get('/chat/rooms', routes.auth.restricted, routes.chat.rooms)
 app.get('/chat/:user', routes.auth.restricted, routes.chat.home)
 app.get('/chat/:user/room', routes.auth.restricted, routes.chat.room)
 app.get('/chat/:user/messages', routes.auth.restricted, routes.chat.messages)

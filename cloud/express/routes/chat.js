@@ -1,5 +1,6 @@
 var User = Parse.User
 var Message = Parse.Object.extend("Message")
+var Conversation = Parse.Object.extend("Conversation")
 var Moment = require("moment")
 
 module.exports.home = function(req, res) {
@@ -24,6 +25,28 @@ module.exports.room = function(req, res) {
   }, res.errorT)
 }
 
+module.exports.rooms = function(req, res) {
+  var query = new Parse.Query(Conversation)
+  var rooms = []
+
+  query.each(function(conversation) {
+    return conversation.get("user").fetch().then(function(user) {
+      return rooms.push({
+        user: {
+          id: user.id,
+          name: user.get("name") || user.get("phone")
+        },
+        created: conversation.createdAt
+      })
+    })
+  }).then(function() {
+    res.successT({
+      rooms: rooms.sort(function(a, b) {
+        return a.created - b.created
+      })
+    })
+  }, res.errorT)
+}
 
 module.exports.message = function(req, res) {
   var message = new Message()
