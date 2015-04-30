@@ -217,6 +217,10 @@ body {
   font-size: 16px;
 }
 
+.rooms .room .messages .message:first-child {
+  margin-top: 0;
+}
+
 .rooms .room .messages .message .name {
   margin-bottom: 10px;
   font-weight: bold;

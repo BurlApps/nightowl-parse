@@ -8,9 +8,10 @@ module.exports.card = function(req, res, next) {
   query.equalTo("objectId", req.param("user"))
   query.first().then(function(user) {
     if(user) {
-      Parse.Analytics.track('userCard').then(function() {
+      Parse.Analytics.track('userCard', {
+        user: user.id
+      }).then(function() {
         res.renderT('user/card', {
-          notification: null,
           config: {
             user: user.id
           },
