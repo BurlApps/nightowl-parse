@@ -147,6 +147,7 @@ ChatRoom.prototype.$buildRoom = function(data) {
   room.$container = room.find(".container")
   room.$header = room.find(".header")
   room.$bottom = room.find(".bottom")
+  room.hide()
 
   return room
 }
@@ -216,7 +217,13 @@ ChatRoom.prototype.loadRooms = function() {
     if(!response.success) {
       console.error(response.message)
     } else {
-      response.rooms.forEach(_this.getRoom.bind(_this))
+      response.rooms.forEach(function(data, i) {
+        var room = _this.getRoom(data)
+
+        if(i == 0) {
+          _this.activateRoom(room)
+        }
+      })
     }
   })
 }

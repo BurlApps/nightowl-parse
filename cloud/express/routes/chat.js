@@ -36,13 +36,18 @@ module.exports.rooms = function(req, res) {
           id: user.id,
           name: user.get("name") || user.get("phone")
         },
+        unread: conversation.get("unread"),
         created: conversation.createdAt
       })
     })
   }).then(function() {
     res.successT({
       rooms: rooms.sort(function(a, b) {
-        return a.created - b.created
+        if(a.unread == b.unread) {
+          return a.created - b.created
+        } else {
+          return b.unread - a.unread
+        }
       })
     })
   }, res.errorT)
