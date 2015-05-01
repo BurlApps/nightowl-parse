@@ -51,6 +51,8 @@ ChatRoom.prototype.resize = function() {
   this.$rooms.height(height).show()
 
   if(room) {
+    this.updateBlock(room)
+
     room.$room.$container.css({
       paddingTop: room.$room.$header.outerHeight() + "px",
       paddingBottom: room.$room.$bottom.outerHeight() + "px",
@@ -140,8 +142,9 @@ ChatRoom.prototype.$buildRoom = function(data) {
         <div class="clear"></div>                                                   \
       </div>                                                                        \
       <div class="container">                                                       \
-        <div class="messages">                                                      \
-          <div class="scroll"></div>                                                \
+        <div class="scroll">                                                        \
+          <div class="block"></div>                                                 \
+          <div class="messages"></div>                                              \
         </div>                                                                      \
       </div>                                                                        \
       <div class="bottom">                                                          \
@@ -157,7 +160,8 @@ ChatRoom.prototype.$buildRoom = function(data) {
   room.$messageForm = room.find(".bottom .messageForm").submit(this.createMessage.bind(this))
   room.$messenger = room.find(".bottom .messenger").focus(this.messengerFocus.bind(this))
   room.$messages = room.find(".messages")
-  room.$scroll = room.find(".messages .scroll")
+  room.$scroll = room.find(".scroll")
+  room.$block = room.find(".block")
   room.$container = room.find(".container")
   room.$header = room.find(".header")
   room.$bottom = room.find(".bottom")
@@ -170,6 +174,14 @@ ChatRoom.prototype.updateRoom = function(room) {
   room.$room.$name.text(room.user.name || room.user.id)
 }
 
+ChatRoom.prototype.updateBlock = function(room) {
+  var $container = room.$room.$container
+  var $messages = room.$room.$messages
+  var height = $container.height() - $messages.height()
+
+  room.$room.$block.height(Math.max(height, 0) + "px")
+}
+
 ChatRoom.prototype.loadMessages = function(room) {
   var _this = this
   var $loading = room.$room.find(".loading").show()
@@ -180,6 +192,7 @@ ChatRoom.prototype.loadMessages = function(room) {
       console.error(response.message)
     } else {
       room.messages = []
+      var $messages = room.$room.$messages
       var $scroll = room.$room.$scroll
 
       var messages = response.messages.map(function(message) {
@@ -190,12 +203,13 @@ ChatRoom.prototype.loadMessages = function(room) {
       })
 
       $loading.hide()
-      $scroll.html(messages)
+      $messages.html(messages)
       room.loaded.messages = true
 
       _this.updateBar(room)
 
       setTimeout(function() {
+        _this.updateBlock(room)
         room.$room.$messages.scrollTop($scroll.outerHeight())
       }, 100)
     }
@@ -216,7 +230,8 @@ ChatRoom.prototype.getRoom = function(data) {
         messages: false,
         bar: false
       },
-      unread: data.unread || false
+      unread: data.unread || false,
+      updated: data.updated || data.created
     }
 
     this.rooms[data.user.id] = room
@@ -234,6 +249,8 @@ ChatRoom.prototype.getRoom = function(data) {
     room.user.name = data.user.name
   }
 
+  room.updated = data.updated || data.created
+
   this.updateBar(room)
   return room
 }
@@ -247,7 +264,7 @@ ChatRoom.prototype.loadRooms = function() {
     } else {
       response.rooms.sort(function(a, b) {
         if(a.unread == b.unread) {
-          return a.updated - b.updated
+          return b.updated - a.updated
         } else {
           return b.unread - a.unread
         }
@@ -274,7 +291,7 @@ ChatRoom.prototype.sortRooms = function() {
 
   rooms.sort(function(a, b) {
     if(a.unread == b.unread) {
-      return a.updated - b.updated
+      return b.updated - a.updated
     } else {
       return b.unread - a.unread
     }
@@ -341,14 +358,16 @@ ChatRoom.prototype.messengerFocus = function() {
 }
 
 ChatRoom.prototype.markRead = function(room) {
+  if(room.unread) {
+    $.post("/chat/" + room.id + "/read", {
+      _csrf: config.csrf
+    })
+  }
+
   room.unread = false
 
   this.updateBar(room)
   this.sortRooms()
-
-  $.post("/chat/" + room.id + "/read", {
-    _csrf: config.csrf
-  })
 }
 
 ChatRoom.prototype.activateRoom = function(room) {
@@ -363,32 +382,39 @@ ChatRoom.prototype.activateRoom = function(room) {
 
   this.resize()
   this.markRead(room)
+  this.updateBlock(room)
   room.$bar.addClass("active")
-  room.$room.$messages.scrollTop(room.$room.$scroll.outerHeight())
+  room.$room.$container.scrollTop(room.$room.$scroll.outerHeight())
   history.pushState(null, null, "/chat/" + room.id)
 }
 
 ChatRoom.prototype.readMessage = function(data) {
   var room = this.getRoom(data)
 
-  this.updateBar(room)
-  this.sortRooms()
+  if(this.room.id == room.id && room.unread) {
+    this.markRead(room)
+  } else {
+    this.updateBar(room)
+    this.sortRooms()
+  }
 }
 
 ChatRoom.prototype.newMessage = function(data) {
   var room = this.getRoom(data)
   var $message = this.buildMessage(data)
+  var $messages = room.$room.$messages
   var $scroll = room.$room.$scroll
 
   data.$message = $message
   room.messages.push(data)
 
-  $scroll.append($message)
+  $messages.append($message)
 
   this.updateBar(room)
+  this.updateBlock(room)
 
   setTimeout(function() {
-    room.$room.$messages.animate({
+    room.$room.$container.animate({
       scrollTop: $scroll.outerHeight()
     }, 500)
   }, 100)

@@ -27,7 +27,7 @@ Parse.Cloud.define("messagePusher", function(req, res) {
       channel: "chat_room"
     })
   }).then(function(data) {
-    res.success("Notified Chat Room")
+    res.success("Notified Chat Room: Message")
   }, function(error) {
     console.error(error)
     res.error(error.message)
@@ -51,7 +51,7 @@ Parse.Cloud.define("conversationPusher", function(req, res) {
       channel: "chat_room"
     })
   }).then(function(data) {
-    res.success("Notified Chat Room")
+    res.success("Notified Chat Room: Read")
   }, function(error) {
     console.error(error)
     res.error(error.message)
