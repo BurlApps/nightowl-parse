@@ -11,6 +11,7 @@ var ChatRoom = function ChatRoom() {
   this.$rooms = $(".rooms")
 
   // Variables
+  this.focus = true
   this.room = null
   this.rooms = {}
   this.channel = pusher.subscribe(account + '_chat_room')
@@ -23,6 +24,8 @@ ChatRoom.prototype.init = function() {
   this.resize()
   this.bindEvents()
   this.loadRooms()
+
+  Notification.requestPermission()
 }
 
 ChatRoom.prototype.bindEvents = function() {
@@ -32,6 +35,12 @@ ChatRoom.prototype.bindEvents = function() {
   this.channel.bind("message.new", this.newMessage.bind(this))
   this.channel.bind("message.read", this.readMessage.bind(this))
   this.$roomForm.submit(this.newRoom.bind(this))
+
+  this.$window.focus(function() {
+    _this.focus = true
+  }).blur(function() {
+    _this.focus = false
+  })
 }
 
 ChatRoom.prototype.resize = function() {
@@ -368,13 +377,13 @@ ChatRoom.prototype.readMessage = function(data) {
 
 ChatRoom.prototype.newMessage = function(data) {
   var room = this.getRoom(data)
-  var message = this.buildMessage(data)
+  var $message = this.buildMessage(data)
   var $scroll = room.$room.$scroll
 
-  data.$message = message
+  data.$message = $message
   room.messages.push(data)
 
-  $scroll.append(message)
+  $scroll.append($message)
 
   this.updateBar(room)
 
@@ -383,6 +392,10 @@ ChatRoom.prototype.newMessage = function(data) {
       scrollTop: $scroll.outerHeight()
     }, 500)
   }, 100)
+
+  if(!this.focus) {
+    this.notify(data, room)
+  }
 }
 
 ChatRoom.prototype.buildMessage = function(data) {
@@ -413,6 +426,31 @@ ChatRoom.prototype.buildMessage = function(data) {
   }
 
   return message
+}
+
+ChatRoom.prototype.notify = function(message, room) {
+  var _this = this
+
+  if(!("Notification" in window)) {
+    console.error("This browser does not support desktop notification");
+
+  } else if(Notification.permission === "granted") {
+    _this.createNotification(message, room)
+  }
+}
+
+ChatRoom.prototype.createNotification = function(message, room) {
+  var _this = this
+  var title = (message.user.name || message.user.id) + " wrote:"
+  var notification = new Notification(title, {
+    icon: config.host + "/images/logo.png",
+    body: message.text
+  })
+
+  notification.onclick = function() {
+    window.focus()
+    _this.activateRoom(room)
+  }
 }
 
 // Initalization
