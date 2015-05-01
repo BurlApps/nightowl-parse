@@ -2,6 +2,7 @@
 $(function() {
   getQuestions()
   setInterval(getQuestions, 30000)
+  $(".flagModal .background").click(cancelFlag)
 })
 
 // Util Methods
@@ -40,9 +41,22 @@ function buildQuestion(data) {
   }
 
   question.find(".good").attr("href", "/questions/" + data.id + "/claim")
-  question.find(".bad").attr("href", "/questions/" + data.id + "/flag")
   question.find(".delete").attr("href", "/questions/" + data.id + "/delete")
+  question.find(".bad").attr("href", "#").click(flagQuestion)
   return question
+}
+
+function flagQuestion() {
+  var id = $(this).parents(".question").data("question")
+
+  $(".flagModal .good").click(cancelFlag)
+  $(".flagModal .blurry").attr("href", "/questions/" + id + "/flag/7")
+  $(".flagModal .many").attr("href", "/questions/" + id + "/flag/8")
+  $(".flagModal").fadeIn(500)
+}
+
+function cancelFlag() {
+  $(".flagModal").fadeOut(500)
 }
 
 function getQuestions() {

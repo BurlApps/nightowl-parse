@@ -142,7 +142,7 @@ module.exports.peek = function(req, res) {
     var subject = null
 
     if(!question.get("tutor")) {
-      return res.redirect("/questions/")
+      return res.redirect("/questions")
     }
 
     if(question.get("state") == 2 && question.get("tutor").id == req.session.tutor.objectId) {
@@ -217,7 +217,7 @@ module.exports.claim = function(req, res) {
     res.redirect("/questions/" + question.id)
   }, function(error) {
     console.error(error)
-    res.redirect("/questions/")
+    res.redirect("/questions")
   })
 }
 
@@ -265,16 +265,21 @@ module.exports.delete = function(req, res) {
     question.save()
   }).then(function() {
     req.session.claimed = null
-    res.redirect("/questions/")
+    res.redirect("/questions")
   }, function(error) {
     console.error(error)
-    res.redirect("/questions/")
+    res.redirect("/questions")
   })
 }
 
 module.exports.flag = function(req, res) {
   var tutor = new Tutor()
   var question = new Assignment()
+  var state = parseInt(req.param("state"))
+
+  if([7, 8].indexOf(state) == -1) {
+    return res.redirect("/questions")
+  }
 
   question.id = req.param("question")
   tutor.id = req.session.tutor.objectId
@@ -286,7 +291,7 @@ module.exports.flag = function(req, res) {
     return creator.save()
   }).then(function(creator) {
     return Parse.Cloud.httpRequest({
-  		url: req.host + "/images/flag.png"
+  		url: req.host + "/images/flagged/" + state + ".png"
   	})
   }).then(function(response) {
 	  var image = new Image()
@@ -300,15 +305,15 @@ module.exports.flag = function(req, res) {
 
 	  return file.save()
 	}).then(function(image) {
-  	question.set("state", 7)
+  	question.set("state", state)
 		question.set("answer", image)
 		question.set("tutor", tutor)
 		return question.save()
 	}).then(function() {
-    res.redirect("/questions/")
+    res.redirect("/questions")
 	}, function(error) {
   	console.error(error)
-    res.redirect("/questions/")
+    res.redirect("/questions")
   })
 }
 
@@ -326,9 +331,9 @@ module.exports.unclaim = function(req, res) {
     return question.save()
   }).then(function() {
     req.session.claimed = null
-    res.redirect("/questions/")
+    res.redirect("/questions")
   }, function(error) {
     console.error(error)
-    res.redirect("/questions/")
+    res.redirect("/questions")
   })
 }

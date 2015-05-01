@@ -2,7 +2,7 @@ var Mailgun = require('mailgun')
 var Assignment = Parse.Object.extend("Assignment")
 var Settings = require('cloud/utils/settings')
 
-Parse.Cloud.define("notifySlack", function(req, res) {
+Parse.Cloud.define("newAssignmentSlack", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   Settings().then(function(settings) {
@@ -18,7 +18,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
 
 
     return Parse.Cloud.httpRequest({
-      url: req.settings.get("slackApi"),
+      url: req.settings.get("slackQuestions"),
       method: "POST",
       followRedirects: true,
       body: JSON.stringify({
@@ -38,7 +38,7 @@ Parse.Cloud.define("notifySlack", function(req, res) {
   })
 })
 
-Parse.Cloud.define("updateSlack", function(req, res) {
+Parse.Cloud.define("updateAssignmentSlack", function(req, res) {
   Parse.Cloud.useMasterKey()
 
   Settings().then(function(settings) {
@@ -71,7 +71,7 @@ Parse.Cloud.define("updateSlack", function(req, res) {
     ].join("")
 
     return Parse.Cloud.httpRequest({
-      url: req.settings.get("slackApi"),
+      url: req.settings.get("slackQuestions"),
       method: "POST",
       followRedirects: true,
       body: JSON.stringify({

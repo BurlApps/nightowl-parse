@@ -30,6 +30,7 @@ ChatRoom.prototype.bindEvents = function() {
 
   this.$window.resize(this.resize.bind(this))
   this.channel.bind("message.new", this.newMessage.bind(this))
+  this.channel.bind("message.read", this.readMessage.bind(this))
   this.$roomForm.submit(this.newRoom.bind(this))
 }
 
@@ -89,12 +90,15 @@ ChatRoom.prototype.$buildBar = function(data) {
         <span class="from"></span> \
         <span class="text"></span> \
       </div>                       \
+      <div class="dot"></div>      \
     </div>                         \
   ')
 
   bar.$name = bar.find(".name").text(data.user.name || data.user.id)
   bar.$from = bar.find(".from")
   bar.$text = bar.find(".text")
+  bar.$dot  = bar.find(".dot").toggle(data.unread)
+
   bar.click(function() {
     _this.activateRoom(_this.getRoom(data))
   })
@@ -104,16 +108,16 @@ ChatRoom.prototype.$buildBar = function(data) {
 
 ChatRoom.prototype.updateBar = function(room) {
   var messagesLength = room.messages.length
-  var $bar = room.$bar
 
-  $bar.$name = $bar.$name.text(room.user.name || room.user.id)
+  room.$bar.$name.text(room.user.name || room.user.id)
+  room.$bar.find(".dot").toggle(room.unread)
 
   if(messagesLength > 0) {
     var message = room.messages[messagesLength - 1]
     var from = (message.type == 1) ? "You" : "User"
 
-    $bar.$from.text(from + ":")
-    $bar.$text.text(message.text)
+    room.$bar.$from.text(from + ":")
+    room.$bar.$text.text(message.text)
   }
 }
 
@@ -142,6 +146,7 @@ ChatRoom.prototype.$buildRoom = function(data) {
   room.$name = room.find(".header .name").text(data.user.name || data.user.id)
   room.$search = room.find(".header .search").keyup(this.searchMessages.bind(this))
   room.$messageForm = room.find(".bottom .messageForm").submit(this.createMessage.bind(this))
+  room.$messenger = room.find(".bottom .messenger").focus(this.messengerFocus.bind(this))
   room.$messages = room.find(".messages")
   room.$scroll = room.find(".messages .scroll")
   room.$container = room.find(".container")
@@ -160,7 +165,7 @@ ChatRoom.prototype.loadMessages = function(room) {
   var _this = this
   var $loading = room.$room.find(".loading").show()
 
-  $.get("/chat/" + room.user.id + "/messages", function(response) {
+  $.get("/chat/" + room.id + "/messages", function(response) {
     if(!response.success) {
       _this.removeRoom(room)
       console.error(response.message)
@@ -189,8 +194,10 @@ ChatRoom.prototype.loadMessages = function(room) {
 }
 
 ChatRoom.prototype.getRoom = function(data) {
+  var room
+
   if(!(data.user.id in this.rooms)) {
-    var room =  {
+    room =  {
       id: data.user.id,
       user: data.user,
       messages: [],
@@ -199,15 +206,27 @@ ChatRoom.prototype.getRoom = function(data) {
       loaded: {
         messages: false,
         bar: false
-      }
+      },
+      unread: data.unread || false
     }
 
     this.rooms[data.user.id] = room
     this.$rooms.append(room.$room)
     this.$users.append(room.$bar)
+  } else {
+    room = this.rooms[data.user.id]
   }
 
-  return this.rooms[data.user.id]
+  if("unread" in  data) {
+    room.unread = data.unread
+  }
+
+  if("name" in  data.user) {
+    room.user.name = data.user.name
+  }
+
+  this.updateBar(room)
+  return room
 }
 
 ChatRoom.prototype.loadRooms = function() {
@@ -217,14 +236,45 @@ ChatRoom.prototype.loadRooms = function() {
     if(!response.success) {
       console.error(response.message)
     } else {
-      response.rooms.forEach(function(data, i) {
+      response.rooms.sort(function(a, b) {
+        if(a.unread == b.unread) {
+          return a.updated - b.updated
+        } else {
+          return b.unread - a.unread
+        }
+      }).forEach(function(data, i) {
         var room = _this.getRoom(data)
 
-        if(i == 0) {
+        if(!_this.room && i == 0) {
           _this.activateRoom(room)
         }
       })
     }
+  })
+}
+
+ChatRoom.prototype.sortRooms = function() {
+  var _this = this
+  this.$users.empty()
+
+  var rooms = []
+
+  for (var key in this.rooms) {
+    rooms.push(this.rooms[key])
+  }
+
+  rooms.sort(function(a, b) {
+    if(a.unread == b.unread) {
+      return a.updated - b.updated
+    } else {
+      return b.unread - a.unread
+    }
+  }).forEach(function(room, i) {
+    room.$bar.click(function() {
+      _this.activateRoom(room)
+    })
+
+    _this.$users.append(room.$bar)
   })
 }
 
@@ -258,12 +308,13 @@ ChatRoom.prototype.setRoom = function(user) {
     })
 
     if(!room.loaded.bar) {
-      $.get("/chat/" + room.user.id + "/room", function(response) {
+      $.get("/chat/" + room.id + "/room", function(response) {
         if(!response.success) {
           _this.removeRoom(room)
           console.error(response.message)
         } else {
           room.user = response.user
+          room.unread = response.unread || false
 
           _this.updateRoom(room)
           _this.updateBar(room)
@@ -274,6 +325,21 @@ ChatRoom.prototype.setRoom = function(user) {
 
     this.activateRoom(room)
   }
+}
+
+ChatRoom.prototype.messengerFocus = function() {
+  this.markRead(this.room)
+}
+
+ChatRoom.prototype.markRead = function(room) {
+  room.unread = false
+
+  this.updateBar(room)
+  this.sortRooms()
+
+  $.post("/chat/" + room.id + "/read", {
+    _csrf: config.csrf
+  })
 }
 
 ChatRoom.prototype.activateRoom = function(room) {
@@ -287,9 +353,17 @@ ChatRoom.prototype.activateRoom = function(room) {
   }
 
   this.resize()
+  this.markRead(room)
   room.$bar.addClass("active")
   room.$room.$messages.scrollTop(room.$room.$scroll.outerHeight())
   history.pushState(null, null, "/chat/" + room.id)
+}
+
+ChatRoom.prototype.readMessage = function(data) {
+  var room = this.getRoom(data)
+
+  this.updateBar(room)
+  this.sortRooms()
 }
 
 ChatRoom.prototype.newMessage = function(data) {
@@ -309,10 +383,6 @@ ChatRoom.prototype.newMessage = function(data) {
       scrollTop: $scroll.outerHeight()
     }, 500)
   }, 100)
-
-  if(!this.room) {
-    this.activateRoom(room)
-  }
 }
 
 ChatRoom.prototype.buildMessage = function(data) {

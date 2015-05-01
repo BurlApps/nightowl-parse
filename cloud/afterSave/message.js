@@ -4,7 +4,7 @@ Parse.Cloud.afterSave("Message", function(req, res) {
     message: message.id
   }
 
-  Parse.Cloud.run("notifyChatRoom", data)
+  Parse.Cloud.run("messagePusher", data)
 
   if(message.get("type") == 1) {
     Parse.Cloud.run("messagePush", data)

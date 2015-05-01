@@ -53,11 +53,15 @@ Parse.Cloud.define("messageConversation", function(req, res) {
 
     conversation = new Conversation()
     conversation.set("user", message.get("user"))
-    conversation.set("unread", true)
+
     return conversation.save()
   }).then(function(conversation) {
     var messages = conversation.relation("messages")
     messages.add(message)
+
+    if(message.get("type") != 1) {
+      conversation.set("unread", true)
+    }
 
     return conversation.save()
   }).then(function() {

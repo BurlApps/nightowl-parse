@@ -9,28 +9,28 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
   switch(question.get("state")) {
     case 1:
       Parse.Cloud.run("notifyTutors")
-      Parse.Cloud.run("notifySlack")
+      Parse.Cloud.run("newAssignmentSlack")
       break
 
     case 2:
       data.action = "claimed"
-      Parse.Cloud.run("updateSlack", data)
+      Parse.Cloud.run("updateAssignmentSlack", data)
       break
 
     case 3:
       data.action = "completed"
-      Parse.Cloud.run("updateSlack", data)
+      Parse.Cloud.run("updateAssignmentSlack", data)
       break
 
     case 7:
     case 8:
       data.action = "flagged"
-      Parse.Cloud.run("updateSlack", data)
+      Parse.Cloud.run("updateAssignmentSlack", data)
       break
 
     case 9:
       data.action = "deleted"
-      Parse.Cloud.run("updateSlack", data)
+      Parse.Cloud.run("updateAssignmentSlack", data)
       break
   }
 })

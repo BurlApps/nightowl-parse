@@ -38,8 +38,9 @@ body {
 }
 
 .sidebar .user {
+  position: relative;
   width: 100%;
-  padding: 15px;
+  padding: 15px 25px 15px 15px;
   font-size: 14px;
   border-bottom: solid 1px #D8BE2B;
   cursor: pointer;
@@ -88,6 +89,23 @@ body {
 
 .sidebar .user .message .from {
   font-weight: bold;
+}
+
+.sidebar .user .dot {
+  position: absolute;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  background: #1D9191;
+
+  top: -moz-calc(50% - 6px);
+  top: -webkit-calc(50% - 6px);
+  top: -o-calc(50% - 6px);
+  top: calc(50% - 6px);
+
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
 }
 
 .rooms {

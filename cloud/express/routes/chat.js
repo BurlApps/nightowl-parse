@@ -12,16 +12,44 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.room = function(req, res) {
+  var query = new Parse.Query(Conversation)
   var user = new User()
 
   user.id = req.param("user")
-  user.fetch().then(function() {
+  query.equalTo("user", user)
+
+  query.first(function(conversation) {
+    req.conversation = conversation
+    conversation.set("unread", false)
+
+    return conversation.save()
+  }).then(function() {
+    return user.fetch()
+  }).then(function() {
     res.successT({
       user: {
         id: user.id,
         name: user.get("name") || user.get("phone")
-      }
+      },
+      unread: req.conversation.get("unread"),
+      updated: req.conversation.updatedAt
     })
+  }, res.errorT)
+}
+
+module.exports.read = function(req, res) {
+  var query = new Parse.Query(Conversation)
+  var user = new User()
+
+  user.id = req.param("user")
+  query.equalTo("user", user)
+
+  query.first(function(conversation) {
+    conversation.set("unread", false)
+
+    return conversation.save()
+  }).then(function() {
+    res.successT()
   }, res.errorT)
 }
 
@@ -37,18 +65,12 @@ module.exports.rooms = function(req, res) {
           name: user.get("name") || user.get("phone")
         },
         unread: conversation.get("unread"),
-        created: conversation.createdAt
+        updated: conversation.updatedAt
       })
     })
   }).then(function() {
     res.successT({
-      rooms: rooms.sort(function(a, b) {
-        if(a.unread == b.unread) {
-          return a.created - b.created
-        } else {
-          return b.unread - a.unread
-        }
-      })
+      rooms: rooms
     })
   }, res.errorT)
 }
