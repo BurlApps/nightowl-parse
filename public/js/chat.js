@@ -340,29 +340,23 @@ ChatRoom.prototype.removeRoom = function(room) {
 ChatRoom.prototype.setRoom = function(user) {
   if(user) {
     var _this = this
-    var room = this.getRoom({
-      user: {
-        id: user
+
+    $.get("/chat/" + user + "/room", function(response) {
+      if(!response.success) {
+        console.error(response.message)
+      } else {
+        room = _this.getRoom(response)
+
+        room.user = response.user
+        room.unread = response.unread || false
+        room.loaded.bar = true
+
+        _this.updateRoom(room)
+        _this.updateBar(room)
+
+        _this.activateRoom(room)
       }
     })
-
-    if(!room.loaded.bar) {
-      $.get("/chat/" + room.id + "/room", function(response) {
-        if(!response.success) {
-          _this.removeRoom(room)
-          console.error(response.message)
-        } else {
-          room.user = response.user
-          room.unread = response.unread || false
-
-          _this.updateRoom(room)
-          _this.updateBar(room)
-          room.loaded.bar = true
-        }
-      })
-    }
-
-    this.activateRoom(room)
   }
 }
 

@@ -12,27 +12,28 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.room = function(req, res) {
+  var userQueryA = new Parse.Query(User)
+  var userQueryB = new Parse.Query(User)
+  var userQuery = Parse.Query.or(userQueryA, userQueryB)
   var query = new Parse.Query(Conversation)
-  var user = new User()
 
-  user.id = req.param("user")
-  query.equalTo("user", user)
+  userQueryA.equalTo("objectId", req.param("user"))
+  userQueryB.equalTo("phone", req.param("user"))
 
-  query.first(function(conversation) {
-    req.conversation = conversation
-    conversation.set("unread", false)
+  userQuery.first(function(user) {
+    req.user = user
 
-    return conversation.save()
-  }).then(function() {
-    return user.fetch()
-  }).then(function() {
+    query.equalTo("user", user)
+
+    return query.first()
+  }).then(function(conversation) {
     res.successT({
       user: {
-        id: user.id,
-        name: user.get("name") || user.get("phone")
+        id: req.user.id,
+        name: req.user.get("name") || req.user.get("phone")
       },
-      unread: req.conversation.get("unread"),
-      updated: req.conversation.updatedAt
+      unread: conversation.get("unread"),
+      updated: conversation.updatedAt
     })
   }, res.errorT)
 }
