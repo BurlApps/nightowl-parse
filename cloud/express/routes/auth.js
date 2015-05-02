@@ -9,12 +9,14 @@ module.exports.restricted = function(req, res, next) {
 		res.errorT("Login required :(")
 	} else {
   	req.session = null
-		res.redirect("/login")
+		res.redirect("/login?next=" + req.url)
 	}
 }
 
 module.exports.login = function(req, res) {
-  res.renderT('auth/login')
+  res.renderT('auth/login', {
+    next: req.param("next")
+  })
 }
 
 module.exports.logout = function(req, res) {
@@ -49,7 +51,7 @@ module.exports.loginUser = function(req, res) {
           })
         }).then(function() {
           res.successT({
-  			  	next: "/questions"
+  			  	next: req.param("next") || "/questions"
   		  	})
         }, res.errorT)
 		  } else {

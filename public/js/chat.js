@@ -396,6 +396,8 @@ ChatRoom.prototype.activateRoom = function(room) {
   this.resize()
   this.markRead(room)
   this.updateScroll(room, false)
+  this.$body.removeClass("openSidebar")
+
   room.$bar.addClass("active")
   history.pushState(null, null, "/chat/" + room.id)
 }
@@ -425,7 +427,7 @@ ChatRoom.prototype.newMessage = function(data) {
   this.updateBar(room)
   this.updateScroll(room, true)
 
-  if(!this.focus) {
+  if(!this.focus && data.type != 1) {
     this.notify(data, room)
   }
 }

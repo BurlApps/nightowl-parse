@@ -3,6 +3,11 @@
   <div class="header">Login</div>
   <form class="form" action="/login">
     <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+
+    <% if(next) { %>
+      <input name="next" type="hidden" value="<%= next %>"/>
+    <% } %>
+
     <input name="email" class="input" type="email" placeholder="Email" required step="1" autofocus/>
     <input name="password" class="input" type="password" placeholder="Password" required step="2"/>
     <input class="submit" type="submit" value="Start Tutoring" />

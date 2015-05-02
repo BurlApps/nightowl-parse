@@ -39,6 +39,10 @@ body > .header .navigation .link:hover {
     margin: 0;
   }
 
+  body > .header .navigation .link {
+    font-size: 18px;
+  }
+
   body > .header .navigation .link:first-child {
     float: left;
   }

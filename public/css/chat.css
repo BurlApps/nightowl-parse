@@ -1,7 +1,7 @@
 html, body {
   background: #FEE033;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -18,6 +18,11 @@ html, body {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
+  -webkit-transition: margin .2s;
+  -moz-transition: margin .2s;
+  -o-transition: margin .2s;
+  transition: margin .2s;
 }
 
 .sidebar .roomInput {
@@ -144,6 +149,11 @@ html, body {
   width: -webkit-calc(100% - 200px);
   width: -o-calc(100% - 200px);
   width: calc(100% - 200px);
+
+  -webkit-transition: width .2s;
+  -moz-transition: width .2s;
+  -o-transition: width .2s;
+  transition: width .2s;
 }
 
 .rooms .room {
@@ -211,6 +221,11 @@ html, body {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+
+  -webkit-transition: margin .2s;
+  -moz-transition: margin .2s;
+  -o-transition: margin .2s;
+  transition: margin .2s;
 }
 
 .rooms .room .header .search:focus {
@@ -295,7 +310,7 @@ html, body {
 
 @media (max-width: 600px) {
   body:not(.openSidebar) .sidebar {
-    display: none !important;
+    margin-left: -200px !important;
   }
 
   body:not(.openSidebar) .rooms {
@@ -303,7 +318,7 @@ html, body {
   }
 
   body.openSidebar .rooms .search {
-    display: none !important;
+    margin-right: -150% !important;
   }
 
   .rooms .loading {
