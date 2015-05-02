@@ -3,6 +3,7 @@ var ChatRoom = function ChatRoom() {
 
   // jQuery
   this.$window = $(window)
+  this.$body = $("body")
   this.$header = $(".header")
   this.$sidebar = $(".sidebar")
   this.$users = $(".sidebar .users")
@@ -135,6 +136,10 @@ ChatRoom.prototype.updateBar = function(room) {
   }
 }
 
+ChatRoom.prototype.sidebarToggle = function(room) {
+  this.$body.toggleClass("openSidebar")
+}
+
 ChatRoom.prototype.$buildRoom = function(data) {
   var room = $('                                                                    \
     <div class="room">                                                              \
@@ -158,7 +163,7 @@ ChatRoom.prototype.$buildRoom = function(data) {
     </div>                                                                          \
   ')
 
-  room.$name = room.find(".header .name").text(data.user.name || data.user.id)
+  room.$name = room.find(".header .name").text(data.user.name || data.user.id).click(this.sidebarToggle.bind(this))
   room.$search = room.find(".header .search").keyup(this.searchMessages.bind(this))
   room.$messageForm = room.find(".bottom .messageForm").submit(this.createMessage.bind(this))
   room.$messenger = room.find(".bottom .messenger").focus(this.messengerFocus.bind(this))

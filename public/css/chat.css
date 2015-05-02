@@ -294,12 +294,16 @@ html, body {
 }
 
 @media (max-width: 600px) {
-  .sidebar {
+  body:not(.openSidebar) .sidebar {
     display: none !important;
   }
 
-  .rooms {
+  body:not(.openSidebar) .rooms {
     width: 100% !important;
+  }
+
+  body.openSidebar .rooms .search {
+    display: none !important;
   }
 
   .rooms .loading {
@@ -307,7 +311,7 @@ html, body {
   }
 
   .rooms .search {
-    min-width: 180px !important;
+    min-width: 160px !important;
     font-size: 14px !important;
   }
 }
