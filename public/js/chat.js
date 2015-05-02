@@ -51,7 +51,7 @@ ChatRoom.prototype.resize = function() {
   this.$rooms.height(height).show()
 
   if(room) {
-    this.updateBlock(room)
+    this.updateScroll(room)
 
     room.$room.$container.css({
       paddingTop: room.$room.$header.outerHeight() + "px",
@@ -174,12 +174,18 @@ ChatRoom.prototype.updateRoom = function(room) {
   room.$room.$name.text(room.user.name || room.user.id)
 }
 
-ChatRoom.prototype.updateBlock = function(room) {
+ChatRoom.prototype.updateScroll = function(room, animate) {
   var $container = room.$room.$container
   var $messages = room.$room.$messages
+  var $scroll = room.$room.$scroll
+  var $block = room.$room.$block
   var height = $container.height() - $messages.height()
 
-  room.$room.$block.height(Math.max(height, 0) + "px")
+  $block.height(height)
+
+  $scroll.animate({
+    scrollTop: $messages.outerHeight() + $block.outerHeight()
+  }, animate ? 500 : 0)
 }
 
 ChatRoom.prototype.loadMessages = function(room) {
@@ -209,8 +215,7 @@ ChatRoom.prototype.loadMessages = function(room) {
       _this.updateBar(room)
 
       setTimeout(function() {
-        _this.updateBlock(room)
-        room.$room.$messages.scrollTop($scroll.outerHeight())
+        _this.updateScroll(room, false)
       }, 100)
     }
   })
@@ -321,7 +326,7 @@ ChatRoom.prototype.removeRoom = function(room) {
   room.$bar.remove()
 
   delete this.rooms[room.id]
-  history.pushState(null, null, "/chat")
+  this.activateRoom(this.rooms[Object.keys(this.rooms)[0]])
 }
 
 ChatRoom.prototype.setRoom = function(user) {
@@ -382,9 +387,8 @@ ChatRoom.prototype.activateRoom = function(room) {
 
   this.resize()
   this.markRead(room)
-  this.updateBlock(room)
+  this.updateScroll(room, false)
   room.$bar.addClass("active")
-  room.$room.$container.scrollTop(room.$room.$scroll.outerHeight())
   history.pushState(null, null, "/chat/" + room.id)
 }
 
@@ -411,13 +415,7 @@ ChatRoom.prototype.newMessage = function(data) {
   $messages.append($message)
 
   this.updateBar(room)
-  this.updateBlock(room)
-
-  setTimeout(function() {
-    room.$room.$container.animate({
-      scrollTop: $scroll.outerHeight()
-    }, 500)
-  }, 100)
+  this.updateScroll(room, true)
 
   if(!this.focus) {
     this.notify(data, room)
