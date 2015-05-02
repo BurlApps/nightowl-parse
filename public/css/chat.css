@@ -1,6 +1,11 @@
-body {
+html, body {
   background: #FEE033;
   overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .sidebar {
@@ -45,6 +50,10 @@ body {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 .sidebar .user {
@@ -176,7 +185,7 @@ body {
   width: 30%;
   min-width: 225px;
   background: #fff;
-  padding: 6px 35px;
+  padding: 6px 6px 6px 35px;
   outline: none;
   border: solid 1px #E2E2E2;
   font-size: 16px;
@@ -193,9 +202,15 @@ body {
   -moz-border-radius: 15px;
   border-radius: 15px;
 
+  -webkit-appearance: none;
+
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 .rooms .room .header .search:focus {
@@ -276,4 +291,23 @@ body {
 
 .rooms .room .messages .message.support .name {
   color: #000;
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    display: none !important;
+  }
+
+  .rooms {
+    width: 100% !important;
+  }
+
+  .rooms .loading {
+    display: none !important;
+  }
+
+  .rooms .search {
+    min-width: 180px !important;
+    font-size: 14px !important;
+  }
 }
