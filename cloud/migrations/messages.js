@@ -28,11 +28,11 @@ Parse.Cloud.define("migrationMessage", function(req, res) {
 
     return conversation.save()
   }).then(function() {
-    return message.destroy()
+    return conversation.destroy()
   }).then(function() {
     return user.destroy()
   }).then(function() {
-    return conversation.destroy()
+    return message.destroy()
   }).then(function() {
     res.success("Successfully added message class")
   }, function(error) {

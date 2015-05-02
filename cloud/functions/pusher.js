@@ -45,7 +45,8 @@ Parse.Cloud.define("conversationPusher", function(req, res) {
         user: {
           id: conversation.get("user").id
         },
-        unread: conversation.get("unread")
+        unread: conversation.get("unread"),
+        updated: conversation.updatedAt
       },
       event: "message.read",
       channel: "chat_room"
