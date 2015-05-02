@@ -23,7 +23,7 @@ Parse.Cloud.job("messagesSlack", function(req, res) {
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          "There are ", count, " unread conversations from our users. ", chatLink
+          "There are *", count, "* unread conversations from our users. ", chatLink
         ].join(""),
         username: req.settings.get("account"),
         icon_url: req.settings.get("host") + "/images/slack/notify.png"

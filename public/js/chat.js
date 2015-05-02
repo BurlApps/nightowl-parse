@@ -403,7 +403,7 @@ ChatRoom.prototype.activateRoom = function(room) {
 ChatRoom.prototype.readMessage = function(data) {
   var room = this.getRoom(data)
 
-  if(this.room.id == room.id && room.unread) {
+  if(this.focus && this.room.id == room.id && room.unread) {
     this.markRead(room)
   } else {
     this.updateBar(room)

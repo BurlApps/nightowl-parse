@@ -23,8 +23,8 @@ Parse.Cloud.define("newAssignmentSlack", function(req, res) {
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          "One of our users has posted a new question! There are a total of ",
-          count, " waiting to be claimed. ", queueLink
+          "One of our users has posted a new question! There are a total of *",
+          count, "* waiting to be claimed. ", queueLink
         ].join(""),
         username: req.settings.get("account") + " - Notify",
         icon_url: req.settings.get("host") + "/images/slack/notify.png"
@@ -76,8 +76,8 @@ Parse.Cloud.define("updateAssignmentSlack", function(req, res) {
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          req.tutor.get("name"), " (", req.tutor.id, ") just ", req.params.action , " question (",
-          questionLink, ") created by (", userLink, ") from ", (phone ? phone : "the app")
+          req.tutor.get("name"), " (*", req.tutor.id, "*) just ", req.params.action , " question (*",
+          questionLink, "*) created by (*", userLink, "*) from ", (phone ? phone : "the app")
         ].join(""),
         username: req.settings.get("account") + " - " + action,
         icon_url: [

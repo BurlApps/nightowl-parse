@@ -64,12 +64,12 @@ Parse.Cloud.job("statsSlack", function(req, res) {
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          "Stats for ", Moment(yesterday).format("MMMM Do YYYY"), "\n",
-          "New Users: ", req.userCount, "\n",
-          "Users w/Cards: ", req.userCardCount, "\n",
-          "Users w/Charges: ", req.userChargesCount, "\n",
-          "New Questions: ", req.questionsCount, "\n",
-          "New Messages: ", req.messageCount
+          "Stats for *", Moment(yesterday).format("MMMM Do YYYY"), "*\n",
+          "New Users: *", req.userCount, "*\n",
+          "Users w/Cards: *", req.userCardCount, "*\n",
+          "Users w/Charges: *", req.userChargesCount, "*\n",
+          "New Questions: *", req.questionsCount, "*\n",
+          "New Messages: *", req.messageCount, "*"
         ].join(""),
         username: req.settings.get("account"),
         icon_url: req.settings.get("host") + "/images/slack/notify.png"
