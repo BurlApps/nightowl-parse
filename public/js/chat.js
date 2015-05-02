@@ -61,7 +61,8 @@ ChatRoom.prototype.resize = function() {
 }
 
 ChatRoom.prototype.searchMessages = function() {
-  var search = this.room.$room.$search.val().toLowerCase()
+  var room = this.room
+  var search = room.$room.$search.val().toLowerCase()
   var override = search.length == 0
 
   this.room.messages.forEach(function(message) {
@@ -69,6 +70,8 @@ ChatRoom.prototype.searchMessages = function() {
     var show = text.indexOf(search) != -1
     message.$message.toggle(override || show)
   })
+
+  this.updateScroll(room, false)
 }
 
 ChatRoom.prototype.createMessage = function(e) {
@@ -184,7 +187,7 @@ ChatRoom.prototype.updateScroll = function(room, animate) {
   $block.height(height)
 
   $scroll.animate({
-    scrollTop: $messages.outerHeight() + $block.outerHeight()
+    scrollTop: $messages.height() + $block.height()
   }, animate ? 500 : 0)
 }
 
