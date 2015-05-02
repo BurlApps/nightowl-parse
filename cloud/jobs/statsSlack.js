@@ -1,4 +1,5 @@
 var User    = Parse.User
+var Installation = Parse.Installation
 var Message = Parse.Object.extend("Message")
 var Assignment = Parse.Object.extend("Assignment")
 var Settings = require('cloud/utils/settings')
@@ -58,18 +59,29 @@ Parse.Cloud.job("statsSlack", function(req, res) {
   }).then(function(count) {
     req.messageCount = count
 
+    var query = new Parse.Query(Installation)
+
+    query.lessThanOrEqualTo("createdAt", today)
+    query.greaterThanOrEqualTo("createdAt", yesterday)
+
+    return query.count()
+  }).then(function(count) {
+    req.installationCount = count
+
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackStats"),
       method: "POST",
       followRedirects: true,
       body: JSON.stringify({
         text: [
-          "Stats for *", Moment(yesterday).format("MMMM Do YYYY"), "*\n",
-          "New Users: *", req.userCount, "*\n",
+          "_Stats for *", Moment(yesterday).format("MMMM Do YYYY"), "*_\n",
+          "New Total Users: *", req.userCount, "*\n",
+          "New iOS Users: *", req.installationCount, "*\n",
+          "New Phones Users: *", (req.userCount - req.installationCount), "*\n\n",
+          "New Questions: *", req.questionsCount, "*\n",
+          "New Messages: *", req.messageCount, "*\n\n",
           "Users w/Cards: *", req.userCardCount, "*\n",
           "Users w/Charges: *", req.userChargesCount, "*\n",
-          "New Questions: *", req.questionsCount, "*\n",
-          "New Messages: *", req.messageCount, "*"
         ].join(""),
         username: req.settings.get("account"),
         icon_url: req.settings.get("host") + "/images/slack/notify.png"
