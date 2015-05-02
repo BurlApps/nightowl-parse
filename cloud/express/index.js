@@ -88,7 +88,7 @@ app.use(function(req, res, next) {
   res.locals.random = random
   res.locals.config = {}
 
-  if(req.session.appliedSettings !== true) {
+  if(req.session.appliedSettings !== true || !req.session.account) {
     Settings().then(function(settings) {
 	    req.session.appliedSettings = true
 	    req.session.itunesApp = settings.get("itunesId")
