@@ -22,7 +22,6 @@ function buildQuestion(data) {
         <div class="actions">                                                  \
           <a class="good button">CLAIM</a>                                     \
           <a class="bad button">FLAG</a>                                       \
-          <a class="delete button">DELETE</a>                                  \
         </div>                                                                 \
         <div class="clear"></div>                                              \
       </div>                                                                   \
@@ -41,7 +40,6 @@ function buildQuestion(data) {
   }
 
   question.find(".good").attr("href", "/questions/" + data.id + "/claim")
-  question.find(".delete").attr("href", "/questions/" + data.id + "/delete")
   question.find(".bad").attr("href", "#").click(flagQuestion)
   return question
 }
@@ -49,9 +47,9 @@ function buildQuestion(data) {
 function flagQuestion() {
   var id = $(this).parents(".question").data("question")
 
-  $(".flagModal .good").click(cancelFlag)
   $(".flagModal .blurry").attr("href", "/questions/" + id + "/flag/7")
   $(".flagModal .many").attr("href", "/questions/" + id + "/flag/8")
+  $(".flagModal .delete").attr("href", "/questions/" + id + "/delete")
   $(".flagModal").fadeIn(500)
 }
 

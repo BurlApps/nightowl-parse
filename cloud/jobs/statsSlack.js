@@ -75,7 +75,7 @@ Parse.Cloud.job("statsSlack", function(req, res) {
       body: JSON.stringify({
         text: [
           "_Stats for *", Moment(yesterday).format("MMMM Do YYYY"), "*_\n",
-          "New Total Users: *", req.userCount, "*\n",
+          "New Users: *", req.userCount, "*\n",
           "New iOS Users: *", req.installationCount, "*\n",
           "New Phones Users: *", (req.userCount - req.installationCount), "*\n\n",
           "New Questions: *", req.questionsCount, "*\n",
