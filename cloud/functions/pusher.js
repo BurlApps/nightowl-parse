@@ -3,9 +3,11 @@ var MD5 = require("cloud/utils/md5")
 var SHA = require("cloud/utils/sha256")
 var Message = Parse.Object.extend("Message")
 var Conversation = Parse.Object.extend("Conversation")
+var Moment = require("moment")
 
 Parse.Cloud.define("messagePusher", function(req, res) {
   var message = new Message()
+  var now = new Date()
 
   message.id = req.params.message
 
@@ -21,7 +23,8 @@ Parse.Cloud.define("messagePusher", function(req, res) {
           name: user.get("name") || user.get("phone")
         },
         type: message.get("type"),
-        created: message.createdAt
+        created: message.createdAt,
+        duration: Moment.duration(message.createdAt - now).humanize(true)
       },
       event: "message.new",
       channel: "chat_room"

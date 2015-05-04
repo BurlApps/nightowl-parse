@@ -290,17 +290,29 @@ html, body {
   margin-top: 0;
 }
 
-.rooms .room .messages .message .name {
+.rooms .room .messages .message .top {
   margin-bottom: 10px;
+}
+
+.rooms .room .messages .message .name {
   font-weight: bold;
   color: #1D9191;
+  display: inline-block;
+}
+
+.rooms .room .messages .message .duration {
+  margin-left: 5px;
+  display: inline-block;
+  color: #BABBBF;
+  font-size: 14px;
+  text-transform: lowercase;
 }
 
 .rooms .room .messages .message.connected {
   margin-top: 15px;
 }
 
-.rooms .room .messages .message.connected .name {
+.rooms .room .messages .message.connected .top {
   display: none;
 }
 

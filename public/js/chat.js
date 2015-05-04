@@ -428,15 +428,19 @@ ChatRoom.prototype.newMessage = function(data) {
 
 ChatRoom.prototype.buildMessage = function(data) {
   var room = this.getRoom(data)
-  var message = $('            \
-    <div class="message">      \
-      <div class="name"></div> \
-      <div class="text"></div> \
-    </div>                     \
+  var message = $('                   \
+    <div class="message">             \
+      <div class="top">               \
+        <div class="name"></div>      \
+        <div class="duration"></div>  \
+      </div>                          \
+      <div class="text"></div>        \
+    </div>                            \
   ')
 
   message.addClass(data.id)
   message.find(".text").text(data.text)
+  message.find(".duration").text(data.duration)
 
   if(data.type == 1) {
     message.addClass("support")
