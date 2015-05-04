@@ -71,6 +71,7 @@ module.exports.rooms = function(req, res) {
           name: user.get("name") || user.get("phone")
         },
         unread: conversation.get("unread"),
+        created: conversation.createdAt,
         updated: conversation.updatedAt
       })
     })
@@ -119,6 +120,7 @@ module.exports.messages = function(req, res) {
         },
         type: message.get("type"),
         created: message.createdAt,
+        updated: message.updatedAt,
         duration: Moment.duration(message.createdAt - now).humanize(true)
       })
     })

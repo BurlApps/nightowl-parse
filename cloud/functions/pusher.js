@@ -24,6 +24,7 @@ Parse.Cloud.define("messagePusher", function(req, res) {
         },
         type: message.get("type"),
         created: message.createdAt,
+        updated: message.updatedAt,
         duration: Moment.duration(message.createdAt - now).humanize(true)
       },
       event: "message.new",
@@ -49,7 +50,8 @@ Parse.Cloud.define("conversationPusher", function(req, res) {
           id: conversation.get("user").id
         },
         unread: conversation.get("unread"),
-        updated: conversation.updatedAt
+        updated: conversation.updatedAt,
+        created: conversation.createdAt
       },
       event: "message.read",
       channel: "chat_room"

@@ -212,6 +212,8 @@ ChatRoom.prototype.loadMessages = function(room) {
       var messages = response.messages.map(function(message) {
         var $message = _this.buildMessage(message)
         message.$message = $message
+        message.created = new Date(message.created)
+        message.updated = new Date(message.updated)
         room.messages.push(message)
         return $message
       })
@@ -244,7 +246,8 @@ ChatRoom.prototype.getRoom = function(data) {
         bar: false
       },
       unread: data.unread || false,
-      updated: data.updated || data.created
+      created: new Date(data.created),
+      updated: new Date(data.updated || data.created)
     }
 
     this.rooms[data.user.id] = room
@@ -262,7 +265,13 @@ ChatRoom.prototype.getRoom = function(data) {
     room.user.name = data.user.name
   }
 
-  room.updated = data.updated || data.created
+  if("created" in data) {
+    room.created = new Date(data.created)
+  }
+
+  if("updated" in data) {
+    room.updated = new Date(data.updated)
+  }
 
   this.updateBar(room)
   return room
@@ -277,7 +286,7 @@ ChatRoom.prototype.loadRooms = function() {
     } else {
       response.rooms.sort(function(a, b) {
         if(a.unread == b.unread) {
-          return b.updated - a.updated
+          return new Date(b.updated) - new Date(a.updated)
         } else {
           return b.unread - a.unread
         }
@@ -304,7 +313,7 @@ ChatRoom.prototype.sortRooms = function() {
 
   rooms.sort(function(a, b) {
     if(a.unread == b.unread) {
-      return b.updated - a.updated
+      return new Date(b.updated) - new Date(a.updated)
     } else {
       return b.unread - a.unread
     }
@@ -451,8 +460,10 @@ ChatRoom.prototype.buildMessage = function(data) {
 
   if(room.messages.length > 0) {
     var last = room.messages[room.messages.length - 1]
+    var duration = new Date(data.created) - last.created
+    var days = Math.round(duration / 86400000)
 
-    if(last && last.type == data.type) {
+    if(last && last.type == data.type && days == 0) {
       message.addClass("connected")
     }
   }
