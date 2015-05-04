@@ -56,7 +56,12 @@ module.exports.read = function(req, res) {
 
 module.exports.rooms = function(req, res) {
   var query = new Parse.Query(Conversation)
+  var daysAgo = new Date()
   var rooms = []
+
+  daysAgo.setDate(daysAgo.getDate() - 2)
+
+  query.greaterThanOrEqualTo("updatedAt", daysAgo)
 
   query.each(function(conversation) {
     return conversation.get("user").fetch().then(function(user) {
