@@ -25,8 +25,7 @@ ChatRoom.prototype.init = function() {
   this.resize()
   this.bindEvents()
   this.loadRooms()
-
-  Notification.requestPermission()
+  this.notifyPermission()
 }
 
 ChatRoom.prototype.bindEvents = function() {
@@ -469,6 +468,12 @@ ChatRoom.prototype.buildMessage = function(data) {
   }
 
   return message
+}
+
+ChatRoom.prototype.notifyPermission = function() {
+  if("Notification" in window) {
+    Notification.requestPermission()
+  }
 }
 
 ChatRoom.prototype.notify = function(message, room) {
