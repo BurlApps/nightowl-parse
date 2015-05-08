@@ -16,9 +16,17 @@ module.exports.room = function(req, res) {
   var userQueryB = new Parse.Query(User)
   var userQuery = Parse.Query.or(userQueryA, userQueryB)
   var query = new Parse.Query(Conversation)
+  var id = req.param("user")
+  var phone = id.replace(/\D+/g, '')
 
-  userQueryA.equalTo("objectId", req.param("user"))
-  userQueryB.equalTo("phone", req.param("user"))
+  if(phone.length == 10) {
+    phone = "1" + phone
+  }
+
+  phone = "+" + phone
+
+  userQueryA.equalTo("objectId", id)
+  userQueryB.equalTo("phone", phone)
 
   userQuery.first(function(user) {
     req.user = user
