@@ -53,7 +53,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
 
       var data = {
         "To": user.get("phone"),
-        "Body": responses[state]
+        "Body": "Bot: " + responses[state]
       }
 
       if(state == 3) {

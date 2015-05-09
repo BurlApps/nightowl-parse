@@ -15,9 +15,20 @@
       <span>ANSWER (<%= question.paid %>)</span>
       <input id="fileUpload" type="file"/>
     </button>
+    <a class="flag button" href="#">FLAG</a>
     <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
-    <a class="delete button" href="/questions/<%= question.id %>/delete">DELETE</a>
   </div>
   <div class="clear"></div>
+</div>
+<div class="flagModal">
+  <div class="background"></div>
+  <div class="modal">
+    <div class="title">Flag For Which Reason</div>
+    <div class="buttons">
+      <a class="button bad blurry" href="/questions/<%= question.id %>/flag/7">Blurry/Unreadable</a>
+      <a class="button bad many" href="/questions/<%= question.id %>/flag/8">Too Many Questions</a>
+      <a class="button delete" href="/questions/<%= question.id %>/delete">Not Math Question</a>
+    </div>
+  </div>
 </div>
 <% include ../includes/end.ejs %>

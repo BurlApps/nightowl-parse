@@ -2,6 +2,8 @@
 $(function() {
   var hidden = false
   $("#fileUpload").change(uploadTriggered)
+  $(".flag").click(flagQuestion)
+  $(".flagModal .background").click(cancelFlag)
 })
 
 // Utils
@@ -23,4 +25,12 @@ function uploadTriggered() {
   }, function(error) {
     alert(error.message)
   })
+}
+
+function flagQuestion() {
+  $(".flagModal").fadeIn(500)
+}
+
+function cancelFlag() {
+  $(".flagModal").fadeOut(500)
 }

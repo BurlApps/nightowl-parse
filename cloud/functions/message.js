@@ -13,7 +13,7 @@ Parse.Cloud.define("messagePush", function(req, res) {
     if(user.get("phone")) {
       return Parse.Cloud.run("twilioMessage", {
         "To": user.get("phone"),
-        "Body": message.get("text")
+        "Body": "Support: " + message.get("text")
       })
     } else {
       var pushQuery = new Parse.Query(Parse.Installation)
