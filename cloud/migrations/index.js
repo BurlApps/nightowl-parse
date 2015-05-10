@@ -26,6 +26,6 @@ Parse.Cloud.job("runMigration", function(req, res) {
   promise.then(function() {
     res.success("Successfully ran migrations")
   }, function(error) {
-    res.error(error.description)
+    res.error(error.message)
   })
 })
