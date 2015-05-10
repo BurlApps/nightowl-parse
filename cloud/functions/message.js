@@ -10,7 +10,7 @@ Parse.Cloud.define("messagePush", function(req, res) {
   message.fetch().then(function() {
     return message.get("user").fetch()
   }).then(function(user) {
-    if(user.get("phone")) {
+    if(user.get("source") == "sms") {
       return Parse.Cloud.run("twilioMessage", {
         "To": user.get("phone"),
         "Body": "Support: " + message.get("text")
