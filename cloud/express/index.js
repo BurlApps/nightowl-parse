@@ -116,7 +116,7 @@ app.use(function(req, res, next) {
 
 // Landing
 app.get('/', routes.core.home)
-app.post('/phone', routes.core.phone)
+app.post('/phone', routes.twilio.user, routes.core.phone)
 
 // Download
 app.get('/d', routes.core.download)

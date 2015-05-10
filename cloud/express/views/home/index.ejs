@@ -4,7 +4,7 @@
     <div class="header">Night Owl</div>
     <div class="subheader">Math problems? We’re here to help.</div>
     <div class="description">
-      Snap a photo of your homework questions and we’ll solve it for you. Get the steps and the answer right from your phone.
+      Snap a photo of your homework questions and we’ll solve it for you. Get the steps and the answer right from your phone, both SMS and iOS!
     </div>
     <form class="form" action="/phone">
       <input name="_csrf" type="hidden" value="<%= csrf %>"/>
@@ -13,7 +13,8 @@
       <div class="contact">We just sent a message to your phone!</div>
     </form>
   </div>
-  <img class="image" src="/images/home.png"/>
+  <img class="image one" src="/images/home.png"/>
+  <img class="image two" src="/images/home2.png"/>
 </div>
 <canvas id="canvas"></canvas>
 <% include ../includes/end.ejs %>

@@ -12,19 +12,11 @@ module.exports.phone = function(req, res) {
   Settings().then(function(settings) {
     var price = settings.get("questionPrice")
 
-    if(price < 1) {
-      price = (price * 100) + " cents"
-    } else {
-      price = "$" + price
-    }
-
     Parse.Cloud.run("twilioMessage", {
       "To": req.param("phone"),
       "Body": [
-        "Hey, I’m the Night Owl bot! Send a photo of a math question ",
-        "and our grad students will solve the first ",
-        settings.get("freeQuestions"), " for free, then it’s only ",
-        price, " 😃"
+        "Hey, I’m the friendly Night Owl bot! Send me math questions here or ",
+        "on my iOS app (", req.session.host, "/d) and I'll solve them for you!"
       ].join("")
     }).then(function() {
       return Parse.Analytics.track('homeTwilio')

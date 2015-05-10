@@ -177,3 +177,7 @@ body {
   width: 300px;
   float: right;
 }
+
+.container .image.two {
+  display: none;
+}
