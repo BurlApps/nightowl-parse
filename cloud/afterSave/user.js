@@ -1,15 +1,18 @@
 Parse.Cloud.afterSave(Parse.User, function(req, res) {
   var user = req.object
-  var pushQuery = new Parse.Query(Parse.Installation)
 
-  pushQuery.equalTo("user", user)
+  if(user.get("source") == "sms") {
+    var pushQuery = new Parse.Query(Parse.Installation)
 
-  return Parse.Push.send({
-	  where: pushQuery,
-	  data: {
-      action: "settingsController.reload"
-    }
-  })
+    pushQuery.equalTo("user", user)
+
+    return Parse.Push.send({
+  	  where: pushQuery,
+  	  data: {
+        action: "settingsController.reload"
+      }
+    })
+  }
 
   if(user.existed()) return
 

@@ -32,6 +32,7 @@ module.exports.user = function(req, res, next) {
     user.set("username", from)
     user.set("password", from)
     user.set("phone", from)
+    user.set("source", "sms")
     return user.signUp()
   }).then(function(user) {
     req.user = user

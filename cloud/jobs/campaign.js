@@ -11,7 +11,7 @@ Parse.Cloud.job("zeroFreeCampaign", function(req, res) {
   Settings().then(function(settings) {
     var query = new Parse.Query(User)
 
-    query.exists("phone")
+    query.equalTo("source", "sms")
     query.notEqualTo("unsubscribe", true)
     query.doesNotExist("card")
     query.equalTo("freeQuestions", 0)
@@ -41,7 +41,7 @@ Parse.Cloud.job("oneFreeCampaign", function(req, res) {
 
   var query = new Parse.Query(User)
 
-  query.exists("phone")
+  query.equalTo("source", "sms")
   query.equalTo("freeQuestions", 1)
   query.notEqualTo("unsubscribe", true)
 
@@ -68,7 +68,7 @@ Parse.Cloud.job("twoFreeNewCampaign", function(req, res) {
   var questionQuery = new Parse.Query(Assignment)
 
   query.doesNotMatchKeyInQuery("objectId", "creator", questionQuery)
-  query.exists("phone")
+  query.equalTo("source", "sms")
   query.greaterThanOrEqualTo("freeQuestions", 2)
   query.notEqualTo("unsubscribe", true)
 

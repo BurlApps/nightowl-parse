@@ -48,6 +48,8 @@ app.use(function(req, res, next) {
       error = error.description || error.message || "An error occurred"
     }
 
+    console.error(error)
+
     res.json({
       success: false,
       status: 1,

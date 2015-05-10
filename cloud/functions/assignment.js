@@ -48,7 +48,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
     var state = question.get("state")
 
     // Send to phone
-    if(user.get("phone")) {
+    if(user.get("source") == "sms") {
       if(!(state in responses)) return true
 
       var data = {
