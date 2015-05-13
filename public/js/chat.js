@@ -422,6 +422,7 @@ ChatRoom.prototype.newMessage = function(data) {
   var $scroll = room.$room.$scroll
 
   data.$message = $message
+  data.created = new Date(data.created)
   room.messages.push(data)
 
   $messages.append($message)
@@ -459,7 +460,7 @@ ChatRoom.prototype.buildMessage = function(data) {
 
   if(room.messages.length > 0) {
     var last = room.messages[room.messages.length - 1]
-    var duration = new Date(data.created) - last.created
+    var duration = new Date(data.created) - new Date(last.created)
     var days = Math.round(duration / 86400000)
 
     if(last && last.type == data.type && days == 0) {
