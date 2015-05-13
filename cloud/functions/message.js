@@ -25,7 +25,8 @@ Parse.Cloud.define("messagePush", function(req, res) {
           action: "support.message",
           sound: "alert.caf",
           message: message.get("text"),
-          alert: "Support: " + message.get("text")
+          alert: "Support: " + message.get("text"),
+          badge: "Increment"
         }
   	  })
     }

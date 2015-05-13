@@ -87,7 +87,8 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
 
       if(state in responses) {
         data["sound"] = "alert.caf"
-        data["alert"] = responses[state]
+        data["alert"] = responses[state],
+        badge: "Increment"
       }
 
       var pushQuery = new Parse.Query(Parse.Installation)
