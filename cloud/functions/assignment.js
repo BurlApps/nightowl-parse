@@ -82,13 +82,13 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
     // Send via push notification
     } else {
       var data = {
-        action: "questionsController.reload"
+        action: "questionsController.reload",
       }
 
       if(state in responses) {
         data["sound"] = "alert.caf"
-        data["alert"] = responses[state],
-        badge: "Increment"
+        data["alert"] = responses[state]
+        data["badge"] = "Increment"
       }
 
       var pushQuery = new Parse.Query(Parse.Installation)
