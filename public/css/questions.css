@@ -44,13 +44,7 @@ body {
   font-size: 18px;
   padding: 20px;
   float: left;
-  width: 55%;
-  white-space: nowrap;
-  overflow: hidden;
-
-  -o-text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+  width: 69%;
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -63,14 +57,12 @@ body {
   padding: 20px;
   float: right;
   color: #666;
-  width: 45%;
-  white-space: nowrap;
-  overflow: hidden;
+  width: 30%;
   text-align: right;
 
-  -o-text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  word-wrap: normal;
+  word-break: break-word;
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;

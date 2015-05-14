@@ -238,6 +238,7 @@ ChatRoom.prototype.getRoom = function(data) {
       id: data.user.id,
       user: data.user,
       messages: [],
+      notifications: [],
       $room: this.$buildRoom(data),
       $bar: this.$buildBar(data),
       loaded: {
@@ -381,6 +382,14 @@ ChatRoom.prototype.markRead = function(room) {
 
   room.unread = false
 
+  room.notifications.forEach(function(notification, i) {
+    notification.close()
+
+    if(i == room.notifications.length - 1) {
+      room.notifications = []
+    }
+  })
+
   this.updateBar(room)
   this.sortRooms()
 }
@@ -500,6 +509,8 @@ ChatRoom.prototype.createNotification = function(message, room) {
     window.focus()
     _this.activateRoom(room)
   }
+
+  room.notifications.push(notification)
 }
 
 // Initalization
