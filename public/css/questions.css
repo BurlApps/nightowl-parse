@@ -60,10 +60,6 @@ body {
   width: 30%;
   text-align: right;
 
-  white-space: pre-wrap;
-  word-wrap: normal;
-  word-break: break-word;
-
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
