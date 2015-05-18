@@ -20,7 +20,7 @@ function buildQuestion(data) {
       <div class="bottom">                                                     \
         <div class="time">' + data.duration + '...</div>                       \
         <div class="actions">                                                  \
-          <a class="chat button">CHAT</a>                                      \
+          <a class="chat button" target="_blank">CHAT</a>                      \
           <a class="good button">CLAIM</a>                                     \
           <a class="bad button">FLAG</a>                                       \
         </div>                                                                 \
@@ -52,7 +52,7 @@ function flagQuestion() {
   var id = question.data("question")
   var user = question.data("user")
 
-  $(".flagModal .chat").attr("href", "/chat" + user)
+  $(".flagModal .chat").attr("href", "/chat/" + user)
   $(".flagModal .blurry").attr("href", "/questions/" + id + "/flag/7")
   $(".flagModal .many").attr("href", "/questions/" + id + "/flag/8")
   $(".flagModal .delete").attr("href", "/questions/" + id + "/delete")
