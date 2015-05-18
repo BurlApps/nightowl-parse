@@ -12,6 +12,49 @@ body {
   font-size: 22px;
 }
 
+.guidelines {
+	position: fixed;
+	z-index: 5;
+	top: 100px;
+	left: 15px;
+	width: 300px;
+	background: #fff;
+	overflow: hidden;
+	margin-bottom: 15px;
+
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+
+  -webkit-box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.guidelines .header {
+	font-size: 16px;
+	background: #F7F7F7;
+	color: #636363;
+	padding: 10px 0;
+	margin: 0;
+	border-bottom: solid 1px #ededed;
+	text-shadow: none;
+	text-align: center;
+	font-weight: bold;
+}
+
+.guidelines .guides {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.8);
+	padding-right: 15px;
+	margin-left: -10px;
+}
+
+.guidelines .guides li {
+	margin-bottom: 8px;
+	color: #666;
+}
+
 .questions {
   width: 550px;
   margin: 20px auto;
