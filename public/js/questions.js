@@ -8,7 +8,7 @@ $(function() {
 // Util Methods
 function buildQuestion(data) {
     var question = $('                                                         \
-      <div class="question ' + data.id + '" data-question="' + data.id + '">   \
+      <div class="question ' + data.id + '">                                   \
       <div class="information">                                                \
         <div class="name">No Description Provided</div>                        \
         <div class="subject">' + data.subject + '</div>                        \
@@ -33,13 +33,14 @@ function buildQuestion(data) {
     question.find(".name").text(data.name)
   }
 
-
   if(data.paid < 1) {
     question.find(".claim").text("CLAIM (" + (data.paid * 100) + "¢)")
   } else {
     question.find(".claim").text("CLAIM ($" + data.paid + ")")
   }
 
+  question.data("question", data.id)
+  question.data("user", data.user)
   question.find(".chat").attr("href", "/chat/" + data.user)
   question.find(".good").attr("href", "/questions/" + data.id + "/claim")
   question.find(".bad").attr("href", "#").click(flagQuestion)
@@ -47,8 +48,11 @@ function buildQuestion(data) {
 }
 
 function flagQuestion() {
-  var id = $(this).parents(".question").data("question")
+  var question = $(this).parents(".question")
+  var id = question.data("question")
+  var user = question.data("user")
 
+  $(".flagModal .chat").attr("href", "/chat" + user)
   $(".flagModal .blurry").attr("href", "/questions/" + id + "/flag/7")
   $(".flagModal .many").attr("href", "/questions/" + id + "/flag/8")
   $(".flagModal .delete").attr("href", "/questions/" + id + "/delete")
