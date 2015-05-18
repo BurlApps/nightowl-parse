@@ -20,6 +20,7 @@ function buildQuestion(data) {
       <div class="bottom">                                                     \
         <div class="time">' + data.duration + '...</div>                       \
         <div class="actions">                                                  \
+          <a class="chat button">CHAT</a>                                      \
           <a class="good button">CLAIM</a>                                     \
           <a class="bad button">FLAG</a>                                       \
         </div>                                                                 \
@@ -39,6 +40,7 @@ function buildQuestion(data) {
     question.find(".claim").text("CLAIM ($" + data.paid + ")")
   }
 
+  question.find(".chat").attr("href", "/chat/" + data.user)
   question.find(".good").attr("href", "/questions/" + data.id + "/claim")
   question.find(".bad").attr("href", "#").click(flagQuestion)
   return question

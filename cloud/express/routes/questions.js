@@ -46,7 +46,8 @@ module.exports.questions = function(req, res) {
         created: question.createdAt,
         duration: Moment.duration(question.createdAt - now).humanize(true),
         subject: subject ? subject.name : "Other",
-        paid: tutor.get("question")
+        paid: tutor.get("question"),
+        user: question.get("creator").id
       })
     })
   }).then(function() {

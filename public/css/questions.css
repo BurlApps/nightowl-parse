@@ -135,6 +135,10 @@ body {
   opacity: 1;
 }
 
+.button.chat {
+  background: #0175FF;
+}
+
 .button.good {
   background: #4862A3;
 }
