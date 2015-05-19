@@ -1,4 +1,3 @@
-
 var User = Parse.User
 var Tutor  = Parse.Object.extend("Tutor")
 

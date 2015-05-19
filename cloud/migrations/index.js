@@ -7,6 +7,7 @@ require("cloud/migrations/userTutor")
 require("cloud/migrations/subjects")
 require("cloud/migrations/messages")
 require("cloud/migrations/userSource")
+require("cloud/migrations/promo")
 
 // Call Migrations
 Parse.Cloud.job("runMigration", function(req, res) {
@@ -14,7 +15,7 @@ Parse.Cloud.job("runMigration", function(req, res) {
 
   var promise = Parse.Promise.as()
   var migrations = [
-    "DebugAccounts", "UserTutor", "Subjects", "Message", "UserSource"
+    "DebugAccounts", "UserTutor", "Subjects", "Message", "UserSource", "Promo"
   ]
 
   _.each(migrations, function(migration) {
