@@ -33,7 +33,7 @@ Parse.Cloud.define("assignmentPush", function(req, res) {
     2: "A tutor is working on your question 😃",
     3: "Just sent your answer!",
     7: "Your question was flagged for being unclear or blurry",
-    8: "Your question was flagged for having to many parts"
+    8: "Your question was flagged for having too many parts"
   }
 
   question.id = req.params.question
