@@ -8,6 +8,9 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
 
   switch(question.get("state")) {
     case 1:
+    case 4:
+    case 5:
+    case 6:
       Parse.Cloud.run("notifyTutors")
       Parse.Cloud.run("newAssignmentSlack")
       break
