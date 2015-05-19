@@ -17,6 +17,7 @@ Parse.Cloud.define("migrationPromo", function(req, res) {
     promo.set("name", "Test Name")
     promo.set("code", "Code")
     promo.set("credits", 3)
+    promo.set("enabled", true)
 
     users.add(user)
 
