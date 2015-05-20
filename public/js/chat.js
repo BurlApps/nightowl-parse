@@ -501,7 +501,7 @@ ChatRoom.prototype.createNotification = function(message, room) {
   var _this = this
   var title = (message.user.name || message.user.id) + " wrote:"
   var notification = new Notification(title, {
-    icon: config.host + "/images/logo.png",
+    icon: config.host + "/images/logoColor.png",
     body: message.text
   })
 
