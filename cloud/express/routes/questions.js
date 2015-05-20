@@ -255,16 +255,10 @@ module.exports.delete = function(req, res) {
   question.id = req.param("question")
   tutor.id = req.session.tutor.objectId
 
-  question.fetch().then(function() {
-    var creator = question.get("creator")
+  question.set("state", 9)
+  question.set("tutor", tutor)
 
-    creator.increment("freeQuestions", 1)
-    return creator.save()
-  }).then(function() {
-    question.set("state", 9)
-    question.set("tutor", tutor)
-    question.save()
-  }).then(function() {
+  question.save().then(function() {
     req.session.claimed = null
     res.redirect("/questions")
   }, function(error) {
@@ -326,11 +320,10 @@ module.exports.unclaim = function(req, res) {
     res.redirect("/questions")
   }
 
-  question.fetch().then(function() {
-    question.unset("tutor")
-    question.set("state", 1)
-    return question.save()
-  }).then(function() {
+  question.unset("tutor")
+  question.set("state", 1)
+
+  question.save().then(function() {
     req.session.claimed = null
     res.redirect("/questions")
   }, function(error) {
