@@ -1,4 +1,5 @@
 var User = Parse.User
+var Installation = Parse.Installation
 var Message = Parse.Object.extend("Message")
 var Conversation = Parse.Object.extend("Conversation")
 var Moment = require("moment")
@@ -90,10 +91,26 @@ module.exports.rooms = function(req, res) {
   }, res.errorT)
 }
 
+module.exports.rate = function(req, res) {
+  var user = new User()
+  var pushQuery = new Parse.Query(Installation)
+
+  user.id = req.param("user")
+  pushQuery.equalTo("user", user)
+
+  Parse.Push.send({
+	  where: pushQuery,
+	  data: {
+      action: "user.rate"
+    }
+  }).then(function() {
+    res.successT()
+  }, res.errorT)
+}
+
 module.exports.message = function(req, res) {
   var message = new Message()
   var user = new User()
-  var messages = []
 
   user.id = req.param("user")
 

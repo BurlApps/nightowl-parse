@@ -78,14 +78,13 @@ ChatRoom.prototype.createMessage = function(e) {
   e.preventDefault()
   e.stopPropagation()
 
-  var data = {
-    text: this.room.$room.find(".messenger").val(),
-    user: this.room.user
-  }
+  var message = this.room.$room.find(".messenger").val()
+    .replace(/{{\s?((rate)|(r))\s?}}/g, config.host + "/rate")
+    .replace(/{{\s?((download)|(d))\s?}}/g, config.host + "/download")
 
   $.post("/chat/" + this.room.user.id + "/message", {
     _csrf: config.csrf,
-    text: this.room.$room.find(".messenger").val()
+    text: message
   }, function(response) {
     if(!response.success) {
       console.error(response.message)

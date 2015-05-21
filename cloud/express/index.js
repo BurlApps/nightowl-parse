@@ -140,6 +140,7 @@ app.get('/chat/:user/room', routes.auth.restricted, routes.chat.room)
 app.get('/chat/:user/messages', routes.auth.restricted, routes.chat.messages)
 app.post('/chat/:user/read', routes.auth.restricted, routes.chat.read)
 app.post('/chat/:user/message', routes.auth.restricted, routes.chat.message)
+app.post('/chat/:user/rate', routes.auth.restricted, routes.chat.rate)
 
 // Queue
 app.get('/questions', routes.auth.restricted, routes.questions.home)
