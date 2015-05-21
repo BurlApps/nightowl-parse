@@ -1,3 +1,7 @@
 <Response>
-    <Message>Bot: Wow, you used all your free questions! Enter your credit card with this secure URL and your question is free: <%= host %>/user/<%= user.id %>/card</Message>
+  <% if(freeQuestions > 0)  { %>
+    <Message>Bot: We’ll solve this question for free if you put in your credit card, after that it’s <%= price %> for every question our grad students solve. You can enter your info with this secure URL for your free question: <%= host %>/user/<%= user.id %>/card</Message>
+  <% } else { %>
+    <Message>Bot: Our tutors can’t start working on your question until you enter your credit card. Use this secure URL: <%= host %>/user/<%= user.id %>/card</Message>
+  <% } %>
 </Response>

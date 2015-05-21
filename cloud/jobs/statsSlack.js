@@ -20,12 +20,13 @@ Parse.Cloud.job("statsSlack", function(req, res) {
 
     var query = new Parse.Query(User)
 
+    query.equalTo("source", "sms")
     query.lessThanOrEqualTo("createdAt", today)
     query.greaterThanOrEqualTo("createdAt", yesterday)
 
     return query.count()
   }).then(function(count) {
-    req.userCount = count
+    req.smsCount = count
 
     var query = new Parse.Query(User)
     query.exists("card")
@@ -60,14 +61,15 @@ Parse.Cloud.job("statsSlack", function(req, res) {
   }).then(function(count) {
     req.messageCount = count
 
-    var query = new Parse.Query(Installation)
+    var query = new Parse.Query(User)
 
+    query.equalTo("source", "ios")
     query.lessThanOrEqualTo("createdAt", today)
     query.greaterThanOrEqualTo("createdAt", yesterday)
 
     return query.count()
   }).then(function(count) {
-    req.installationCount = count
+    req.iOSCount = count
 
     return Parse.Cloud.httpRequest({
       url: req.settings.get("slackStats"),
@@ -76,9 +78,9 @@ Parse.Cloud.job("statsSlack", function(req, res) {
       body: JSON.stringify({
         text: [
           "_Stats for *", Moment(yesterday).format("MMMM Do YYYY"), "*_\n",
-          "New Users: *", req.userCount, "*\n",
-          "New iOS Users: *", req.installationCount, "*\n",
-          "New Phones Users: *", (req.userCount - req.installationCount), "*\n\n",
+          "New Users: *", (req.smsCount + req.iOSCount), "*\n",
+          "New iOS Users: *", req.iOSCount, "*\n",
+          "New SMS Users: *", req.smsCount, "*\n\n",
           "New Questions: *", req.questionsCount, "*\n",
           "New Messages: *", req.messageCount, "*\n\n",
           "Users w/Cards: *", req.userCardCount, "*\n",

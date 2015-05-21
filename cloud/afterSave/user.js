@@ -1,7 +1,7 @@
 Parse.Cloud.afterSave(Parse.User, function(req, res) {
   var user = req.object
 
-  if(user.get("source") == "sms") {
+  if(user.get("source") == "ios") {
     var pushQuery = new Parse.Query(Parse.Installation)
 
     pushQuery.equalTo("user", user)

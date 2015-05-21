@@ -45,7 +45,6 @@ module.exports.handler = function(req, res, next) {
   var mediaUrl = req.param("MediaUrl0")
   var mediaType = req.param("MediaContentType0")
   req.message = req.param("Body")
-  req.activateQuestion = !(req.user.get("freeQuestions") == 0 && !req.user.get("card"))
 
   if(numMedia == 0 || mediaType.split("/")[0] != "image") {
     if(req.message.toLowerCase().trim() == "unsubscribe") {
@@ -61,7 +60,7 @@ module.exports.handler = function(req, res, next) {
       message.set("text", req.message)
 
       message.save().then(function() {
-        var template = (req.newUser) ? "guide" : "empty"
+        var template = req.newUser ? "guide" : "empty"
         module.exports.render(req, res, "twilio/" + template)
       })
     }
@@ -92,6 +91,7 @@ module.exports.handler = function(req, res, next) {
 
 module.exports.newQuestion = function(req, res, next) {
   var question = new Assignment()
+  var activateQuestion = !!req.user.get("card")
 
   if(req.message && req.message.length != 0) {
     question.set("name", req.message)
@@ -99,27 +99,22 @@ module.exports.newQuestion = function(req, res, next) {
 
   question.set("creator", req.user)
   question.set("question", req.media)
-  question.set("state", req.activateQuestion ? 1 : 0)
+  question.set("state", activateQuestion ? 1 : 0)
 
   question.save().then(function() {
-    if(req.activateQuestion) {
-      if(req.user.get("freeQuestions") == 0) {
-        var increment = req.settings.get("questionPrice")
-        var earned = req.user.get("charges")
-        var charges = +(increment + earned).toFixed(2)
-        req.user.set("charges", charges)
-      } else {
-        req.user.increment("freeQuestions", -1)
-      }
+    if(req.user.get("freeQuestions") == 0) {
+      var increment = req.settings.get("questionPrice")
+      var earned = req.user.get("charges")
+      var charges = +(increment + earned).toFixed(2)
+      req.user.set("charges", charges)
+    } else {
+      req.user.increment("freeQuestions", -1)
     }
 
     return req.user.save()
   }).then(function() {
-    if(req.activateQuestion) {
-      module.exports.render(req, res, "twilio/submitted")
-    } else {
-      module.exports.render(req, res, "twilio/card")
-    }
+    var template = activateQuestion ? "submitted" : "card"
+    module.exports.render(req, res, "twilio/" + template)
   })
 }
 
