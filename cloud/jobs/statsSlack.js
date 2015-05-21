@@ -44,7 +44,7 @@ Parse.Cloud.job("statsSlack", function(req, res) {
 
     var query = new Parse.Query(Assignment)
 
-    query.notEqualTo("state", 0)
+    query.equalTo("state", 3)
     query.lessThanOrEqualTo("createdAt", today)
     query.greaterThanOrEqualTo("createdAt", yesterday)
 
