@@ -1,4 +1,9 @@
 <% include ../includes/start.ejs %>
+<% if(banner) { %>
+  <div class="banner">
+    Welcome hunters! Use promo <strong><%= banner %></strong> for free questions!
+  </div>
+<% } %>
 <div class="container">
   <div class="information">
     <div class="header">Night Owl</div>
@@ -15,7 +20,7 @@
   </div>
   <img class="image" src="/images/home.png"/>
   <div class="clear"></div>
-  <a href="/d" class="appStore">
+  <a target="_blank" href="/d" class="appStore">
     <img src="/images/appStore.png"/>
   </a>
 </div>

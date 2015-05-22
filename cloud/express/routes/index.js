@@ -3,7 +3,8 @@ var Settings = require("cloud/utils/settings")
 module.exports.home = function(req, res) {
   Settings().then(function(settings) {
     res.renderT('home/index', {
-      freeQuestions: settings.get("freeQuestions")
+      freeQuestions: settings.get("freeQuestions"),
+      banner: settings.get("bannerPromo")
     })
   })
 }

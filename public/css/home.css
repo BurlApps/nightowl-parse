@@ -12,6 +12,28 @@ body {
   opacity: 0.06;
 }
 
+.banner {
+  position: relative;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+  background: #DA552F;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+  font-size: 26px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.banner strong {
+  color: #fff;
+}
+
 .container {
   position: relative;
   z-index: 2;
