@@ -15,8 +15,9 @@ module.exports.phone = function(req, res) {
     Parse.Cloud.run("twilioMessage", {
       "To": req.param("phone"),
       "Body": [
-        "Hey, I’m the friendly Night Owl bot! Send me math questions here or ",
-        "on my iOS app (", req.session.host, "/d) and I'll solve them for you!"
+        "Welcome to Night Owl! On iOS? Download the app: ",
+        req.session.host, "/d. If not just reply back with ",
+        "your name to get started!"
       ].join("")
     }).then(function() {
       return Parse.Analytics.track('homeTwilio')

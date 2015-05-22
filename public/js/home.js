@@ -21,9 +21,4 @@ $(function() {
       })
     }
   })
-
-  setInterval(function() {
-    $(".image.one").toggle()
-    $(".image.two").toggle()
-  }, 5000)
 })
