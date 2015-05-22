@@ -1,8 +1,11 @@
 <div class="header">
-  <img class="logo" src="/images/logo.png"/>
+  <a href="/">
+    <img class="logo" src="/images/logo.png"/>
+  </a>
   <div class="navigation">
-    <a class="link" href="/chat">Chat Room</a>
-    <a class="link" href="/questions">Questions ($<%= tutor.earned.toFixed(2) %>)</a>
+    <a class="link" href="/chat">Chat</a>
+    <a class="link" href="/questions">Queue ($<%= tutor.earned.toFixed(2) %>)</a>
+    <a class="link" href="/stats">Stats</a>
     <a class="link" href="/logout">Sign Out</a>
   </div>
   <div class="clear"></div>

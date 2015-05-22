@@ -1,0 +1,74 @@
+<% include ../includes/start.ejs %>
+<% include ../includes/header.ejs %>
+<div class="container">
+  <div class="group">
+    <div class="block">
+      <div class="header">Users</div>
+      <div class="stat"><%= users.total %></div>
+    </div>
+    <div class="block">
+      <div class="header">Cards </div>
+      <div class="stat"><%= users.cards %></div>
+    </div>
+    <div class="block">
+      <div class="header">Charges</div>
+      <div class="stat">$<%= users.charges.toFixed(2) %></div>
+    </div>
+    <div class="block">
+      <div class="header">Questions</div>
+      <div class="stat"><%= users.questions %></div>
+    </div>
+    <div class="block">
+      <div class="header">Messages</div>
+      <div class="stat"><%= users.messages %></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="group">
+    <div class="block">
+      <div class="header">iOS</div>
+      <div class="stat"><%= ios.total %></div>
+    </div>
+    <div class="block">
+      <div class="header">Cards </div>
+      <div class="stat"><%= ios.cards %></div>
+    </div>
+    <div class="block">
+      <div class="header">Charges</div>
+      <div class="stat">$<%= ios.charges.toFixed(2) %></div>
+    </div>
+    <div class="block">
+      <div class="header">Questions</div>
+      <div class="stat"><%= ios.questions %></div>
+    </div>
+    <div class="block">
+      <div class="header">Messages</div>
+      <div class="stat"><%= ios.messages %></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="group">
+    <div class="block">
+      <div class="header">SMS</div>
+      <div class="stat"><%= sms.total %></div>
+    </div>
+    <div class="block">
+      <div class="header">Cards </div>
+      <div class="stat"><%= sms.cards %></div>
+    </div>
+    <div class="block">
+      <div class="header">Charges</div>
+      <div class="stat">$<%= sms.charges.toFixed(2) %></div>
+    </div>
+    <div class="block">
+      <div class="header">Questions</div>
+      <div class="stat"><%= sms.questions %></div>
+    </div>
+    <div class="block">
+      <div class="header">Messages</div>
+      <div class="stat"><%= sms.messages %></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<% include ../includes/end.ejs %>

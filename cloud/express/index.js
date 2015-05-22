@@ -13,7 +13,8 @@ var routes = {
   questions: require("cloud/express/routes/questions"),
   twilio: require("cloud/express/routes/twilio"),
   user: require("cloud/express/routes/user"),
-  chat: require("cloud/express/routes/chat")
+  chat: require("cloud/express/routes/chat"),
+  stats: require("cloud/express/routes/stats")
 }
 
 // Global app configuration section
@@ -142,7 +143,10 @@ app.post('/chat/:user/read', routes.auth.restricted, routes.chat.read)
 app.post('/chat/:user/message', routes.auth.restricted, routes.chat.message)
 app.post('/chat/:user/rate', routes.auth.restricted, routes.chat.rate)
 
-// Queue
+// Stats
+app.get('/stats', routes.auth.restricted, routes.stats.home)
+
+// Questions
 app.get('/questions', routes.auth.restricted, routes.questions.home)
 app.get('/questions/:question', routes.auth.restricted, routes.questions.question)
 app.get('/questions/:question/peek', routes.auth.restricted, routes.questions.peek)
