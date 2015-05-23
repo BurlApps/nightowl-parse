@@ -70,10 +70,17 @@ if(template == "home/index") {
 
 	<!-- Twitter Card data -->
 	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="@heynightowlapp">
+	<meta name="twitter:creator" content="@heynightowlapp">
 	<meta name="twitter:domain" content="<%= host %>">
 	<meta name="twitter:title" content="<%= title %>">
 	<meta name="twitter:description" content="<%= description %>">
-	<meta name="twitter:image:src" content="<%= host %>/images/graph.png">
+	<meta name="twitter:image" content="<%= host %>/images/graph.png">
+  <meta name="twitter:image:width" content="1200" />
+  <meta name="twitter:image:height" content="630" />
+  <meta name="twitter:app:name:iphone" content="Night Owl" />
+  <meta name="twitter:app:id:iphone" content="<%= itunesApp %>" />
+  <meta name="twitter:app:url:iphone" content="nightowl://open" />
 
 	<!-- Robot Meta Tags -->
 	<meta name="robots" content="INDEX, FOLLOW">
