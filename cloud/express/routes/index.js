@@ -1,10 +1,14 @@
+var Promo = Parse.Object.extend("Promo")
 var Settings = require("cloud/utils/settings")
 
 module.exports.home = function(req, res) {
-  Settings().then(function(settings) {
+  var query = new Parse.Query(Promo)
+
+  query.equalTo("slug", req.param("ref"))
+
+  query.first(function(promo) {
     res.renderT('home/index', {
-      freeQuestions: settings.get("freeQuestions"),
-      banner: settings.get("bannerPromo")
+      promo: promo ? promo.get("code") : null
     })
   })
 }

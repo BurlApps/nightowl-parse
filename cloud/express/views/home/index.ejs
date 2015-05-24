@@ -1,7 +1,7 @@
 <% include ../includes/start.ejs %>
-<% if(banner) { %>
+<% if(promo) { %>
   <div class="banner">
-    Welcome hunters! Use promo <strong><%= banner %></strong> for free questions!
+    Use promo <strong><%= promo %></strong> for free questions!
   </div>
 <% } %>
 <div class="container">
@@ -14,7 +14,7 @@
     <form class="form" action="/phone">
       <input name="_csrf" type="hidden" value="<%= csrf %>"/>
       <input name="phone" class="input phone" type="tel" placeholder="Your digits ### ### ####" required step="1" autofocus/>
-      <input class="submit" type="submit" value="Get <%= freeQuestions %> free solution!" />
+      <input class="submit" type="submit" value="Get free solutions!" />
       <div class="contact">We just sent a message to your phone!</div>
     </form>
   </div>
