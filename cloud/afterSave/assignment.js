@@ -4,14 +4,15 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
     question: question.id
   }
 
-  Parse.Cloud.run("assignmentPush", data)
+  if(question.existed()) {
+    Parse.Cloud.run("assignmentPush", data)
+  }
 
   switch(question.get("state")) {
     case 1:
     case 4:
     case 5:
     case 6:
-      Parse.Cloud.run("notifyTutors")
       Parse.Cloud.run("newAssignmentSlack")
       break
 

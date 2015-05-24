@@ -3,7 +3,7 @@ var Tutor = Parse.Object.extend("Tutor")
 var Subject = Parse.Object.extend("Subject")
 
 module.exports.restricted = function(req, res, next) {
-	if(req.session.user && req.session.user.tutoring) {
+	if(req.session.user && req.session.tutor.enabled) {
 		next();
 	} else if(req.xhr) {
 		res.errorT("Login required :(")
@@ -35,28 +35,31 @@ module.exports.welcome = function(req, res) {
 module.exports.loginUser = function(req, res) {
   Parse.User.logIn(req.param("email"), req.param("password"), {
 	  success: function(user) {
-		  if(user.get("tutor") && user.get("tutoring")) {
+  	  if(!user || !user.get("tutor")) {
+    	  return res.errorT("Invalid credentials :(")
+  	  }
+
+  	  user.get("tutor").fetch(function(tutor) {
+  		  if(!tutor.get("enabled")) {
+    		  return res.errorT("Invalid credentials :(")
+  		  }
+
   		  req.session.user = user
+  		  req.session.tutor = tutor
   		  req.session.subjects = []
 
-  		  var tutor = user.get("tutor")
         var query = new Parse.Query(Subject)
 
         query.ascending("rank")
-        query.find(function(subjects) {
+
+        return query.find(function(subjects) {
           req.session.subjects = subjects
-        }).then(function() {
-          return tutor.fetch().then(function() {
-            req.session.tutor = tutor
-          })
-        }).then(function() {
-          res.successT({
-  			  	next: req.param("next") || "/questions"
-  		  	})
-        }, res.errorT)
-		  } else {
-			  res.errorT("Invalid credentials :(")
-		  }
+        })
+		  }).then(function() {
+        res.successT({
+			  	next: req.param("next") || "/questions"
+		  	})
+      }, res.errorT)
 	  },
 	  error: function(user, error) {
       res.errorT("Invalid credentials :(")
@@ -69,15 +72,16 @@ module.exports.registerUser = function(req, res) {
     var user = new User()
     var tutor = new Tutor()
 
+    user.set("enabled", false)
+    user.set("email", false)
     tutor.set("biography", req.param("biography"))
+
     tutor.save().then(function(tutor) {
       user.set("name", req.param("name"))
       user.set("email", req.param("email"))
       user.set("username", req.param("email"))
       user.set("password", req.param("password"))
       user.set("tutor", tutor)
-      user.set("tutoring", false)
-      user.set("tutorEmail", true)
 
       return user.save().then(function() {
         tutor.set("user", user)

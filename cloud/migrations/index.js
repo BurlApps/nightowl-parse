@@ -15,7 +15,7 @@ Parse.Cloud.job("runMigration", function(req, res) {
 
   var promise = Parse.Promise.as()
   var migrations = [
-    "Promo", "DebugAccounts", "UserTutor", "Subjects", "Message", "UserSource"
+    "UserTutor" //, "Promo", "DebugAccounts", "Subjects", "Message", "UserSource"
   ]
 
   _.each(migrations, function(migration) {

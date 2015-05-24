@@ -1,7 +1,9 @@
 var Mailgun = require('mailgun')
+var Tutor = Parse.Object.extend("Tutor")
 var Assignment = Parse.Object.extend("Assignment")
 var Settings = require('cloud/utils/settings')
 
+// DEPRECATED: We have moved to Slack notifications
 Parse.Cloud.define("notifyTutors", function(req, res) {
   Parse.Cloud.useMasterKey()
 
@@ -14,22 +16,23 @@ Parse.Cloud.define("notifyTutors", function(req, res) {
     query.equalTo("state", 1)
     return query.count()
   }).then(function(count) {
-    var query = new Parse.Query(Parse.User)
+    var query = new Parse.Query(Tutor)
 
-    query.exists("tutor")
-    query.equalTo("tutorEmail", true)
-    query.equalTo("tutoring", true)
+    query.equalTo("email", true)
+    query.equalTo("enabled", true)
 
-    return query.each(function(user) {
-      return Mailgun.sendEmail({
-        to: user.get("email"),
-        from: "Night Owl <questions@heynightowl.com>",
-        subject: "[Night Owl: " + req.settings.get("account") + "] A Question Has Been Posted!",
-        text: [
-          "One of our users has posted a new question! There are a total of ",
-          count, " waiting to be claimed. \n\nStart answering questions: ",
-          req.settings.get("host"), "/questions"
-        ].join("")
+    return query.each(function(tutor) {
+      return tutor.get("user").fetch(function(user) {
+        return Mailgun.sendEmail({
+          to: user.get("email"),
+          from: "Night Owl <questions@heynightowl.com>",
+          subject: "[Night Owl: " + req.settings.get("account") + "] A Question Has Been Posted!",
+          text: [
+            "One of our users has posted a new question! There are a total of ",
+            count, " waiting to be claimed. \n\nStart answering questions: ",
+            req.settings.get("host"), "/questions"
+          ].join("")
+        })
       })
     })
   }).then(function(data) {
