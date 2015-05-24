@@ -4,6 +4,7 @@ var Settings = require("cloud/utils/settings")
 module.exports.home = function(req, res) {
   var query = new Parse.Query(Promo)
 
+  query.equalTo("enabled", true)
   query.equalTo("slug", req.param("ref"))
 
   query.first(function(promo) {
