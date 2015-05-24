@@ -6,13 +6,16 @@ Parse.Cloud.define("newAssignmentSlack", function(req, res) {
   var query = new Parse.Query(Tutor)
   var date = new Date().getUTCHours()
 
+  query.exists("slack")
   query.equalTo("enabled", true)
   query.lessThanOrEqualTo("start", date)
   query.greaterThan("end", date)
 
-  query.each(function(tutor) {
+  query.find(function(tutors) {
     return Parse.Cloud.run("notifyAssignmentSlack", {
-      channel: tutor.get("slack")
+      channels: tutors.map(function(tutor) {
+        return tutor.get("slack")
+      })
     })
   }).then(function(data) {
     res.success("Notified Tutors on Slack")
@@ -48,17 +51,17 @@ Parse.Cloud.define("notifyAssignmentSlack", function(req, res) {
       icon_url: req.settings.get("host") + "/images/slack/notify.png"
     }
 
-    if(req.params.channel) {
-      data.channel = req.params.channel
-    } else {
-      data.text = "@channel: " + data.text
-    }
+    var channels = req.params.channels || [""]
 
-    return Parse.Cloud.httpRequest({
-      url: req.settings.get("slackQuestions"),
-      method: "POST",
-      followRedirects: true,
-      body: JSON.stringify(data)
+    return channels.forEach(function(channel) {
+      data.channel = channel
+
+      return Parse.Cloud.httpRequest({
+        url: req.settings.get("slackQuestions"),
+        method: "POST",
+        followRedirects: true,
+        body: JSON.stringify(data)
+      })
     })
   }).then(function(data) {
     res.success("Notified Tutors on Slack")
