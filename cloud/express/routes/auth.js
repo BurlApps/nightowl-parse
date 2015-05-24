@@ -72,8 +72,8 @@ module.exports.registerUser = function(req, res) {
     var user = new User()
     var tutor = new Tutor()
 
-    user.set("enabled", false)
-    user.set("email", false)
+    tutor.set("enabled", false)
+    tutor.set("email", false)
     tutor.set("biography", req.param("biography"))
 
     tutor.save().then(function(tutor) {
