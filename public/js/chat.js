@@ -146,7 +146,7 @@ ChatRoom.prototype.$buildRoom = function(data) {
         <div class="name">                                                          \
           <span class="title"></span>                                               \
           <span class="source"></span>                                              \
-          <span class="loading">loading...</span>                                   \
+          <span class="loading">(loading)</span>                                    \
         </div>                                                                      \
         <input class="search" type="text" placeholder="Search messages..." />       \
         <div class="clear"></div>                                                   \

@@ -189,7 +189,6 @@ html, body {
 }
 
 .rooms .room .header .loading {
-  margin-left: 10px;
   color: #888;
   font-size: 22px;
   display: none;
