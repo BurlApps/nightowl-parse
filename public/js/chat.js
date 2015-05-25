@@ -136,7 +136,7 @@ ChatRoom.prototype.updateBar = function(room) {
 
 ChatRoom.prototype.sidebarToggle = function(room) {
   this.$body.toggleClass("openSidebar")
-  this.resize()
+  setTimeout(this.resize.bind(this), 250)
 }
 
 ChatRoom.prototype.$buildRoom = function(data) {
@@ -418,10 +418,11 @@ ChatRoom.prototype.activateRoom = function(room) {
     this.loadMessages(room)
   }
 
+  this.resize()
   this.markRead(room)
   this.updateScroll(room, false)
   this.$body.removeClass("openSidebar")
-  this.resize()
+  setTimeout(this.resize.bind(this), 250)
 
   room.$bar.addClass("active")
   history.pushState(null, null, "/chat/" + room.id)
