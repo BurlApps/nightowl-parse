@@ -200,7 +200,7 @@ ChatRoom.prototype.updateScroll = function(room, animate) {
   var $messages = room.$room.$messages
   var $scroll = room.$room.$scroll
   var $block = room.$room.$block
-  var height = $container.height() - $messages.height()
+  var height = $container.height() - $messages.outerHeight()
 
   $block.height(height)
 
