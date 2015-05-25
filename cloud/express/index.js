@@ -145,6 +145,11 @@ app.post('/chat/:user/rate', routes.auth.restricted, routes.chat.rate)
 
 // Stats
 app.get('/stats', routes.auth.restricted, routes.stats.home)
+app.get('/stats/users', routes.twilio.auth, routes.stats.users)
+app.get('/stats/cards', routes.twilio.auth, routes.stats.cards)
+app.get('/stats/charges', routes.twilio.auth, routes.stats.charges)
+app.get('/stats/questions', routes.twilio.auth, routes.stats.questions)
+app.get('/stats/messages', routes.twilio.auth, routes.stats.messages)
 
 // Questions
 app.get('/questions', routes.auth.restricted, routes.questions.home)

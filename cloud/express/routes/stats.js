@@ -124,3 +124,53 @@ module.exports.home = function(req, res) {
     console.log(error)
   })
 }
+
+module.exports.users = function(req, res) {
+  var query = new Parse.Query(User)
+
+  return query.count(function(count) {
+    res.status(200).send(count + "")
+  })
+}
+
+module.exports.cards = function(req, res) {
+  var query = new Parse.Query(User)
+
+  query.exists("card")
+
+  return query.count(function(count) {
+    res.status(200).send(count + "")
+  })
+}
+
+module.exports.charges = function(req, res) {
+  var query = new Parse.Query(User)
+  var charges = 0
+
+  query.greaterThan("charges", 0)
+  query.select(["charges"])
+
+  return query.each(function(user) {
+    charges += user.get("charges")
+  }).then(function() {
+    res.status(200).send("$" + charges.toFixed(2))
+  })
+}
+
+module.exports.questions = function(req, res) {
+  var query = new Parse.Query(Assignment)
+
+  query.equalTo("state", 3)
+
+  return query.count(function(count) {
+    res.status(200).send(count + "")
+  })
+}
+
+module.exports.messages = function(req, res) {
+  var query = new Parse.Query(Message)
+
+  return query.count(function(count) {
+    res.status(200).send(count + "")
+  })
+}
