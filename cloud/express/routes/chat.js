@@ -39,7 +39,8 @@ module.exports.room = function(req, res) {
     res.successT({
       user: {
         id: req.user.id,
-        name: req.user.get("name") || req.user.get("phone")
+        name: req.user.get("name") || req.user.get("phone"),
+        source: req.user.get("source")
       },
       unread: conversation.get("unread"),
       updated: conversation.updatedAt
@@ -77,7 +78,8 @@ module.exports.rooms = function(req, res) {
       return rooms.push({
         user: {
           id: user.id,
-          name: user.get("name") || user.get("phone")
+          name: user.get("name") || user.get("phone"),
+          source: user.get("source")
         },
         unread: conversation.get("unread"),
         created: conversation.createdAt,

@@ -136,15 +136,19 @@ ChatRoom.prototype.updateBar = function(room) {
 
 ChatRoom.prototype.sidebarToggle = function(room) {
   this.$body.toggleClass("openSidebar")
+  this.resize()
 }
 
 ChatRoom.prototype.$buildRoom = function(data) {
   var room = $('                                                                    \
     <div class="room">                                                              \
       <div class="header">                                                          \
-        <div class="name"></div>                                                    \
-         <div class="loading">(loading)</div>                                       \
-          <input class="search" type="text" placeholder="Search messages..." />     \
+        <div class="name">                                                          \
+          <span class="title"></span>                                               \
+          <span class="source"></span>                                              \
+          <span class="loading">loading...</span>                                   \
+        </div>                                                                      \
+        <input class="search" type="text" placeholder="Search messages..." />       \
         <div class="clear"></div>                                                   \
       </div>                                                                        \
       <div class="container">                                                       \
@@ -161,7 +165,10 @@ ChatRoom.prototype.$buildRoom = function(data) {
     </div>                                                                          \
   ')
 
-  room.$name = room.find(".header .name").text(data.user.name || data.user.id).click(this.sidebarToggle.bind(this))
+  room.$name = room.find(".header .name").click(this.sidebarToggle.bind(this))
+  room.$title = room.find(".header .title").text(data.user.name || data.user.id)
+  room.$source = room.find(".header .source")
+  room.$loading = room.find(".header .loading")
   room.$search = room.find(".header .search").keyup(this.searchMessages.bind(this))
   room.$messageForm = room.find(".bottom .messageForm").submit(this.createMessage.bind(this))
   room.$messenger = room.find(".bottom .messenger").focus(this.messengerFocus.bind(this))
@@ -173,11 +180,19 @@ ChatRoom.prototype.$buildRoom = function(data) {
   room.$bottom = room.find(".bottom")
   room.hide()
 
+  if(data.user.source) {
+    room.$source.text("(" + data.user.source + ")")
+  }
+
   return room
 }
 
 ChatRoom.prototype.updateRoom = function(room) {
-  room.$room.$name.text(room.user.name || room.user.id)
+  room.$room.$title.text(room.user.name || room.user.id)
+
+  if(room.user.source) {
+    room.$room.$source.text("(" + room.user.source + ")")
+  }
 }
 
 ChatRoom.prototype.updateScroll = function(room, animate) {
@@ -196,7 +211,7 @@ ChatRoom.prototype.updateScroll = function(room, animate) {
 
 ChatRoom.prototype.loadMessages = function(room) {
   var _this = this
-  var $loading = room.$room.find(".loading").show()
+  var $loading = room.$room.$loading.show()
 
   $.get("/chat/" + room.id + "/messages", function(response) {
     if(!response.success) {
@@ -403,10 +418,10 @@ ChatRoom.prototype.activateRoom = function(room) {
     this.loadMessages(room)
   }
 
-  this.resize()
   this.markRead(room)
   this.updateScroll(room, false)
   this.$body.removeClass("openSidebar")
+  this.resize()
 
   room.$bar.addClass("active")
   history.pushState(null, null, "/chat/" + room.id)
