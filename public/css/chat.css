@@ -171,9 +171,9 @@ html, body {
   right: 0;
   background: #fff;
 
-  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
