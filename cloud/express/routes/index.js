@@ -9,7 +9,7 @@ module.exports.home = function(req, res) {
 
   query.first(function(promo) {
     res.renderT('home/index', {
-      promo: promo ? promo.get("code") : null
+      promo: promo
     })
   })
 }

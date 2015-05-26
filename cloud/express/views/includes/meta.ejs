@@ -1,16 +1,28 @@
 <%
 title = "Night Owl"
+titleOG = null
+visible = true
 description = [
 	"Math problems? We’re here to help. ",
   "Snap a photo of your homework questions ",
   "and we’ll solve it for you. Get the steps ",
   "and the answer right from your phone. ",
   "Download Night Owl and say goodbye to all-nighters."
-].join(" ")
-visible = true
+].join("")
 
 if(template == "home/index") {
 	title = "Night Owl - Math Problems?"
+
+	if(promo) {
+  	titleOG = "Promo Code: " + promo.get("code")
+
+  	description = [
+    	"Math problems? We’re here to help. ",
+      "Use promo ", promo.get("code"), " to get free answers ",
+      "with steps! Download Night Owl and say goodbye ",
+      "to all-nighters."
+    ].join("")
+	}
 } else if(template == "auth/register") {
   title = "Tutor Registration"
 } else if(template == "auth/login") {
@@ -26,6 +38,8 @@ if(template == "home/index") {
 } else if(template == "stats/index") {
   title = "Stats"
 }
+
+titleOG = titleOG || title
 %>
 
 <!-- Base Meta Tags -->
@@ -57,14 +71,14 @@ if(template == "home/index") {
 	<meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-	<meta property="og:title" content="<%= title %>">
+	<meta property="og:title" content="<%= titleOG %>">
 	<meta property="og:description" content="<%= description %>">
 	<meta property="og:site_name" content="Night Owl"/>
 	<meta property="fb:app_id" content="838388612942433" />
 	<meta property="fb:profile_id" content="841776125916224" />
 
 	<!-- Schema.org markup for Google+ -->
-	<meta itemprop="name" content="<%= title %>">
+	<meta itemprop="name" content="<%= titleOG %>">
 	<meta itemprop="description" content="<%= description %>">
 	<meta itemprop="image" content="<%= host %>/images/graph.png">
 
@@ -73,7 +87,7 @@ if(template == "home/index") {
 	<meta name="twitter:site" content="@heynightowlapp">
 	<meta name="twitter:creator" content="@heynightowlapp">
 	<meta name="twitter:domain" content="<%= host %>">
-	<meta name="twitter:title" content="<%= title %>">
+	<meta name="twitter:title" content="<%= titleOG %>">
 	<meta name="twitter:description" content="<%= description %>">
 	<meta name="twitter:image" content="<%= host %>/images/graph.png">
   <meta name="twitter:image:width" content="1200" />

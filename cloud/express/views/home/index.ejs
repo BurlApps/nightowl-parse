@@ -1,7 +1,7 @@
 <% include ../includes/start.ejs %>
 <% if(promo) { %>
   <div class="banner">
-    Use promo <strong><%= promo %></strong> for free questions!
+    Use promo <strong><%= promo.get("code") %></strong> for free questions!
   </div>
 <% } %>
 <div class="container">
