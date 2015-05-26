@@ -69,14 +69,12 @@ module.exports.question = function(req, res) {
 
   question.id = req.param("question")
 
-  console.log(question)
-
   question.fetch().then(function() {
     return question.get("creator").fetch()
   }).then(function(user) {
     var subject = null
 
-    if(question.get("state") != 2 || !question.get("tutor") || question.get("tutor").id != req.session.tutor.objectId) {
+    if(!question.get("tutor") || question.get("tutor").id != req.session.tutor.objectId) {
       req.session.claimed = null
       return res.redirect("/questions")
     }
@@ -146,7 +144,7 @@ module.exports.peek = function(req, res) {
       return res.redirect("/questions")
     }
 
-    if(question.get("state") == 2 && question.get("tutor").id == req.session.tutor.objectId) {
+    if(question.get("tutor").id == req.session.tutor.objectId) {
       req.session.claimed = question.id
       return res.redirect("/questions/" + question.id)
     }
