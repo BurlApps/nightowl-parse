@@ -8,17 +8,24 @@ Parse.Cloud.define("referredUser", function(req, res) {
   user.id = req.params.user
   if(current.id == user.id) return res.error("Same user!")
 
-  user.increment("freeQuestions", credits)
+  user.fetch().then(function() {
+    user.increment("freeQuestions", credits)
 
-  return user.save().then(function() {
+    return user.save()
+  }).then(function() {
+    var name = "Your friend"
     var pushQuery = new Parse.Query(Parse.Installation)
     pushQuery.equalTo("user", user)
+
+    if(user.get("name")) {
+      name = user.get("name")
+    }
 
     return Parse.Push.send({
       where: pushQuery,
       data: {
         action: "settingsController.reload",
-        alert: "Your friend just joined Night Owl! Here's " + credits + " free questions!",
+        alert: name + " just joined Night Owl! Here's " + credits + " free questions!",
         sound: "alert.caf"
       }
     })
