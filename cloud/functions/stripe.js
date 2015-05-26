@@ -47,6 +47,15 @@ Parse.Cloud.define("addCard", function(req, res) {
 
     return true
   }).then(function() {
+    if(user.get("stripe")) return true
+
+    return Stripe.Customers.create({
+      description: 'User ID: ' + user.id
+    }).then(function(data) {
+      user.set("stripe", data.id)
+      return user.save()
+    })
+  }).then(function() {
     return Stripe.Customers.update(user.get("stripe"), {
       card: req.params.card
     })
