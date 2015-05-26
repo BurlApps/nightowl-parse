@@ -48,18 +48,18 @@ module.exports.loginUser = function(req, res) {
   		  req.session.tutor = tutor
   		  req.session.subjects = []
 
+  		  return tutor
+  		}).then(function() {
         var query = new Parse.Query(Subject)
-
-        query.ascending("rank")
 
         return query.find(function(subjects) {
           req.session.subjects = subjects
         })
 		  }).then(function() {
-        res.successT({
+  		  res.successT({
 			  	next: req.param("next") || "/questions"
 		  	})
-      }, res.errorT)
+		  }, res.errorT)
 	  },
 	  error: function(user, error) {
       res.errorT("Invalid credentials :(")

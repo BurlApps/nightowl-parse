@@ -49,6 +49,12 @@ module.exports.download = function(req, res) {
   })
 }
 
+module.exports.onboard = function(req, res) {
+  Settings().then(function(settings) {
+  	res.redirect(settings.get("onboardUrl"))
+  })
+}
+
 module.exports.terms = function(req, res) {
   Settings().then(function(settings) {
   	res.redirect(settings.get("termsUrl"))

@@ -24,9 +24,8 @@ module.exports.questions = function(req, res) {
   query.containedIn("state", [1, 4, 5, 6])
 
   tutor.fetch().then(function() {
-    var subjectsQuery = tutor.relation("subjects").query()
-
     // REENABLE WHEN DASHBOARD IS BUILT
+    //var subjectsQuery = tutor.relation("subjects").query()
     //query.matchesQuery("subject", subjectsQuery)
 
     return query.each(function(question) {

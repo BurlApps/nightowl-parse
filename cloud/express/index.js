@@ -169,6 +169,9 @@ app.get('/twilio', routes.twilio.auth, routes.twilio.user, routes.twilio.handler
 app.get('/user/updated', routes.user.updated)
 app.get('/user/:user/card', routes.user.card)
 
+// Onboard
+app.get('/onboard', routes.core.onboard)
+
 // Terms
 app.get('/terms', routes.core.terms)
 
