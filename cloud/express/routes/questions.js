@@ -6,11 +6,7 @@ var _ = require("underscore")
 var Image = require("parse-image")
 
 module.exports.home = function(req, res) {
-  if(req.session.claimed) {
-    res.redirect("/questions/" + req.session.claimed)
-  } else {
-    res.renderT("questions/index")
-  }
+  res.renderT("questions/index")
 }
 
 module.exports.questions = function(req, res) {
@@ -74,7 +70,6 @@ module.exports.question = function(req, res) {
     var subject = null
 
     if(!question.get("tutor") || question.get("tutor").id != req.session.tutor.objectId) {
-      req.session.claimed = null
       return res.redirect("/questions")
     }
 
@@ -110,7 +105,6 @@ module.exports.question = function(req, res) {
     })
   }, function(error) {
     console.error(error)
-    req.session.claimed = null
     res.redirect("/questions")
   })
 }
@@ -144,7 +138,6 @@ module.exports.peek = function(req, res) {
     }
 
     if(question.get("tutor").id == req.session.tutor.objectId) {
-      req.session.claimed = question.id
       return res.redirect("/questions/" + question.id)
     }
 
@@ -211,7 +204,6 @@ module.exports.claim = function(req, res) {
     question.set("state", 2)
     return question.save()
   }).then(function() {
-    req.session.claimed = question.id
     res.redirect("/questions/" + question.id)
   }, function(error) {
     console.error(error)
@@ -220,13 +212,8 @@ module.exports.claim = function(req, res) {
 }
 
 module.exports.answered = function(req, res) {
-  if(req.param("question") != req.session.claimed) {
-    res.redirect("/questions")
-  }
-
   var tutor = new Tutor()
 
-  req.session.claimed = null
   tutor.id = req.session.tutor.objectId
 
   tutor.fetch().then(function() {
@@ -256,7 +243,6 @@ module.exports.delete = function(req, res) {
   question.set("tutor", tutor)
 
   question.save().then(function() {
-    req.session.claimed = null
     res.redirect("/questions")
   }, function(error) {
     console.error(error)
@@ -313,15 +299,10 @@ module.exports.unclaim = function(req, res) {
   var question = new Assignment()
   question.id = req.param("question")
 
-  if(question.id != req.session.claimed) {
-    res.redirect("/questions")
-  }
-
   question.unset("tutor")
   question.set("state", 1)
 
   question.save().then(function() {
-    req.session.claimed = null
     res.redirect("/questions")
   }, function(error) {
     console.error(error)
