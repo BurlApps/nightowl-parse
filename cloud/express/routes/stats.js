@@ -32,7 +32,8 @@ module.exports.home = function(req, res) {
     users.charges = 0
 
     return query.each(function(user) {
-      users.charges += user.get("charges")
+      users.charges += user.get("charges") || 0
+      users.charges += user.get("payed") || 0
     })
   }).then(function() {
     var query = new Parse.Query(Assignment)
@@ -151,7 +152,8 @@ module.exports.charges = function(req, res) {
   query.select(["charges"])
 
   return query.each(function(user) {
-    charges += user.get("charges")
+    charges += user.get("charges") || 0
+    charges += user.get("payed") || 0
   }).then(function() {
     res.status(200).send("$" + charges.toFixed(2))
   })

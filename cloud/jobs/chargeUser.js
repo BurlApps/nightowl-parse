@@ -29,6 +29,7 @@ Parse.Cloud.job("chargeUser", function(req, res) {
         customer: user.get("stripe"),
         statement_descriptor: "Night Owl"
       }).then(function() {
+        user.set("payed", user.get("charges"))
         user.set("charges", 0)
         return user.save()
       }, function(error) {
