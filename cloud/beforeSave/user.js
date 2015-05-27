@@ -10,6 +10,7 @@ Parse.Cloud.beforeSave(Parse.User, function(req, res) {
 
   Settings().then(function(settings) {
     if(!user.get("charges")) user.set("charges", 0)
+    if(!user.get("payed")) user.set("payed", 0)
     if(!user.get("freeQuestions")) user.set("freeQuestions", settings.get("freeQuestions"))
   }).then(function() {
     res.success()

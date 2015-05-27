@@ -38,17 +38,22 @@ Parse.Cloud.job("statsSlack", function(req, res) {
   }).then(function(count) {
     req.userCardCount = count
 
-    var query = new Parse.Query(User)
-
-    query.greaterThan("charges", 0)
-    query.select(["charges"])
-    query.lessThanOrEqualTo("createdAt", today)
-    query.greaterThanOrEqualTo("createdAt", yesterday)
+    var queryOne = new Parse.Query(User)
+    var queryTwo = new Parse.Query(User)
 
     req.userChargesCount = 0
 
-    return query.each(function(user) {
-      req.userChargesCount += user.get("charges")
+    queryOne.greaterThan("charges", 0)
+    queryTwo.greaterThan("payed", 0)
+
+    var query = Parse.Query.or(queryOne, queryTwo)
+    query.select(["charges", "payed"])
+    query.lessThanOrEqualTo("createdAt", today)
+    query.greaterThanOrEqualTo("createdAt", yesterday)
+
+    query.each(function(user) {
+      req.userChargesCount += user.get("charges") || 0
+      req.userChargesCount += user.get("payed") || 0
     })
   }).then(function() {
     var query = new Parse.Query(Assignment)

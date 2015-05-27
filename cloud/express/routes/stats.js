@@ -24,10 +24,14 @@ module.exports.home = function(req, res) {
       users.cards = count
     })
   }).then(function() {
-    var query = new Parse.Query(User)
+    var queryOne = new Parse.Query(User)
+    var queryTwo = new Parse.Query(User)
 
-    query.greaterThan("charges", 0)
-    query.select(["charges"])
+    queryOne.greaterThan("charges", 0)
+    queryTwo.greaterThan("payed", 0)
+
+    var query = Parse.Query.or(queryOne, queryTwo)
+    query.select(["charges", "payed"])
 
     users.charges = 0
 
@@ -70,16 +74,21 @@ module.exports.home = function(req, res) {
       ios.cards = count
     })
   }).then(function() {
-    var query = new Parse.Query(User)
+    var queryOne = new Parse.Query(User)
+    var queryTwo = new Parse.Query(User)
 
+    queryOne.greaterThan("charges", 0)
+    queryTwo.greaterThan("payed", 0)
+
+    var query = Parse.Query.or(queryOne, queryTwo)
+    query.select(["charges", "payed"])
     query.equalTo("source", "ios")
-    query.greaterThan("charges", 0)
-    query.select(["charges"])
 
     ios.charges = 0
 
     return query.each(function(user) {
-      ios.charges += user.get("charges")
+      ios.charges += user.get("charges") || 0
+      ios.charges += user.get("payed") || 0
     })
   }).then(function() {
     var query = new Parse.Query(Assignment)
@@ -145,13 +154,17 @@ module.exports.cards = function(req, res) {
 }
 
 module.exports.charges = function(req, res) {
-  var query = new Parse.Query(User)
+  var queryOne = new Parse.Query(User)
+  var queryTwo = new Parse.Query(User)
   var charges = 0
 
-  query.greaterThan("charges", 0)
-  query.select(["charges"])
+  queryOne.greaterThan("charges", 0)
+  queryTwo.greaterThan("payed", 0)
 
-  return query.each(function(user) {
+  var query = Parse.Query.or(queryOne, queryTwo)
+  query.select(["charges", "payed"])
+
+  query.each(function(user) {
     charges += user.get("charges") || 0
     charges += user.get("payed") || 0
   }).then(function() {
