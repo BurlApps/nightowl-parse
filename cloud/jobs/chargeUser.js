@@ -7,10 +7,20 @@ Parse.Cloud.job("chargeUser", function(req, res) {
   Settings().then(function(settings) {
     Stripe.initialize(settings.get("stripeKey"))
 
-    var query = new Parse.Query(Parse.User)
+    var queryOne = new Parse.Query(Parse.User)
+    var queryTwo = new Parse.Query(Parse.User)
+    var monthAgo = new Date()
 
-    query.greaterThanOrEqualTo("charges", settings.get("bulkCharging"))
+    monthAgo.setMonth(monthAgo.getMonth() - 1)
+
+    queryOne.greaterThanOrEqualTo("charges", settings.get("bulkCharging"))
+    queryTwo.lessThanOrEqualTo("updatedAt", monthAgo)
+
+    var query = Parse.Query.or(queryOne, queryTwo)
+
     query.exists("stripe")
+    query.exists("card")
+    query.greaterThan("charges", 0)
 
     return query.each(function(user) {
       return Stripe.Charges.create({
@@ -20,6 +30,9 @@ Parse.Cloud.job("chargeUser", function(req, res) {
         statement_descriptor: "Night Owl"
       }).then(function() {
         user.set("charges", 0)
+        return user.save()
+      }, function(error) {
+        user.unset("card")
         return user.save()
       })
     })
