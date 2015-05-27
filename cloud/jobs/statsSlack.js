@@ -29,6 +29,9 @@ Parse.Cloud.job("statsSlack", function(req, res) {
     req.smsCount = count
 
     var query = new Parse.Query(User)
+
+    query.lessThanOrEqualTo("createdAt", today)
+    query.greaterThanOrEqualTo("createdAt", yesterday)
     query.exists("card")
 
     return query.count()
@@ -36,12 +39,18 @@ Parse.Cloud.job("statsSlack", function(req, res) {
     req.userCardCount = count
 
     var query = new Parse.Query(User)
+
     query.greaterThan("charges", 0)
+    query.select(["charges"])
+    query.lessThanOrEqualTo("createdAt", today)
+    query.greaterThanOrEqualTo("createdAt", yesterday)
 
-    return query.count()
-  }).then(function(count) {
-    req.userChargesCount = count
+    req.userChargesCount = 0
 
+    return query.each(function(user) {
+      req.userChargesCount += user.get("charges")
+    })
+  }).then(function() {
     var query = new Parse.Query(Assignment)
 
     query.equalTo("state", 3)
@@ -81,10 +90,10 @@ Parse.Cloud.job("statsSlack", function(req, res) {
           "New Users: *", (req.smsCount + req.iOSCount), "*\n",
           "New iOS Users: *", req.iOSCount, "*\n",
           "New SMS Users: *", req.smsCount, "*\n\n",
+          "New Cards: *", req.userCardCount, "*\n",
+          "New Charges: *$", req.userChargesCount, "*\n\n",
           "New Questions: *", req.questionsCount, "*\n",
-          "New Messages: *", req.messageCount, "*\n\n",
-          "Users w/Cards: *", req.userCardCount, "*\n",
-          "Users w/Charges: *", req.userChargesCount, "*\n",
+          "New Messages: *", req.messageCount, "*",
         ].join(""),
         username: req.settings.get("account"),
         icon_url: req.settings.get("host") + "/images/slack/notify.png"
