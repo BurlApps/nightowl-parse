@@ -32,7 +32,7 @@ module.exports.welcome = function(req, res) {
   res.renderT('auth/welcome')
 }
 
-module.exports.loginUser = function(req, res) {
+module.exports.loginTutor = function(req, res) {
   Parse.User.logIn(req.param("email"), req.param("password"), {
 	  success: function(user) {
   	  if(!user || !user.get("tutor")) {
@@ -67,7 +67,7 @@ module.exports.loginUser = function(req, res) {
 	})
 }
 
-module.exports.registerUser = function(req, res) {
+module.exports.registerTutor = function(req, res) {
   if(req.param("password") == req.param("password_confirm")) {
     var user = new User()
     var tutor = new Tutor()
@@ -88,6 +88,10 @@ module.exports.registerUser = function(req, res) {
         return tutor.save()
       })
     }).then(function() {
+      return Parse.Cloud.run("newTutorSlack", {
+        tutor: tutor.id
+      })
+    }).then(function() {
       res.successT({
 		  	next: "/register/welcome"
 	  	})
@@ -100,4 +104,30 @@ module.exports.registerUser = function(req, res) {
   } else {
     res.errorT("Passwords Don't Match :(")
   }
+}
+
+module.exports.activateTutor = function(req, res) {
+  var tutor = new Tutor()
+
+  tutor.id = req.param("tutor")
+
+  tutor.fetch().then(function() {
+    if(tutor.get("enabled")) {
+      return false
+    }
+
+    tutor.set("enabled", true)
+    return tutor.save()
+  }).then(function(data) {
+    if(data === false) return
+
+    return Parse.Cloud.run("createTutorSlack", {
+      tutor: tutor.id
+    })
+  }).then(function() {
+    res.renderT("auth/activated")
+  }, function(error) {
+	  console.log(error)
+    res.errorT("Something Went Wrong :(")
+  })
 }

@@ -2,6 +2,80 @@ var Assignment = Parse.Object.extend("Assignment")
 var Tutor = Parse.Object.extend("Tutor")
 var Settings = require('cloud/utils/settings')
 
+Parse.Cloud.define("createTutorSlack", function(req, res) {
+  var tutor = new Tutor()
+
+  tutor.id = req.params.tutor
+
+  Settings().then(function(settings) {
+    req.settings = settings
+
+    return tutor.fetch()
+  }).then(function() {
+    return tutor.get("user").fetch()
+  }).then(function(user) {
+    var now = new Date()
+    var timestamp = parseInt(now.getTime() / 1000, 10)
+    var names = user.get("name").split(" ")
+
+    return Parse.Cloud.httpRequest({
+      url: [
+        req.settings.get("slackApiTutors"), "/users.admin.invite",
+        "?t=", timestamp
+      ].join(""),
+      method: "POST",
+      followRedirects: true,
+      body: {
+        email: user.get("email"),
+        first_name: names[0],
+        token: req.settings.get("slackTokenTutors"),
+        set_active: true,
+        _attempts: 1
+      }
+    })
+  }).then(function(data) {
+    console.log(data.text)
+    res.success("Notified Admins of New Tutor Slack")
+  }, function(error) {
+    console.error(error)
+    res.error(error.message)
+  })
+})
+
+Parse.Cloud.define("newTutorSlack", function(req, res) {
+  var tutor = new Tutor()
+
+  tutor.id = req.params.tutor
+
+  Settings().then(function(settings) {
+    req.settings = settings
+
+    return tutor.fetch()
+  }).then(function() {
+    return tutor.get("user").fetch()
+  }).then(function(user) {
+    return Parse.Cloud.httpRequest({
+      url: req.settings.get("slackGeneral"),
+      method: "POST",
+      followRedirects: true,
+      body: JSON.stringify({
+        text: [
+          user.get("name"), " registered as a tutor. Please activate their account <",
+          req.settings.get("host"), "/tutor/", tutor.id,
+          "/activate|here>."
+        ].join(""),
+        username: req.settings.get("account") + " - Notify",
+        icon_url: req.settings.get("host") + "/images/slack/notify.png"
+      })
+    })
+  }).then(function(data) {
+    res.success("Notified Admins of New Tutor Slack")
+  }, function(error) {
+    console.error(error)
+    res.error(error.message)
+  })
+})
+
 Parse.Cloud.define("newAssignmentSlack", function(req, res) {
   var query = new Parse.Query(Tutor)
   var date = new Date().getUTCHours()

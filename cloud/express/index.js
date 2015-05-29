@@ -130,8 +130,9 @@ app.get('/login', routes.auth.login)
 app.get('/logout', routes.auth.logout)
 app.get('/register', routes.auth.register)
 app.get('/register/welcome', routes.auth.welcome)
-app.post('/login', routes.auth.loginUser)
-app.post('/register', routes.auth.registerUser)
+app.get('/tutor/:tutor/activate', routes.auth.restricted, routes.auth.activateTutor)
+app.post('/login', routes.auth.loginTutor)
+app.post('/register', routes.auth.registerTutor)
 
 // Support Chat
 app.get('/chat', routes.auth.restricted, routes.chat.home)
