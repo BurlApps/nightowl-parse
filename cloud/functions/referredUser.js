@@ -24,7 +24,8 @@ Parse.Cloud.define("referredUser", function(req, res) {
     return Parse.Push.send({
       where: pushQuery,
       data: {
-        action: "settingsController.reload, user.message",
+        action: "settingsController.reload",
+        actions: "settingsController.reload, user.message",
         alert: name + " just joined Night Owl! Here's " + credits + " free questions!",
         message: name + " just joined Night Owl! Here's " + credits + " free questions!",
         title:  "Thanks For Sharing",
