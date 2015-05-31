@@ -9,6 +9,9 @@ Parse.Cloud.define("referredUser", function(req, res) {
   if(current.id == user.id) return res.error("Same user!")
 
   user.fetch().then(function() {
+    var referrals = user.relation("referrals")
+
+    referrals.add(current)
     user.increment("freeQuestions", credits)
 
     return user.save()
