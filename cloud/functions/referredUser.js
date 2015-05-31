@@ -17,8 +17,8 @@ Parse.Cloud.define("referredUser", function(req, res) {
     var pushQuery = new Parse.Query(Parse.Installation)
     pushQuery.equalTo("user", user)
 
-    if(user.get("name")) {
-      name = user.get("name")
+    if(current.get("name")) {
+      name = current.get("name")
     }
 
     return Parse.Push.send({
