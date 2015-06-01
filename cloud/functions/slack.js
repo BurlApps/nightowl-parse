@@ -77,13 +77,19 @@ Parse.Cloud.define("newTutorSlack", function(req, res) {
 })
 
 Parse.Cloud.define("newAssignmentSlack", function(req, res) {
-  var query = new Parse.Query(Tutor)
+  var queryOne = new Parse.Query(Tutor)
+  var queryTwo = new Parse.Query(Tutor)
   var date = new Date().getUTCHours()
 
+  queryOne.lessThanOrEqualTo("start", date)
+  queryOne.greaterThan("end", date)
+
+  queryTwo.lessThanOrEqualTo("start", date)
+  queryTwo.greaterThan("end", 23 - date)
+
+  var query = Parse.Query.Or(queryOne, queryTwo)
   query.exists("slack")
   query.equalTo("enabled", true)
-  query.lessThanOrEqualTo("start", date)
-  query.greaterThan("end", date)
 
   query.find(function(tutors) {
     return Parse.Cloud.run("notifyAssignmentSlack", {
