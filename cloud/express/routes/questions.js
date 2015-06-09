@@ -80,6 +80,7 @@ module.exports.question = function(req, res) {
     }
 
     var name = question.get("name")
+    var answer = question.get("answer")
     var paid = req.session.tutor.question
 
     if(paid < 1) {
@@ -93,6 +94,7 @@ module.exports.question = function(req, res) {
         id: question.id,
         description: name || "No Description Provided",
         image: question.get("question").url(),
+        answer: (answer) ? answer.url() : null,
         name: question.get("name"),
         subject: subject ? subject.name : "Other",
         paid: paid,

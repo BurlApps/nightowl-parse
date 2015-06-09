@@ -1,5 +1,10 @@
 <% include ../includes/start.ejs %>
-<a class="image" href="<%= question.image %>" target="_blank" style="background-image: url('<%= question.image %>')"></a>
+<% if(question.answer == null) { %>
+  <a class="image full" href="<%= question.image %>" target="_blank" style="background-image: url('<%= question.image %>')"></a>
+<% } else { %>
+  <a class="image left" href="<%= question.image %>" target="_blank" style="background-image: url('<%= question.image %>')"></a>
+  <a class="image right" href="<%= question.answer %>" target="_blank" style="background-image: url('<%= question.answer %>')"></a>
+<% } %>
 <div class="header">
   <div class="name"><%= question.description %></div>
   <div class="subject"><%= question.subject %></div>

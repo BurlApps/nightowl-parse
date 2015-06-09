@@ -5,13 +5,27 @@ body {
 .image {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
   z-index: 0;
+}
+
+
+.image.left {
+  left: 0;
+  width: 49%;
+}
+
+.image.right {
+  right: 0;
+  width: 49%;
+}
+
+.image.full {
+  left: 0;
+  right: 0;
 }
 
 .header {
@@ -46,17 +60,6 @@ body {
   color: #ededed;
   width: 30%;
   text-align: right;
-
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.header .image {
-  width: 100%;
-  padding: 10px;
-  background: #000;
-  text-align: center;
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
