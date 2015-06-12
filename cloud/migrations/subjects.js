@@ -14,10 +14,14 @@ Parse.Cloud.define("migrationSubjects", function(req, res) {
   query.each(function(subject) {
     var name = subject.get("name")
     if(name in subjects) delete subjects[name]
+
+    subject.set("price", subject.get("price") || 0.99)
+    return subject.save()
   }).then(function() {
     for(var name in subjects) {
       var subject = new Subject()
 
+      subject.set("price", 0.99)
       subject.set("name", name)
       subject.set("rank", subjects[name])
       subject.save()
