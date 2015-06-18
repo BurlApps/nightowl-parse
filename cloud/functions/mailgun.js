@@ -5,6 +5,9 @@ var Settings = require('cloud/utils/settings')
 
 // DEPRECATED: We have moved to Slack notifications
 Parse.Cloud.define("notifyTutors", function(req, res) {
+  
+  return res.error("Module has been deprecated!")
+  
   Parse.Cloud.useMasterKey()
 
   Settings().then(function(settings) {

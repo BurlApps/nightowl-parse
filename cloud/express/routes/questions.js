@@ -37,7 +37,6 @@ module.exports.questions = function(req, res) {
         id: question.id,
         name: question.get("name"),
         image: question.get("question").url(),
-        name: question.get("name"),
         created: question.createdAt,
         duration: Moment.duration(question.createdAt - now).humanize(true),
         subject: subject ? subject.name : "Other",
