@@ -1,6 +1,8 @@
 var User = Parse.User
 var Tutor = Parse.Object.extend("Tutor")
 var Subject = Parse.Object.extend("Subject")
+var Mailgun = require("mailgun")
+var Settings = require("cloud/utils/settings")
 
 module.exports.restricted = function(req, res, next) {
 	if(req.session.user && req.session.tutor.enabled) {
@@ -120,8 +122,12 @@ module.exports.activateTutor = function(req, res) {
     return tutor.save()
   }).then(function(data) {
     if(data === false) return
-
+    
     return Parse.Cloud.run("createTutorSlack", {
+      tutor: tutor.id
+    })
+  }).then(function() {
+    return Parse.Cloud.run("notifyNewTutor", {
       tutor: tutor.id
     })
   }).then(function() {

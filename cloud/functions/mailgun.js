@@ -3,6 +3,38 @@ var Tutor = Parse.Object.extend("Tutor")
 var Assignment = Parse.Object.extend("Assignment")
 var Settings = require('cloud/utils/settings')
 
+Parse.Cloud.define("notifyNewTutor", function (req, res) {
+  Parse.Cloud.useMasterKey()
+  var tutor = new Tutor()
+  
+  tutor.id = req.params.tutor
+  
+  Settings().then(function(settings) {
+    req.settings = settings
+    Mailgun.initialize(settings.get("mailgunDomain"), settings.get('mailgunKey'))
+    return tutor.fetch()
+  }).then(function () {
+    return tutor.get("user").fetch()
+  }).then(function(user) {
+    return Mailgun.sendEmail({
+      to: user.get("email"),
+      from: "Night Owl <noreply@heynightowl.com>",
+      subject: "[Night Owl: "+req.settings.get("account") + " ] You have been approved as a tutor!",
+      text: ["Congratulations, you've been accepted as a tutor at Night Owl!\n\n",
+             "Keep an eye out for a Slack invitation and check out the question queue here:\n\n",
+             req.settings.get("host"),"/login"
+      ].join("")
+    })
+  }).then(function(data) {
+    res.success("Notified New Tutor")
+  }, function(error) {
+    console.error(error)
+    res.error(error.message)
+  })
+})
+
+
+
 // DEPRECATED: We have moved to Slack notifications
 Parse.Cloud.define("notifyTutors", function(req, res) {
   
