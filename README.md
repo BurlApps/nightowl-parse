@@ -1,7 +1,7 @@
 # Getting Started
 
 ``` bash
-git update-index --assume-unchanged Parse/config/global.json
+git update-index --assume-unchanged config/global.json
 ```
 
 Now open `Parse/config/global.json` and change the `_default` field to
