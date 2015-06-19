@@ -4,7 +4,7 @@
 git update-index --assume-unchanged config/global.json
 ```
 
-Now open `Parse/config/global.json` and change the `_default` field to
+Now open `config/global.json` and change the `_default` field to
 `Night Owl (Debug: <username>)`
 
 # Assignment State Codes
