@@ -1,11 +1,10 @@
 # Getting Started
 
 ``` bash
-git clone git@github.com:bvallelunga/Night-Owl.git
-git update-index --assume-unchanged Parse/config/global.json
+git update-index --assume-unchanged config/global.json
 ```
 
-Now open `Parse/config/global.json` and change the `_default` field to
+Now open `config/global.json` and change the `_default` field to
 `Night Owl (Debug: <username>)`
 
 # Assignment State Codes
