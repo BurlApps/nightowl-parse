@@ -55,15 +55,6 @@ body {
 	color: #666;
 }
 
-.guidelines .guides li a {
-	color: #188EC8;
-	text-decoration: none;
-}
-
-.guidelines .guides li a:hover {
-  text-decoration: underline;
-}
-
 .questions {
   width: 550px;
   margin: 20px auto;
