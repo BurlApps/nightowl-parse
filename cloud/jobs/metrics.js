@@ -6,9 +6,7 @@ Parse.Cloud.job("metrics", function(req, res) {
   var promise = Parse.Promise.as()
   var data = {
     "ahq": {},
-    "adq": {},
-    "maua": null,
-    "mau": null
+    "adq": {}
   }
 
   promise.then(function() {
@@ -19,7 +17,11 @@ Parse.Cloud.job("metrics", function(req, res) {
     queryAssignment.matchesKeyInQuery("creator", "user", queryInstallation)
 
     return queryAssignment.each(function(question) {
-      var hour = question.createdAt.getUTCHours()
+      var date = question.createdAt
+
+      date.setHours(date.getHours() - 7)
+
+      var hour = date.getUTCHours()
 
       if(data["ahq"][hour] == null) {
         data["ahq"][hour] = 0
@@ -31,36 +33,17 @@ Parse.Cloud.job("metrics", function(req, res) {
     var queryAssignment = new Parse.Query(Assignment)
 
     return queryAssignment.each(function(question) {
-      var day = question.createdAt.getUTCDay()
+      var date = question.createdAt
+
+      date.setHours(date.getHours() - 7)
+
+      var day = date.getUTCDay()
 
       if(data["adq"][day] == null) {
         data["adq"][day] = 0
       }
 
       data["adq"][day]++
-    })
-  }).then(function() {
-    var queryInstallation = new Parse.Query(Installation)
-    var date = new Date()
-
-    date.setMonth(date.getMonth() - 1)
-
-    queryInstallation.matches("timeZone", new RegExp("(America)|(US)", "ig"))
-    queryInstallation.greaterThanOrEqualTo("updatedAt", date)
-
-    return queryInstallation.count(function(count) {
-      data["maua"] = count
-    })
-  }).then(function() {
-    var queryInstallation = new Parse.Query(Installation)
-    var date = new Date()
-
-    date.setMonth(date.getMonth() - 1)
-
-    queryInstallation.greaterThanOrEqualTo("updatedAt", date)
-
-    return queryInstallation.count(function(count) {
-      data["mau"] = count
     })
   }).then(function() {
     console.log(data)
