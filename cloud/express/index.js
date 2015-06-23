@@ -164,7 +164,8 @@ app.get('/questions/:question/answered', routes.auth.restricted, routes.question
 app.post('/questions', routes.auth.restricted, routes.questions.questions)
 
 // Twilio Texting
-app.get('/twilio', routes.twilio.auth, routes.twilio.user, routes.twilio.handler)
+//app.get('/twilio', routes.twilio.auth, routes.twilio.user, routes.twilio.handler)
+app.get('/twilio', routes.twilio.auth, routes.twilio.disabled)
 
 // User
 app.get('/user/updated', routes.user.updated)

@@ -15,6 +15,10 @@ module.exports.auth = function(req, res, next) {
   })
 }
 
+module.exports.disabled = function(req, res, next) {
+  res.render("twilio/disabled")
+}
+
 module.exports.user = function(req, res, next) {
   var query = new Parse.Query(User)
   var from = req.param("From")
