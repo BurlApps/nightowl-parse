@@ -9,7 +9,7 @@
     <div class="header">Night Owl</div>
     <div class="subheader">Math problems? We’re here to help.</div>
     <div class="description">
-      Snap a photo of your homework questions and we’ll solve it for you. Get the steps and the answer right from your phone, both iOS and SMS!
+      Snap a photo of your homework questions and we’ll solve it for you. Get the steps and the answer right from your iPhone!
     </div>
     <form class="form" action="/phone">
       <input name="_csrf" type="hidden" value="<%= csrf %>"/>
@@ -23,6 +23,13 @@
   <a target="_blank" href="/d" class="appStore">
     <img src="/images/appStore.png"/>
   </a>
+</div>
+<div class="footer">
+  <a href="mailto:vallelungabrian@gmail.com">Contact Us</a>
+  •
+  <a href="/terms" target="_blank">Terms of Use</a>
+  •
+  <a href="/privacy" target="_blank">Privacy</a>
 </div>
 <canvas id="canvas"></canvas>
 <% include ../includes/end.ejs %>
