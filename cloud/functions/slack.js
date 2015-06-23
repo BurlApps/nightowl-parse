@@ -87,7 +87,7 @@ Parse.Cloud.define("newAssignmentSlack", function(req, res) {
   queryTwo.lessThanOrEqualTo("start", date)
   queryTwo.greaterThan("end", 23 - date)
 
-  var query = Parse.Query.Or(queryOne, queryTwo)
+  var query = Parse.Query.or(queryOne, queryTwo)
   query.exists("slack")
   query.equalTo("enabled", true)
 
