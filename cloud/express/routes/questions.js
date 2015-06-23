@@ -19,6 +19,8 @@ module.exports.questions = function(req, res) {
 
   query.containedIn("state", [1, 4, 5, 6])
 
+  console.log(req.session.tutor)
+
   tutor.fetch().then(function() {
     // REENABLE WHEN DASHBOARD IS BUILT
     //var subjectsQuery = tutor.relation("subjects").query()
@@ -225,7 +227,14 @@ module.exports.answered = function(req, res) {
     tutor.set("earned", owed)
     return tutor.save()
   }).then(function() {
-    req.session.tutor = tutor
+	  req.session.tutor = {
+		  objectId: tutor.id,
+      enabled: tutor.get("enabled"),
+      earned: tutor.get("earned"),
+      paid: tutor.get("paid"),
+      question: tutor.get("question")
+	  }
+
     res.redirect("/questions")
   }, function(error) {
     console.error(error)

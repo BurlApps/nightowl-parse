@@ -46,8 +46,18 @@ module.exports.loginTutor = function(req, res) {
     		  return res.errorT("Invalid credentials :(")
   		  }
 
-  		  req.session.user = user
-  		  req.session.tutor = tutor
+  		  req.session.user = {
+    		  objectId: user.id
+  		  }
+
+  		  req.session.tutor = {
+    		  objectId: tutor.id,
+          enabled: tutor.get("enabled"),
+          earned: tutor.get("earned"),
+          paid: tutor.get("paid"),
+          question: tutor.get("question")
+  		  }
+
   		  req.session.subjects = []
 
   		  return tutor
@@ -122,7 +132,7 @@ module.exports.activateTutor = function(req, res) {
     return tutor.save()
   }).then(function(data) {
     if(data === false) return
-    
+
     return Parse.Cloud.run("createTutorSlack", {
       tutor: tutor.id
     })
