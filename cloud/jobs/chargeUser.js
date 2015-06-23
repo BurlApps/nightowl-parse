@@ -35,6 +35,17 @@ Parse.Cloud.job("chargeUser", function(req, res) {
       }, function(error) {
         user.unset("card")
         return user.save()
+      }).then(function () {
+        var pushQuery = new Parse.Query(Parse.Installation)
+        pushQuery.equalTo("user", user)
+        
+        return Parse.Push.send({
+    	    where: pushQuery,
+    	    data: {
+            "sound": "alert.caf",
+            "alert": "Thank you for your purchase(s)!"
+          }
+  	    })
       })
     })
   }).then(function() {
