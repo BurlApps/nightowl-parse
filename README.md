@@ -7,7 +7,7 @@ git update-index --assume-unchanged config/global.json
 Now open `config/global.json` and change the `_default` field to
 `Night Owl (Debug: <username>)`
 
-## Assignment State Codes
+# Assignment State Codes
 
 | Description                             | State |
 |-----------------------------------------|-------|
@@ -22,7 +22,7 @@ Now open `config/global.json` and change the `_default` field to
 | Tutor Flagged: To Many Questions        | 8     |
 | Tutor Deleted                           | 9     |
 
-## Message State Codes
+# Message State Codes
 
 | Description       | State |
 |-------------------|-------|
@@ -30,7 +30,7 @@ Now open `config/global.json` and change the `_default` field to
 | Created by Tutor  | 1     |
 | Created by User   | 2     |
 
-## Push Notifications
+# Push Notifications
 
 | Description  | Action                                       |
 |--------------|----------------------------------------------|
