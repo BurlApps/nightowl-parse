@@ -16,17 +16,22 @@ Parse.Cloud.define("migrationUserTutor", function(req, res) {
   tutor.set("end", 2)
   tutor.set("enabled", true)
   tutor.set("email", false)
-  tutor.save()
 
-  user.set("username", random)
-  user.set("password", random)
-  user.set("tutor", tutor)
-  user.set("name", "test")
-  user.set("phone", "test")
-  user.set("unsubscribe", true)
-  user.set("source", "sms")
+  tutor.save().then(function() {
+    user.set("username", random)
+    user.set("password", random)
+    user.set("tutor", tutor)
+    user.set("name", "test")
+    user.set("phone", "test")
+    user.set("unsubscribe", true)
+    user.set("source", "sms")
 
-  user.signUp().then(function() {
+    return user.signUp()
+  }).then(function() {
+    tutor.set("user", user)
+
+    return tutor.save()
+  }).then(function() {
     return user.destroy()
   }).then(function() {
     return tutor.destroy()
