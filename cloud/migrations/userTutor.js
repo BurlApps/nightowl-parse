@@ -25,6 +25,7 @@ Parse.Cloud.define("migrationUserTutor", function(req, res) {
     user.set("phone", "test")
     user.set("unsubscribe", true)
     user.set("source", "sms")
+    user.set("questions", 0)
 
     return user.signUp()
   }).then(function() {
