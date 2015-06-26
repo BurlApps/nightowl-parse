@@ -15,6 +15,7 @@ Parse.Cloud.define("migrationUserTutorRating", function(req, res) {
   user.set("username", random)
   user.set("password", random)
   user.set("questions", 0)
+  user.set("messages", 0)
   user.set("rating", 0)
 
   user.signUp().then(function() {

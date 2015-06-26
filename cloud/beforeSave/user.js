@@ -8,6 +8,7 @@ Parse.Cloud.beforeSave(Parse.User, function(req, res) {
   if(!user.get("source")) user.set("source", "ios")
   if(!user.isNew()) return res.success()
 
+  if(!user.get("messages")) user.set("messages", 0)
   if(!user.get("questions")) user.set("questions", 0)
   if(!user.get("charges")) user.set("charges", 0)
   if(!user.get("payed")) user.set("payed", 0)
