@@ -10,14 +10,14 @@ mixpanel.init("<%= mixpanelToken %>");
 <% if(user != null && user.objectId != null) { %>
   mixpanel.alias("<%= user.objectId %>")
   mixpanel.people.set({
-    ID: "<%= user.objectId %>",
-    $name: <%= user.name ? ('"' + user.name + '"') : null %>,
-    $email: <%= user.email ? ('"' + user.email + '"') : null %>
+    "ID": "<%= user.objectId %>",
+    "$name": <%- user.name ? ('"' + user.name + '"') : null %>,
+    "$email": <%- user.email ? ('"' + user.email + '"') : null %>
   })
 <% } %>
 mixpanel.track('WEB: Page Viewed', {
-    'Name' : config.title,
-    'URL' : window.location.pathname
+    'Name': config.title,
+    'URL': window.location.pathname
 })
 </script>
 <!-- end Mixpanel -->
