@@ -1,10 +1,11 @@
 $(function() {
+  
   var enablePosting = true
-
+  
   $(".form").on("submit", function(e) {
     e.preventDefault()
     e.stopPropagation()
-
+    
     if(enablePosting) {
       var form = $(this)
       var contact = form.find(".contact")
@@ -18,6 +19,10 @@ $(function() {
         button.toggleClass("active", response.success)
         contact.toggleClass("active", response.success)
         form.find("input[type=text], input[type=tel], textarea").val("")
+        
+        if(response == success) {
+          mixpanel.track("WEB: SMS Download Link Sent")
+        }
       })
     }
   })

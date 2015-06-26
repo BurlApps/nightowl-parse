@@ -88,10 +88,11 @@ app.use(function(req, res, next) {
   res.locals.stripeKey = req.session.stripeKey
   res.locals.pusherKey = req.session.pusherKey
   res.locals.account = req.session.account
+  res.locals.mixpanelToken = req.session.mixpanelToken
   res.locals.random = random
   res.locals.config = {}
 
-  if(req.session.appliedSettings !== true || !req.session.account) {
+  if(req.session.appliedSettings !== true || !req.session.mixpanelToken) {
     Settings().then(function(settings) {
 	    req.session.appliedSettings = true
 	    req.session.itunesApp = settings.get("itunesId")
@@ -101,10 +102,12 @@ app.use(function(req, res, next) {
 	    req.session.stripeKey = settings.get("stripePubKey")
 	    req.session.account = settings.get("account")
 	    req.session.host = settings.get("host")
+      req.session.mixpanelToken = settings.get("mixpanelToken")
 	    res.locals.host = req.session.host
       res.locals.itunesApp = req.session.itunesApp
       res.locals.parseId = req.session.parseId
       res.locals.parseSecret = req.session.parseSecret
+      res.locals.mixpanelToken = req.session.mixpanelToken
       res.locals.stripeKey = req.session.stripeKey
       res.locals.pusherKey = req.session.pusherKey
       res.locals.account = req.session.account

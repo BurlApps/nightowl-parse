@@ -47,7 +47,9 @@ module.exports.loginTutor = function(req, res) {
   		  }
 
   		  req.session.user = {
-    		  objectId: user.id
+    		  objectId: user.id,
+          name: user.get("name"),
+          email: user.get("email")
   		  }
 
   		  req.session.tutor = {
@@ -69,6 +71,9 @@ module.exports.loginTutor = function(req, res) {
         })
 		  }).then(function() {
   		  res.successT({
+          user: user.id,
+          name: user.get("name"),
+          email: user.get("email"),
 			  	next: req.param("next") || "/questions"
 		  	})
 		  }, res.errorT)
@@ -105,6 +110,9 @@ module.exports.registerTutor = function(req, res) {
       })
     }).then(function() {
       res.successT({
+        user: user.id,
+        name: user.get("name"),
+        email: user.get("email"),
 		  	next: "/register/welcome"
 	  	})
     }, function(error) {

@@ -103,7 +103,13 @@ module.exports.question = function(req, res) {
         user: user.id
       },
       config: {
-        question: question.id
+        question: question.id,
+        creatorID: user.id,
+        subjectID: subject ? subject.objectId : null,
+        subjectName: subject ? subject.name : null,
+        creatorName: user.get("name"),
+        tutorID: req.session.tutor.objectId,
+        tutorName: req.session.user.name
       }
     })
   }, function(error) {
