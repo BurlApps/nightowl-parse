@@ -15,12 +15,12 @@
     <a target="_blank" href="/chat/<%= question.user %>">Open Chat</a>
   </div>
   <div class="actions">
-    <button class="good button">
+    <button class="good button" id="answerButton">
       <span>ANSWER (<%= question.paid %>)</span>
       <input id="fileUpload" type="file"/>
     </button>
     <a class="flag button" href="#">FLAG</a>
-    <a class="bad button" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
+    <a class="bad button" id="unclaim" href="/questions/<%= question.id %>/unclaim">UNCLAIM</a>
   </div>
   <div class="clear"></div>
 </div>
