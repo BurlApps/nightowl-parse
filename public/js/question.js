@@ -32,7 +32,7 @@ function uploadTriggered() {
     var uploadEnd = new Date()
     var uploadTotal = (uploadEnd - uploadStart)/1000
     
-    return mixpanel.track("WEB: Question Answered", {
+    return mixpanel.track("Web.Question.Answered", {
       "Response Time": tutorTotal,
       "Upload Time": uploadTotal,
       "Tutor Name": config.tutorName,

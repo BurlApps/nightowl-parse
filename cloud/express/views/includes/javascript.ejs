@@ -15,10 +15,11 @@ mixpanel.init("<%= mixpanelToken %>");
     "$email": <%- user.email ? ('"' + user.email + '"') : null %>
   })
 <% } %>
-mixpanel.track('WEB: Page Viewed', {
-    'Name': config.title,
-    'URL': window.location.pathname
-})
+  mixpanel.track('Web.Page.View', {
+      'Name' : config.title,
+      'URL' : window.location.pathname
+  })
+}, 500)
 </script>
 <!-- end Mixpanel -->
 
