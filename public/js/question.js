@@ -4,7 +4,7 @@ $(function() {
   window.startTutor = new Date()
   $("#fileUpload").change(uploadTriggered)
   $(".flag").click(flagQuestion)
-  $(".flagModal .background").click(cancelFlag) 
+  $(".flagModal .background").click(cancelFlag)
 })
 
 // Utils
@@ -14,8 +14,8 @@ function uploadTriggered() {
   var file = new Parse.File("image.png", this.files[0])
   var payTutor = false
   var uploadStart = new Date()
-  var tutorTotal = (uploadStart - startTutor)/1000
-  
+  var tutorTotal = (uploadStart - startTutor)/60000
+
   question.id = config.question
   $(".good span").text("UPLOADING")
 
@@ -31,10 +31,10 @@ function uploadTriggered() {
   }).then(function() {
     var uploadEnd = new Date()
     var uploadTotal = (uploadEnd - uploadStart)/1000
-    
+
     return mixpanel.track("Web.Question.Answered", {
-      "Response Time": tutorTotal,
-      "Upload Time": uploadTotal,
+      "Response Time (min)": tutorTotal,
+      "Upload Time (sec)": uploadTotal,
       "Tutor Name": config.tutorName,
       "Tutor ID": config.tutorID,
       "Creator Name": config.creatorName,
@@ -63,5 +63,4 @@ function flagQuestion() {
 
 function cancelFlag() {
   $(".flagModal").fadeOut(500)
-}               
-                 
+}
