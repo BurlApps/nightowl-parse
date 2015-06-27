@@ -33,8 +33,8 @@ function uploadTriggered() {
     var uploadTotal = (uploadEnd - uploadStart)/1000
 
     return mixpanel.track("Web.Question.Answered", {
-      "Response Time (min)": tutorTotal,
-      "Upload Time (sec)": uploadTotal,
+      "Response Time (min)": parseFloat(tutorTotal.toFixed(2)),
+      "Upload Time (sec)": parseFloat(uploadTotal.toFixed(2)),
       "Tutor Name": config.tutorName,
       "Tutor ID": config.tutorID,
       "Creator Name": config.creatorName,
