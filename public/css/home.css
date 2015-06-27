@@ -207,7 +207,7 @@ body {
   }
 
   #canvas {
-    display: none;
+    opacity: 0.04 !important;
   }
 }
 
@@ -227,6 +227,15 @@ body {
 		float: none !important;
 		margin: 0 !important;
 	}
+
+	.container .information .form {
+  	display: none !important;
+	}
+
+	.container .appStore {
+    margin-top: 20px !important;
+    width: 100% !important;
+  }
 
 	.container .information .subheader {
 		font-size: 32px !important;
