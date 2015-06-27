@@ -26,15 +26,15 @@ function uploadTriggered() {
 
     question.set("state", 3)
     question.set("answer", file)
-    console.log("file uploaded")
+
     return question.save()
   }).then(function() {
     var uploadEnd = new Date()
     var uploadTotal = (uploadEnd - uploadStart)/1000
 
     return mixpanel.track("Web.Question.Answered", {
-      "Response Time (min)": parseFloat(tutorTotal.toFixed(2)),
-      "Upload Time (sec)": parseFloat(uploadTotal.toFixed(2)),
+      "Response Time (min)": Math.round(tutorTotal * 100) / 100,
+      "Upload Time (sec)": Math.round(uploadTotal * 100) / 100,
       "Tutor Name": config.tutorName,
       "Tutor ID": config.tutorID,
       "Creator Name": config.creatorName,
