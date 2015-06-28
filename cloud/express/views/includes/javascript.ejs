@@ -14,6 +14,10 @@ mixpanel.init("<%= mixpanelToken %>");
     "$name": <%- user.name ? ('"' + user.name + '"') : null %>,
     "$email": <%- user.email ? ('"' + user.email + '"') : null %>
   })
+  mixpanel.register({
+    "Tutor ID": "<%= user.objectId %>",
+    "Tutor Name": <%- user.name ? ('"' + user.name + '"') : null %>
+  });
 <% } %>
 mixpanel.track('Web.Page.View', {
     'Name' : config.title,
