@@ -28,7 +28,21 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
   		question.set("answer", image)
   		return question.save()
   	}).then(function() {
-      Parse.Cloud.run("assignmentPush", data)
+      var pushQuery = new Parse.Query(Parse.Installation)
+      
+      pushQuery.equalTo("user", question.get("user"))
+      
+      Parse.Push.send({
+        where: pushQuery,
+        data: {
+          action: "user.message",
+          actions: "user.message",
+          alert: "We are under maintenance and can't answer your question at this time :(",
+          message: "We are under maintenance and can't answer your question at this time :(",
+          title:  "Under Maintenance",
+          sound: "alert.caf"
+        }
+      })
   	})
   }
 
