@@ -1,9 +1,38 @@
+var Image = require("parse-image")
+var Settings = require("cloud/utils/settings")
+
 Parse.Cloud.afterSave("Assignment", function(req, res) {
   var question = req.object
   var data = {
     question: question.id
   }
 
+  if(question.get("state") == 1) {
+    Settings().then(function(settings) {
+      return Parse.Cloud.httpRequest({
+      		url: settings.get("host") + "/images/flagged/10.png"
+      })
+    }).then(function(response) {
+  	  var image = new Image()
+  	  return image.setData(response.buffer)
+  	}).then(function(image) {
+  	  return image.data()
+  	}).then(function(buffer) {
+  	  var file = new Parse.File("image.png", {
+  			base64: buffer.toString("base64")
+  		})
+
+  	  return file.save()
+  	}).then(function(image) {
+    	question.set("state", 8)
+  		question.set("answer", image)
+  		return question.save()
+  	}).then(function() {
+      Parse.Cloud.run("assignmentPush", data)
+  	})
+  }
+
+/*
   if(question.existed()) {
     Parse.Cloud.run("assignmentPush", data)
   }
@@ -37,4 +66,5 @@ Parse.Cloud.afterSave("Assignment", function(req, res) {
       Parse.Cloud.run("updateAssignmentSlack", data)
       break
   }
+*/
 })
